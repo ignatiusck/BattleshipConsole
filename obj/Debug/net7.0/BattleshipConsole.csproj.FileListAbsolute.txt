@@ -1,0 +1,15 @@
+/home/ignatius/Desktop/Learn/BattleshipConsole/bin/Debug/net7.0/BattleshipConsole
+/home/ignatius/Desktop/Learn/BattleshipConsole/bin/Debug/net7.0/BattleshipConsole.deps.json
+/home/ignatius/Desktop/Learn/BattleshipConsole/bin/Debug/net7.0/BattleshipConsole.runtimeconfig.json
+/home/ignatius/Desktop/Learn/BattleshipConsole/bin/Debug/net7.0/BattleshipConsole.dll
+/home/ignatius/Desktop/Learn/BattleshipConsole/bin/Debug/net7.0/BattleshipConsole.pdb
+/home/ignatius/Desktop/Learn/BattleshipConsole/obj/Debug/net7.0/BattleshipConsole.csproj.AssemblyReference.cache
+/home/ignatius/Desktop/Learn/BattleshipConsole/obj/Debug/net7.0/BattleshipConsole.GeneratedMSBuildEditorConfig.editorconfig
+/home/ignatius/Desktop/Learn/BattleshipConsole/obj/Debug/net7.0/BattleshipConsole.AssemblyInfoInputs.cache
+/home/ignatius/Desktop/Learn/BattleshipConsole/obj/Debug/net7.0/BattleshipConsole.AssemblyInfo.cs
+/home/ignatius/Desktop/Learn/BattleshipConsole/obj/Debug/net7.0/BattleshipConsole.csproj.CoreCompileInputs.cache
+/home/ignatius/Desktop/Learn/BattleshipConsole/obj/Debug/net7.0/BattleshipConsole.dll
+/home/ignatius/Desktop/Learn/BattleshipConsole/obj/Debug/net7.0/refint/BattleshipConsole.dll
+/home/ignatius/Desktop/Learn/BattleshipConsole/obj/Debug/net7.0/BattleshipConsole.pdb
+/home/ignatius/Desktop/Learn/BattleshipConsole/obj/Debug/net7.0/BattleshipConsole.genruntimeconfig.cache
+/home/ignatius/Desktop/Learn/BattleshipConsole/obj/Debug/net7.0/ref/BattleshipConsole.dll
