@@ -1,28 +1,64 @@
+using System.Runtime.Serialization;
 using System.Xml;
 using System.Drawing;
 
 class GameController
 {
-    private List<Player> _listPlayer;
+    private List<Player>? _listPlayer;
     private bool _isPlayingMode = false;
-    private Player Player;
-    private Dictionary<Player, List<IShip>> _listShipsCoors;
-
-
-    private Dictionary<string, string[,]> _listShipPlayer;
-    private Dictionary<string, string> _listShip = new();  // New property
+    private int _activePlayer = 1;
+    private Dictionary<int, Dictionary<string, IShip>>? _listShipsPlayer = new();
+    private Dictionary<string, string>? _listShip = new();  // New property
     private Arena _arena = new();   // New property
     private string[,] ArenaArray = new string[10, 10]; //new property
-    private Player player_1 = new();
-    private Player player_2 = new();
 
-    public void ResetShipCoor()
+    //Create game with player
+    public GameController(List<Player> players)
     {
+        _listPlayer = players;
+        _listPlayer[0].Id = 1;
+        _listPlayer[1].Id = 2;
+
+        Submarine submarine = new();
+        Battleship battleship = new();
+        Cruiser cruiser = new();
+        Destroyer destroyer = new();
+        Carrier carrier = new();
+
+        Dictionary<string, IShip> listShip = new();
+        listShip.Add("B", battleship);
+        listShip.Add("C", cruiser);
+        listShip.Add("R", carrier);
+        listShip.Add("S", submarine);
+        listShip.Add("D", destroyer);
+
+        foreach (var player in _listPlayer)
+        {
+            _listShipsPlayer.Add(player.Id, listShip);
+        }
+
         _listShip.Add("B", "Battleship");
         _listShip.Add("R", "Carrier");
         _listShip.Add("C", "Cruiser");
         _listShip.Add("S", "Submarine");
         _listShip.Add("D", "Destroyer");
+    }
+
+    //for controlling player turn
+    public void TurnControl()
+    {
+        if (_activePlayer == 1) _activePlayer = 2;
+        else _activePlayer = 1;
+    }
+
+    // For reset setting mode
+    public void ResetShipCoor()
+    {
+        _listShip["B"] = "Battleship";
+        _listShip["R"] = "Carrier";
+        _listShip["C"] = "Cruiser";
+        _listShip["S"] = "Submarine";
+        _listShip["D"] = "Destroyer";
 
         for (int i = 0; i < 10; i++)
         {
@@ -32,24 +68,19 @@ class GameController
             }
         }
     }
-
-    public void CreatePlayer(string name_1, string name_2)
+    //Title Game
+    public void GameTitle()
     {
-        player_1.Name = name_1;
-        player_2.Name = name_2;
-        _listShipPlayer.Add(player_1.Name, ArenaArray);
-        _listShipPlayer.Add(player_2.Name, ArenaArray);
+        Console.WriteLine("==============================================");
+        Console.WriteLine("**                 BATTLESHIP               **");
+        Console.WriteLine("==============================================");
     }
 
-    public void AddPlayer(string name)
-    {
-        _listShipPlayer[name] = ArenaArray;
-    }
+    //For displaying arena information in preparation mode
     public void DisplayArena()
     {
 
-        string input = "";
-        Console.WriteLine("Arena : ");
+        string? input = " ";
         Console.WriteLine();
         Console.Write("  0  1");
         Size arena = _arena.GetArenaSize();
@@ -75,10 +106,10 @@ class GameController
             }
             Console.WriteLine();
         }
-
     }
 
-    public void DisplayShip()
+    // For display ship that should placed player on the arena
+    public bool DisplayShip()
     {
         Console.WriteLine();
         Console.WriteLine("List Ship : ");
@@ -86,27 +117,45 @@ class GameController
         {
             Console.WriteLine($"[{item.Key}] {item.Value}");
         }
+        int Count = _listShip.Count;
+        return Count != 0;
     }
 
+    //add ship to arena player
     public void AddToMap(string key, Coordinate coor, string rotate)
     {
+        Dictionary<string, IShip> listShip = _listShipsPlayer[_activePlayer];
         _listShip.Remove(key);
         int x = coor.GetValueX();
         int y = coor.GetValueY();
+        List<Coordinate> listCoor = new();
         if (rotate == "V")
         {
-            for (int i = 0; i < 3; i++)
+            for (int i = 0; i < listShip[key].ShipSize; i++)
             {
-                ArenaArray[i + x, y - 1] = key;
+                ArenaArray[i + x - 1, y - 1] = key;
+                Coordinate c = new();
+                c.SetValue(i + x - 1, y - 1);
+                listCoor.Add(c);
+                listCoor[i] = c;
+            }
+        }
+        else if (rotate == "H")
+        {
+            for (int i = 0; i < listShip[key].ShipSize; i++)
+            {
+                ArenaArray[x - 1, i + y - 1] = key;
+                Coordinate c = new();
+                c.SetValue(x - 1, i + y - 1);
+                listCoor.Add(c);
+                listCoor[i] = c;
             }
         }
         else
         {
-            for (int i = 0; i < 3; i++)
-            {
-                ArenaArray[x - 1, i + y] = key;
-            }
+            Console.WriteLine("Input invalid");
         }
-
     }
+
+    //add ship to palyer map
 }

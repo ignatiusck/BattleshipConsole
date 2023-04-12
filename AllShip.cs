@@ -5,11 +5,13 @@ class Battleship : IShip
     public List<Coordinate> ShipCoordinates { get; set; }
     public bool IsSink { get; set; }
 
-    public Battleship(List<Coordinate> ListCoordinate)
+    public Battleship()
     {
         ShipName = "Battleship";
         ShipSize = 4;
-        ShipCoordinates = ListCoordinate;
+        Coordinate coordinate = new();
+        List<Coordinate> ListCoors = new();
+        ShipCoordinates = ListCoors;
         IsSink = false;
     }
 }
@@ -22,11 +24,13 @@ class Submarine : IShip
     public List<Coordinate> ShipCoordinates { get; set; }
     public bool IsSink { get; set; }
 
-    public Submarine(List<Coordinate> ListCoordinate)
+    public Submarine()
     {
         ShipName = "Submarine";
         ShipSize = 3;
-        ShipCoordinates = ListCoordinate;
+        Coordinate coordinate = new();
+        List<Coordinate> ListCoors = new();
+        ShipCoordinates = ListCoors;
         IsSink = false;
     }
 }
@@ -38,11 +42,13 @@ class Carrier : IShip
     public List<Coordinate> ShipCoordinates { get; set; }
     public bool IsSink { get; set; }
 
-    public Carrier(List<Coordinate> ListCoordinate)
+    public Carrier()
     {
         ShipName = "Carrier";
         ShipSize = 5;
-        ShipCoordinates = ListCoordinate;
+        Coordinate coordinate = new();
+        List<Coordinate> ListCoors = new();
+        ShipCoordinates = ListCoors;
         IsSink = false;
     }
 }
@@ -54,11 +60,13 @@ class Destroyer : IShip
     public List<Coordinate> ShipCoordinates { get; set; }
     public bool IsSink { get; set; }
 
-    public Destroyer(List<Coordinate> ListCoordinate)
+    public Destroyer()
     {
         ShipName = "Destroyer";
         ShipSize = 2;
-        ShipCoordinates = ListCoordinate;
+        Coordinate coordinate = new();
+        List<Coordinate> ListCoors = new();
+        ShipCoordinates = ListCoors;
         IsSink = false;
     }
 }
@@ -70,11 +78,13 @@ class Cruiser : IShip
     public List<Coordinate> ShipCoordinates { get; set; }
     public bool IsSink { get; set; }
 
-    public Cruiser(List<Coordinate> ListCoordinate)
+    public Cruiser()
     {
         ShipName = "Cruise";
         ShipSize = 3;
-        ShipCoordinates = ListCoordinate;
+        Coordinate coordinate = new();
+        List<Coordinate> ListCoors = new();
+        ShipCoordinates = ListCoors;
         IsSink = false;
     }
 }
