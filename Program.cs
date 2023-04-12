@@ -1,5 +1,6 @@
 ﻿class Program
 {
+    public delegate void calculator(int a, int b);
     public static void Main(string[] args)
     {
         GameController game = new();
