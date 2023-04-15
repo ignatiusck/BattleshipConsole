@@ -9,7 +9,7 @@
         Coordinate coordinate = new();
 
         // Console.SetWindowSize(40, 40);
-        // Console.SetBufferSize(80, 80);
+        //Console.SetBufferSize(80, 80);
 
         string DataInput = "";
         string[] Data;
@@ -17,6 +17,7 @@
         bool turn = true;
         bool start = true;
         int count = 1;
+        string result = "";
 
         game.GameHome();
         game.CreatePlayer();
@@ -25,8 +26,6 @@
             game.ResetShipCoor();
             while (turn == true)
             {
-                Console.Clear();
-                game.DisplayName();
                 game.DisplayArena();
                 turn = game.DisplayShip();
                 if (turn == false) break;
@@ -45,6 +44,47 @@
             if (count >= 2) start = false;
             count++;
         }
+
+        start = true;
+        game.SetDefaultArena();
+
+
+        while (start == true)
+        {
+            string inputCoor = "";
+            bool DisplayMap = true;
+
+            while (DisplayMap == true)
+            {
+                Console.Clear();
+                game.DisplayName();
+                game.DisplayHitArena();
+                Console.WriteLine($"             \n Your turn, {game.DisplayName()}");
+                Console.Write($" Hit Enemy : ");
+                inputCoor = Console.ReadLine();
+
+                while (inputCoor.ToLower().Replace(" ", "") == "myship")
+                {
+                    Console.Clear();
+                    game.DisplayShipPosition();
+                    Console.WriteLine("  Your Ship Position        Will close in 3s. ");
+                    Console.WriteLine(" ");
+                    Thread.Sleep(3000);
+                    inputCoor = "Back";
+                }
+                if (inputCoor != "Back") DisplayMap = false;
+            }
+            string[] coor = inputCoor.Split(",");
+            result = game.HitEnemy(int.Parse(coor[0]), int.Parse(coor[1]));
+
+            Console.Clear();
+            game.DisplayName();
+            game.DisplayHitArena();
+            Console.WriteLine($"\n Coordinates {inputCoor}          result : {result}");
+            Thread.Sleep(1000);
+            game.TurnControl();
+        }
+
         // turn = true;
         // game.DisplayHitArena();
         // game.SaveCoordinates();

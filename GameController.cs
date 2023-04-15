@@ -1,3 +1,4 @@
+using System;
 using System.Runtime.Serialization;
 using System.Xml;
 using System.Drawing;
@@ -47,23 +48,12 @@ class GameController
         _listShip.Add("C", "Cruiser");
         _listShip.Add("S", "Submarine");
         _listShip.Add("D", "Destroyer");
-
-        for (int i = 0; i < 10; i++)
-        {
-            for (int j = 0; j < 10; j++)
-            {
-                ArenaArray[i, j] = "_";
-            }
-        }
-
-        _arenaHitPlayer.Add(1, ArenaArray);
-        _arenaHitPlayer.Add(2, ArenaArray);
     }
 
     //home Game
-    public void GameHome()
+    public async void GameHome()
     {
-        string Input = "2";
+        ConsoleKey Input;
         do
         {
             Console.Clear();
@@ -71,16 +61,21 @@ class GameController
             Console.WriteLine("==============================================");
             Console.WriteLine("**                 BATTLESHIP               **");
             Console.WriteLine("==============================================");
-            Console.WriteLine("\n \n \n");
-            Console.WriteLine("[1] Single player");
-            Console.WriteLine("[2] Multiplayer player");
-            Console.WriteLine("[3] option");
-            Console.WriteLine("[4] exit");
             Console.WriteLine("\n \n");
-            Console.Write("Select Menu : ");
-            Input = Console.ReadLine();
+            Console.WriteLine("                 MULTIPLAYER");
+            Console.WriteLine("          Press Enter to continue...");
+            Console.WriteLine("\n \n");
+            Input = Console.ReadKey().Key;
 
-        } while (int.Parse(Input) > 4 && int.Parse(Input) > 0);
+        } while (((int)Input) != 13);
+
+        Console.WriteLine("Loading...");
+        for (int i = 0; i < 44; i++)
+        {
+            Console.Write("=");
+            Thread.Sleep(50);
+        }
+
     }
 
     //create player
@@ -101,7 +96,7 @@ class GameController
             name = Console.ReadLine();
             _listPlayer[_activePlayer - 1].Name = name;
             Console.WriteLine("Player name saved!");
-            //await Task.Delay(3000);
+            Thread.Sleep(1000);
 
             TurnControl();
             count++;
@@ -145,26 +140,43 @@ class GameController
     }
 
     //display player name turn
-    public void DisplayName()
+    public string DisplayName()
     {
-        Console.SetCursorPosition(10, 10);
-        Console.Write("\n It's your turn, " + _listPlayer[_activePlayer].Name);
+        return _listPlayer[_activePlayer - 1].Name;
+    }
+
+    public void SetDefaultArena()
+    {
+        for (int i = 0; i < 10; i++)
+        {
+            for (int j = 0; j < 10; j++)
+            {
+                ArenaArray[i, j] = "_";
+            }
+        }
+
+        string[,] ArrayData = new string[10, 10];
+        string[,] ArrayData2 = new string[10, 10];
+
+        Array.Copy(ArenaArray, ArrayData, ArenaArray.Length);
+        Array.Copy(ArenaArray, ArrayData2, ArenaArray.Length);
+
+        _arenaHitPlayer.Add(1, ArrayData);
+        _arenaHitPlayer.Add(2, ArrayData2);
     }
 
     //display hit arena information
     public void DisplayHitArena()
     {
-        ArenaArray = _arenaHitPlayer[1];
-        DisplayArena();
-        ArenaArray = _arenaHitPlayer[2];
+        Array.Copy(_arenaHitPlayer[_activePlayer], ArenaArray, _arenaHitPlayer[_activePlayer].Length);
         DisplayArena();
     }
 
     //for controlling player turn
     public void TurnControl()
     {
-        if (_activePlayer == 1) _activePlayer = 2;
-        else _activePlayer = 1;
+        if (_activePlayer == 1) { _activePlayer = 2; }
+        else { _activePlayer = 1; };
     }
 
     // For reset setting mode
@@ -188,24 +200,23 @@ class GameController
     //Display player ship position
     public void DisplayShipPosition()
     {
-        ArenaArray = _shipPlayerInArena[1];
-        DisplayArena();
-        ArenaArray = _shipPlayerInArena[2];
+        Array.Copy(_shipPlayerInArena[_activePlayer], ArenaArray, ArenaArray.Length);
         DisplayArena();
     }
 
     //displaying arena information in preparation mode
     public void DisplayArena()
     {
+        Console.Clear();
         string? input = " ";
-        Console.WriteLine();
+        Console.Write("\n");
         Console.Write("  0  1");
         Size arena = _arena.GetArenaSize();
         for (int k = 2; k <= arena.Width; k++)
         {
             Console.Write($"   {k}");
         }
-        Console.WriteLine();
+        Console.Write("\n");
         for (int i = 1; i <= arena.Height; i++)
         {
             if (i == 10)
@@ -221,18 +232,21 @@ class GameController
             {
                 Console.Write($" [{ArenaArray[i - 1, j]}]");
             }
-            Console.WriteLine();
+            Console.Write("\n");
         }
     }
 
     // For display ship that should placed player on the arena
     public bool DisplayShip()
     {
+        int cout = 0;
         Console.WriteLine();
-        Console.WriteLine("List Ship : ");
+        Console.WriteLine($"List Ship :               Your Turn, {DisplayName()}");
         foreach (var item in _listShip)
         {
+
             Console.WriteLine($"[{item.Key}] {item.Value}");
+
         }
         int Count = _listShip.Count;
         return Count != 0;
@@ -242,21 +256,37 @@ class GameController
     //save coordinates ship player
     public void SaveCoordinates()
     {
-        _shipPlayerInArena.Add(1, ArenaArray);
-        _shipPlayerInArena.Add(2, ArenaArray);
+        string[,] ArrayData = new string[10, 10];
+        Array.Copy(ArenaArray, ArrayData, ArenaArray.Length);
+        _shipPlayerInArena.Add(_activePlayer, ArrayData);
     }
 
-    //Hit Enemy
-    public void HitEnemy(int x, int y)
+    //Hit Enemy 
+    public string HitEnemy(int x, int y)
     {
+        int EnemyId;
+        string result;
 
-        if (_activePlayer == 1)
+        if (_activePlayer == 1) EnemyId = 2;
+        else EnemyId = 1;
+
+        string[,] shipCoor = _shipPlayerInArena[EnemyId];
+        string[,] blankCoor = _arenaHitPlayer[_activePlayer];
+        if (shipCoor[x - 1, y - 1] != "_")
         {
-            string[,] shipCoor = _shipPlayerInArena[2];
-            string[,] blankCoor = _arenaHitPlayer[2];
-            if (shipCoor[x - 1, y - 1] != "_") blankCoor[x - 1, y - 1] = "H";
-            else blankCoor[x - 1, y - 1] = "*";
-            _arenaHitPlayer[2] = blankCoor;
+            blankCoor[x - 1, y - 1] = "H";
+            shipCoor[x - 1, y - 1] = "H";
+            result = "Hit!!";
         }
+        else
+        {
+            blankCoor[x - 1, y - 1] = "*";
+            shipCoor[x - 1, y - 1] = "*";
+            result = "Miss";
+        }
+        _shipPlayerInArena[EnemyId] = shipCoor;
+        _arenaHitPlayer[_activePlayer] = blankCoor;
+
+        return result;
     }
 }
