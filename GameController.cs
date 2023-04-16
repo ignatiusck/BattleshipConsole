@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 class GameController
 {
     private List<Player>? _listPlayer;
-    private bool _isPlayingMode = false;
     private int _activePlayer;
     private Dictionary<int, string[,]> _shipPlayerInArena = new();
     private Dictionary<int, string[,]> _arenaHitPlayer = new();
@@ -15,6 +14,7 @@ class GameController
     private Dictionary<string, string>? _listShip = new();  // New property
     private Arena _arena = new();   // New property
     private string[,] ArenaArray = new string[10, 10]; //new property
+    private List<int> count = new(); // new property
 
     //Create game with player
     public GameController(List<Player> players)
@@ -73,7 +73,7 @@ class GameController
         for (int i = 0; i < 44; i++)
         {
             Console.Write("=");
-            Thread.Sleep(50);
+            Thread.Sleep(20);
         }
 
     }

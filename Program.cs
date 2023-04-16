@@ -48,11 +48,13 @@
         start = true;
         game.SetDefaultArena();
 
-
         while (start == true)
         {
             string inputCoor = "";
             bool DisplayMap = true;
+            ConsoleKey key;
+            int btn = 0;
+            bool state = true;
 
             while (DisplayMap == true)
             {
@@ -61,26 +63,39 @@
                 game.DisplayHitArena();
                 Console.WriteLine($"             \n Your turn, {game.DisplayName()}");
                 Console.Write($" Hit Enemy : ");
-                inputCoor = Console.ReadLine();
+                btn = 0;
 
-                while (inputCoor.ToLower().Replace(" ", "") == "myship")
+                while (btn != 13)
                 {
-                    Console.Clear();
-                    game.DisplayShipPosition();
-                    Console.WriteLine("  Your Ship Position        Will close in 3s. ");
-                    Console.WriteLine(" ");
-                    Thread.Sleep(3000);
-                    inputCoor = "Back";
+                    key = Console.ReadKey().Key;
+                    btn = (int)key;
+                    if (btn == 36)
+                    {
+                        Console.Clear();
+                        game.DisplayShipPosition();
+                        Console.WriteLine("\n Your Ship Position        Will close in 3s. ");
+                        Console.WriteLine(" ");
+                        Thread.Sleep(3000);
+                        state = false;
+                        break;
+                    }
+                    else if (btn == 13)
+                    {
+                        state = true;
+                        break;
+                    }
+                    char c = Convert.ToChar(btn);
+                    inputCoor += c.ToString();
                 }
-                if (inputCoor != "Back") DisplayMap = false;
+                DisplayMap = state == false;
             }
-            string[] coor = inputCoor.Split(",");
+            string[] coor = inputCoor.Split("¼");
             result = game.HitEnemy(int.Parse(coor[0]), int.Parse(coor[1]));
 
             Console.Clear();
             game.DisplayName();
             game.DisplayHitArena();
-            Console.WriteLine($"\n Coordinates {inputCoor}          result : {result}");
+            Console.WriteLine($"\n Coordinates {coor[0]},{coor[1]}         result : {result}");
             Thread.Sleep(1000);
             game.TurnControl();
         }
