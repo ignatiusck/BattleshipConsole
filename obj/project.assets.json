@@ -8,19 +8,19 @@
     "net7.0": []
   },
   "packageFolders": {
-    "/home/ignatius/.nuget/packages/": {}
+    "/home/codespace/.nuget/packages/": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/home/ignatius/Desktop/Learn/BattleshipConsole/BattleshipConsole.csproj",
+      "projectUniqueName": "/workspaces/BattleshipConsole/BattleshipConsole.csproj",
       "projectName": "BattleshipConsole",
-      "projectPath": "/home/ignatius/Desktop/Learn/BattleshipConsole/BattleshipConsole.csproj",
-      "packagesPath": "/home/ignatius/.nuget/packages/",
-      "outputPath": "/home/ignatius/Desktop/Learn/BattleshipConsole/obj/",
+      "projectPath": "/workspaces/BattleshipConsole/BattleshipConsole.csproj",
+      "packagesPath": "/home/codespace/.nuget/packages/",
+      "outputPath": "/workspaces/BattleshipConsole/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "/home/ignatius/.nuget/NuGet/NuGet.Config"
+        "/home/codespace/.nuget/NuGet/NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net7.0"
@@ -59,7 +59,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/7.0.203/RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "/usr/local/dotnet/7.0.202/sdk/7.0.202/RuntimeIdentifierGraph.json"
       }
     }
   }
