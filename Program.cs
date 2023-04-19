@@ -35,24 +35,33 @@
         {
             string inputCoor = "";
             bool DisplayMap = true;
-
-            while (DisplayMap)
+            bool TryInput = true;
+            while (TryInput)
             {
+                while (DisplayMap)
+                {
+                    game.DisplayClear();
+                    game.DisplayHitArena();
+                    game.DisplayPlayerTurn();
+
+                    inputCoor = game.ReadKeyCoor();
+                    DisplayMap = (inputCoor == "false") ? true : false;
+                }
+                string[] coor = inputCoor.Split("¼");
+                string result = game.HitEnemy(int.Parse(coor[0]), int.Parse(coor[1]));
+                if (result == "false")
+                {
+                    Console.WriteLine($"Input Invalid. try again.");
+                    Thread.Sleep(1000);
+                    break;
+                }
                 game.DisplayClear();
-                game.DisplayHitArena();
                 game.DisplayPlayerTurn();
-
-                inputCoor = game.ReadKeyCoor();
-                DisplayMap = (inputCoor == "false") ? true : false;
+                game.DisplayHitArena();
+                game.DisplayHitResult(coor, result);
+                game.TurnControl();
+                TryInput = false;
             }
-            string[] coor = inputCoor.Split("¼");
-            string result = game.HitEnemy(int.Parse(coor[0]), int.Parse(coor[1]));
-
-            game.DisplayClear();
-            game.DisplayPlayerTurn();
-            game.DisplayHitArena();
-            game.DisplayHitResult(coor, result);
-            game.TurnControl();
         }
     }
 
