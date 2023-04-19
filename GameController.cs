@@ -88,41 +88,6 @@ class GameController
         }
     }
 
-    //add ship to arena player
-    public void AddToMap(string key, Coordinate coor, string rotate)
-    {
-        Dictionary<string, IShip> listShip = _listShipsPlayer[_activePlayer];
-        _listShipMenu.Remove(key);
-        int x = coor.GetValueX();
-        int y = coor.GetValueY();
-        List<Coordinate> listCoor = new();
-        if (rotate == "V")
-        {
-            for (int i = 0; i < listShip[key].ShipSize; i++)
-            {
-                ArenaArray[i + x - 1, y - 1] = key;
-                Coordinate c = new();
-                c.SetValue(i + x - 1, y - 1);
-                listCoor.Add(c);
-                listCoor[i] = c;
-            }
-        }
-        else if (rotate == "H")
-        {
-            for (int i = 0; i < listShip[key].ShipSize; i++)
-            {
-                ArenaArray[x - 1, i + y - 1] = key;
-                Coordinate c = new();
-                c.SetValue(x - 1, i + y - 1);
-                listCoor.Add(c);
-                listCoor[i] = c;
-            }
-        }
-        else
-        {
-            Console.WriteLine("Input invalid");
-        }
-    }
 
     //display player name turn
     public void DisplayPlayerTurn()
@@ -170,22 +135,162 @@ class GameController
     //Add ship to arena
     public void AddShipToArena(bool _playerAddShip)
     {
-        while (_playerAddShip == true)
+        bool DataValid = true;
+        while (DataValid)
         {
-            DisplayArena();
-            _playerAddShip = DisplayListShip();
-            if (_playerAddShip == false) break;
+            while (_playerAddShip == true)
+            {
+                DisplayArena();
+                _playerAddShip = DisplayListShip();
+                if (_playerAddShip == false) break;
 
-            Console.Write("\n" + "Place your ship : ");
-            string DataInput = Console.ReadLine();
-            string[] Data = DataInput.Split(" ");
-            string[] Coor = Data[1].Split(",");
-            coordinate.SetValue(int.Parse(Coor[0]), int.Parse(Coor[1]));
-            AddToMap(Data[0].ToUpper(), coordinate, Data[2].ToUpper());
+                Console.Write("\n" + "Place your ship : ");
+                string DataInput = Console.ReadLine();
+                string[] Data = DataInput.Split(" ");
 
+                if (Data.Count() != 3 || Data[1].Split(",").Count() != 2)
+                {
+                    Console.WriteLine("Data Invalid");
+                    Thread.Sleep(1000);
+                    DataValid = true;
+                    break;
+                }
+                else if (ValidateListShipMenu(Data[0]))
+                {
+                    Console.WriteLine("Ship not found");
+                    Thread.Sleep(1000);
+                    DataValid = true;
+                    break;
+                };
+
+                string[] Coor = Data[1].Split(",");
+                if (!int.TryParse(Coor[0], out int x) || !int.TryParse(Coor[1], out int y))
+                {
+                    Console.WriteLine("Coordinate Invalid");
+                    Thread.Sleep(1000);
+                    DataValid = true;
+                    break;
+                }
+                coordinate.SetValue(int.Parse(Coor[0]), int.Parse(Coor[1]));
+
+                bool AddMap = ValidateAddToMap(Data[0].ToUpper(), coordinate, Data[2].ToUpper());
+                if (AddMap)
+                {
+                    DataValid = true;
+                    break;
+                }
+
+                bool CheckRotate = AddToMap(Data[0].ToUpper(), coordinate, Data[2].ToUpper());
+                if (!CheckRotate)
+                {
+                    Console.WriteLine("Data rotate Invalid");
+                    Thread.Sleep(1000);
+                    DataValid = true;
+                    break;
+                }
+                DataValid = false;
+            }
         }
         SaveCoordinates();
     }
+
+    //Check list ship
+    public bool ValidateListShipMenu(string data)
+    {
+        bool state = true;
+        foreach (KeyValuePair<string, string> ship in _listShipMenu)
+        {
+            if (ship.Key == data.ToUpper())
+            {
+                state = false;
+            }
+        }
+        return state;
+    }
+
+    //Validation for input ship to arena
+    public bool ValidateAddToMap(string key, Coordinate coor, string rotate)
+    {
+        Dictionary<string, IShip> listShip = _listShipsPlayer[_activePlayer];
+        int x = coor.GetValueX();
+        int y = coor.GetValueY();
+        bool result = false;
+
+        List<Coordinate> listCoor = new();
+        if (rotate == "V")
+        {
+            for (int i = 0; i < listShip[key].ShipSize; i++)
+            {
+                if (ArenaArray[i + x - 1, y - 1] != "_")
+                {
+                    Console.WriteLine($"Ship {listShip[ArenaArray[i + x - 1, y - 1]]} here, Reposition your ship!");
+                    Thread.Sleep(2000);
+                    result = true;
+                    break;
+                }
+            }
+            return result;
+        }
+        else if (rotate == "H")
+        {
+            for (int i = 0; i < listShip[key].ShipSize; i++)
+            {
+                if (ArenaArray[x - 1, i + y - 1] != "_")
+                {
+                    Console.WriteLine($"Ship {listShip[ArenaArray[x - 1, i + y - 1]]} here, Reposition your ship!");
+                    Thread.Sleep(2000);
+                    result = true;
+                    break;
+                }
+
+            }
+            return result;
+        }
+        else
+        {
+            return result;
+        }
+    }
+
+    //add ship to arena player
+    public bool AddToMap(string key, Coordinate coor, string rotate)
+    {
+        Dictionary<string, IShip> listShip = _listShipsPlayer[_activePlayer];
+        int x = coor.GetValueX();
+        int y = coor.GetValueY();
+        List<Coordinate> listCoor = new();
+        if (rotate == "V")
+        {
+            for (int i = 0; i < listShip[key].ShipSize; i++)
+            {
+                ArenaArray[i + x - 1, y - 1] = key;
+                Coordinate c = new();
+                c.SetValue(i + x - 1, y - 1);
+                listCoor.Add(c);
+                listCoor[i] = c;
+            }
+            _listShipMenu.Remove(key);
+            return true;
+        }
+        else if (rotate == "H")
+        {
+            for (int i = 0; i < listShip[key].ShipSize; i++)
+            {
+                ArenaArray[x - 1, i + y - 1] = key;
+                Coordinate c = new();
+                c.SetValue(x - 1, i + y - 1);
+                listCoor.Add(c);
+                listCoor[i] = c;
+            }
+            _listShipMenu.Remove(key);
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
 
     //For reset setting mode
     public void ResetShipCoor()
@@ -272,23 +377,28 @@ class GameController
 
         string[,] shipCoor = _shipPlayerInArena[EnemyId];
         string[,] blankCoor = _arenaHitPlayer[_activePlayer];
-        if (shipCoor[x - 1, y - 1] != "_")
+        if (shipCoor[x - 1, y - 1] != "_" && shipCoor[x - 1, y - 1] != "H" && shipCoor[x - 1, y - 1] != "*")
         {
             blankCoor[x - 1, y - 1] = "H";
             shipCoor[x - 1, y - 1] = "H";
             result = "Hit!!";
         }
-        else
+        else if (shipCoor[x - 1, y - 1] == "_")
         {
             blankCoor[x - 1, y - 1] = "*";
             shipCoor[x - 1, y - 1] = "*";
             result = "Miss";
+        }
+        else
+        {
+            return "false";
         }
         _shipPlayerInArena[EnemyId] = shipCoor;
         _arenaHitPlayer[_activePlayer] = blankCoor;
 
         return result;
     }
+
 
     //Display hit result
     public void DisplayHitResult(string[] coor, string result)
