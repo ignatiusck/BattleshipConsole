@@ -36,65 +36,31 @@ class GameController
 
         SetArenaClear();
     }
-
-    //home Game
-    public void GameHome()
+    //get active player
+    public int GetActivePlayer()
     {
-        ConsoleKey Input;
-        do
-        {
-            Console.Clear();
-            Console.WriteLine();
-            Console.WriteLine("==============================================");
-            Console.WriteLine("**                 BATTLESHIP               **");
-            Console.WriteLine("==============================================");
-            Console.WriteLine("\n \n");
-            Console.WriteLine("                 MULTIPLAYER");
-            Console.WriteLine("          Press Enter to continue...");
-            Console.WriteLine("\n \n");
-            Input = Console.ReadKey().Key;
-
-        } while (((int)Input) != 13);
+        return _activePlayer;
+    }
+    //get list player
+    public List<Player> GetPlayerList()
+    {
+        return _listPlayer;
+    }
+    //get Player ship list
+    public Dictionary<int, Dictionary<string, IShip>> GetPlayerShipList()
+    {
+        return _listShipsPlayer;
+    }
+    //get ship list
+    public Dictionary<string, IShip> GetShipList()
+    {
+        return _Ships;
     }
 
-    //create player
-    public void CreatePlayer()
+    //get player name
+    public string GetPlayerName()
     {
-        int Index = 0;
-        while (Index < 2)
-        {
-            Player player = new();
-            _listPlayer.Add(player);
-            _listPlayer[_activePlayer - 1].Id = _activePlayer;
-
-            Console.Clear();
-            Console.WriteLine();
-            Console.WriteLine("==============================================");
-            Console.WriteLine("**                 BATTLESHIP               **");
-            Console.WriteLine("==============================================");
-            Console.WriteLine();
-            Console.Write($"Enter your name (Player {_activePlayer}) : ");
-            string name = Console.ReadLine();
-            _listPlayer[_activePlayer - 1].Name = name;
-            Console.WriteLine("Player name saved!");
-            Thread.Sleep(1000);
-
-            TurnControl();
-            Index++;
-        }
-        foreach (var player in _listPlayer)
-        {
-            _listShipsPlayer.Add(player.Id, _Ships);
-        }
-    }
-
-
-    //display player name turn
-    public void DisplayPlayerTurn()
-    {
-        string name = _listPlayer[_activePlayer - 1].Name;
-        Console.WriteLine($"             \n Your turn, {name}");
-        Console.Write($" Hit Enemy : ");
+        return _listPlayer[_activePlayer - 1].Name;
     }
 
     //Set default arena
@@ -126,10 +92,10 @@ class GameController
     }
 
     //Coontrolling player turn
-    public void TurnControl()
+    public int TurnControl()
     {
-        if (_activePlayer == 1) { _activePlayer = 2; }
-        else { _activePlayer = 1; };
+        if (_activePlayer == 1) { return _activePlayer = 2; }
+        else { return _activePlayer = 1; };
     }
 
     //Add ship to arena
