@@ -9,7 +9,6 @@ class GameController
     private Dictionary<int, Dictionary<string, IShip>>? _listShipsPlayer = new();
     private Dictionary<string, string>? _listShipMenu = new();  // New property
     private Dictionary<string, IShip> _Ships = new();
-    private Arena _arena = new();   // New property
     private string[,] ArenaArray = new string[10, 10]; //new property
     private int _activePlayer = 1;
 
@@ -321,8 +320,8 @@ class GameController
     //Displaying arena information in preparation mode
     public void DisplayArena()
     {
+        Arena _arena = new();
         Console.Clear();
-        string? input = " ";
         Console.Write("\n");
         Console.Write("  0  1");
         Size arena = _arena.GetArenaSize();
