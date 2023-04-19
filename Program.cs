@@ -105,20 +105,31 @@ class Program
         List<Player> _listPlayer = data.PlayerList;
 
         int Index = 0;
+        string Name;
         while (Index < 2)
         {
             Player player = new();
+            do
+            {
+                Console.Clear();
+                Console.WriteLine();
+                Console.WriteLine("==============================================");
+                Console.WriteLine("**                 BATTLESHIP               **");
+                Console.WriteLine("==============================================");
+                Console.WriteLine();
 
-            Console.Clear();
-            Console.WriteLine();
-            Console.WriteLine("==============================================");
-            Console.WriteLine("**                 BATTLESHIP               **");
-            Console.WriteLine("==============================================");
-            Console.WriteLine();
+                Console.Write($"Enter your name (Player {_activePlayer}) : ");
 
-            Console.Write($"Enter your name (Player {_activePlayer}) : ");
+                Name = Console.ReadLine();
+
+                if (Name.Length < 3)
+                {
+                    Console.WriteLine("Name should be atleast 3 characters long");
+                    Thread.Sleep(2000);
+                };
+            } while (Name.Length < 3);
             _listPlayer.Add(player);
-            _listPlayer[_activePlayer - 1].Name = Console.ReadLine();
+            _listPlayer[_activePlayer - 1].Name = Name;
             _listPlayer[_activePlayer - 1].Id = _activePlayer;
             Console.WriteLine("Player name saved!");
             Thread.Sleep(1000);
@@ -264,5 +275,5 @@ class Program
         Console.Clear();
     }
 
-    
+
 }
