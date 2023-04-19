@@ -1,4 +1,4 @@
-interface IShip
+public interface IShip
 {
     string ShipName { get; set; }
     int ShipSize { get; set; }

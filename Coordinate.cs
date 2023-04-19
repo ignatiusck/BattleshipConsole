@@ -1,5 +1,5 @@
 using System.Xml.Serialization;
-class Coordinate
+public class Coordinate
 {
     private int _x;
     private int _y;

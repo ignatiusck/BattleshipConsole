@@ -1,3 +1,4 @@
+using System.Data.Common;
 using System.Drawing;
 
 class GameController
@@ -36,65 +37,30 @@ class GameController
 
         SetArenaClear();
     }
-
-    //home Game
-    public void GameHome()
+    //get active player
+    public Data GetDataCreatePlayer()
     {
-        ConsoleKey Input;
-        do
+        return new Data()
         {
-            Console.Clear();
-            Console.WriteLine();
-            Console.WriteLine("==============================================");
-            Console.WriteLine("**                 BATTLESHIP               **");
-            Console.WriteLine("==============================================");
-            Console.WriteLine("\n \n");
-            Console.WriteLine("                 MULTIPLAYER");
-            Console.WriteLine("          Press Enter to continue...");
-            Console.WriteLine("\n \n");
-            Input = Console.ReadKey().Key;
-
-        } while (((int)Input) != 13);
+            ActivePlayer = _activePlayer,
+            PlayerList = _listPlayer,
+        };
     }
 
-    //create player
-    public void CreatePlayer()
+    //set Player to the list
+    public void SetPlayerList(List<Player> _listPlayer)
     {
-        int Index = 0;
-        while (Index < 2)
-        {
-            Player player = new();
-            _listPlayer.Add(player);
-            _listPlayer[_activePlayer - 1].Id = _activePlayer;
-
-            Console.Clear();
-            Console.WriteLine();
-            Console.WriteLine("==============================================");
-            Console.WriteLine("**                 BATTLESHIP               **");
-            Console.WriteLine("==============================================");
-            Console.WriteLine();
-            Console.Write($"Enter your name (Player {_activePlayer}) : ");
-            string name = Console.ReadLine();
-            _listPlayer[_activePlayer - 1].Name = name;
-            Console.WriteLine("Player name saved!");
-            Thread.Sleep(1000);
-
-            TurnControl();
-            Index++;
-        }
-        foreach (var player in _listPlayer)
+        foreach (Player player in _listPlayer)
         {
             _listShipsPlayer.Add(player.Id, _Ships);
+
         }
     }
 
-
-    //display player name turn
-    public void DisplayPlayerTurn()
+    //get player name
+    public string GetPlayerName()
     {
-        string name = _listPlayer[_activePlayer - 1].Name;
-        Console.WriteLine($"             \n Your turn, {name}");
-        Console.Write($" Hit Enemy : ");
+        return _listPlayer[_activePlayer - 1].Name;
     }
 
     //Set default arena
@@ -119,79 +85,91 @@ class GameController
     }
 
     //display hit arena information
-    public void DisplayHitArena()
+    public void UpdateHitArena()
     {
         Array.Copy(_arenaHitPlayer[_activePlayer], ArenaArray, _arenaHitPlayer[_activePlayer].Length);
-        DisplayArena();
     }
 
     //Coontrolling player turn
-    public void TurnControl()
+    public int TurnControl()
     {
-        if (_activePlayer == 1) { _activePlayer = 2; }
-        else { _activePlayer = 1; };
+        if (_activePlayer == 1) { return _activePlayer = 2; }
+        else { return _activePlayer = 1; };
     }
 
     //Add ship to arena
-    public void AddShipToArena(bool _playerAddShip)
+    public Data ValidationInShip(string DataInput)
     {
-        bool DataValid = true;
-        while (DataValid)
+        Data data = new();
+        string[] Data = DataInput.Split(" ");
+        if (Data.Count() != 3 || Data[1].Split(",").Count() != 2)
         {
-            while (_playerAddShip == true)
-            {
-                DisplayArena();
-                _playerAddShip = DisplayListShip();
-                if (_playerAddShip == false) break;
-
-                Console.Write("\n" + "Place your ship : ");
-                string DataInput = Console.ReadLine();
-                string[] Data = DataInput.Split(" ");
-
-                if (Data.Count() != 3 || Data[1].Split(",").Count() != 2)
-                {
-                    Console.WriteLine("Data Invalid");
-                    Thread.Sleep(1000);
-                    DataValid = true;
-                    break;
-                }
-                else if (ValidateListShipMenu(Data[0]))
-                {
-                    Console.WriteLine("Ship not found");
-                    Thread.Sleep(1000);
-                    DataValid = true;
-                    break;
-                };
-
-                string[] Coor = Data[1].Split(",");
-                if (!int.TryParse(Coor[0], out int x) || !int.TryParse(Coor[1], out int y))
-                {
-                    Console.WriteLine("Coordinate Invalid");
-                    Thread.Sleep(1000);
-                    DataValid = true;
-                    break;
-                }
-                coordinate.SetValue(int.Parse(Coor[0]), int.Parse(Coor[1]));
-
-                bool AddMap = ValidateAddToMap(Data[0].ToUpper(), coordinate, Data[2].ToUpper());
-                if (AddMap)
-                {
-                    DataValid = true;
-                    break;
-                }
-
-                bool CheckRotate = AddToMap(Data[0].ToUpper(), coordinate, Data[2].ToUpper());
-                if (!CheckRotate)
-                {
-                    Console.WriteLine("Data rotate Invalid");
-                    Thread.Sleep(1000);
-                    DataValid = true;
-                    break;
-                }
-                DataValid = false;
-            }
+            data.Message = "Data Invalid";
+            data.State = false;
+            return data;
         }
-        SaveCoordinates();
+        else if (ValidateListShipMenu(Data[0]))
+        {
+            data.Message = "Ship not found";
+            data.State = false;
+            return data;
+        };
+
+        string[] Coor = Data[1].Split(",");
+        if (!int.TryParse(Coor[0], out int x) || !int.TryParse(Coor[1], out int y))
+        {
+            data.Message = "Coordinate Invalid";
+            data.State = false;
+            return data;
+        }
+        else if (ValidationOutShip(Data[0], Coor[0], Coor[1], Data[2]))
+        {
+            data.Message = "Out of range";
+            data.State = false;
+            return data;
+        }
+        coordinate.SetValue(int.Parse(Coor[0]), int.Parse(Coor[1]));
+
+        Data validShip = ValidateAddToMap(Data[0].ToUpper(), coordinate, Data[2].ToUpper());
+        if (validShip.State)
+        {
+            data.Message = validShip.Message;
+            data.State = false;
+            return data;
+        }
+
+        bool CheckRotate = AddToMap(Data[0].ToUpper(), coordinate, Data[2].ToUpper());
+        if (CheckRotate)
+        {
+            data.Message = "Data rotate Invalid";
+            data.State = false;
+            return data;
+        }
+        return new Data()
+        {
+            Message = "succed.",
+            State = true
+        };
+    }
+
+    //Check out of arena or not
+    public bool ValidationOutShip(string key, string x, string y, string rotate)
+    {
+        Dictionary<string, IShip> Ship = _Ships;
+        int ShipSize = Ship[key.ToUpper()].ShipSize;
+
+        if (rotate.ToUpper() == "H")
+        {
+            return ShipSize + int.Parse(x) > 10;
+        }
+        else if (rotate.ToUpper() == "V")
+        {
+            return ShipSize + int.Parse(y) > 10;
+        }
+        else
+        {
+            return false;
+        }
     }
 
     //Check list ship
@@ -209,12 +187,12 @@ class GameController
     }
 
     //Validation for input ship to arena
-    public bool ValidateAddToMap(string key, Coordinate coor, string rotate)
+    public Data ValidateAddToMap(string key, Coordinate coor, string rotate)
     {
+        Data data = new();
         Dictionary<string, IShip> listShip = _listShipsPlayer[_activePlayer];
         int x = coor.GetValueX();
         int y = coor.GetValueY();
-        bool result = false;
 
         List<Coordinate> listCoor = new();
         if (rotate == "V")
@@ -223,13 +201,12 @@ class GameController
             {
                 if (ArenaArray[i + x - 1, y - 1] != "_")
                 {
-                    Console.WriteLine($"Ship {listShip[ArenaArray[i + x - 1, y - 1]]} here, Reposition your ship!");
-                    Thread.Sleep(2000);
-                    result = true;
+                    data.Message = $"{listShip[ArenaArray[i + x - 1, y - 1]]} here, Reposition your ship!";
+                    data.State = true;
                     break;
                 }
             }
-            return result;
+            return data;
         }
         else if (rotate == "H")
         {
@@ -237,18 +214,21 @@ class GameController
             {
                 if (ArenaArray[x - 1, i + y - 1] != "_")
                 {
-                    Console.WriteLine($"Ship {listShip[ArenaArray[x - 1, i + y - 1]]} here, Reposition your ship!");
-                    Thread.Sleep(2000);
-                    result = true;
+                    data.Message = $"{listShip[ArenaArray[x - 1, i + y - 1]]} here, Reposition your ship!";
+                    data.State = true;
                     break;
                 }
 
             }
-            return result;
+            return data;
         }
         else
         {
-            return result;
+            return new Data()
+            {
+                Message = "Invalid value rotate",
+                State = true,
+            };
         }
     }
 
@@ -270,7 +250,7 @@ class GameController
                 listCoor[i] = c;
             }
             _listShipMenu.Remove(key);
-            return true;
+            return false;
         }
         else if (rotate == "H")
         {
@@ -283,11 +263,11 @@ class GameController
                 listCoor[i] = c;
             }
             _listShipMenu.Remove(key);
-            return true;
+            return false;
         }
         else
         {
-            return false;
+            return true;
         }
     }
 
@@ -314,56 +294,23 @@ class GameController
     public void DisplayShipPosition()
     {
         Array.Copy(_shipPlayerInArena[_activePlayer], ArenaArray, ArenaArray.Length);
-        DisplayArena();
     }
 
     //Displaying arena information in preparation mode
-    public void DisplayArena()
+    public string[,] GetArenaArray()
     {
-        Arena _arena = new();
-        Console.Clear();
-        Console.Write("\n");
-        Console.Write("  0  1");
-        Size arena = _arena.GetArenaSize();
-        for (int k = 2; k <= arena.Width; k++)
-        {
-            Console.Write($"   {k}");
-        }
-        Console.Write("\n");
-        for (int i = 1; i <= arena.Height; i++)
-        {
-            if (i == 10)
-            {
-                Console.Write($" {i}");
-            }
-            else
-            {
-                Console.Write($"  {i}");
-            }
-
-            for (int j = 0; j < arena.Width; j++)
-            {
-                Console.Write($" [{ArenaArray[i - 1, j]}]");
-            }
-            Console.Write("\n");
-        }
+        return ArenaArray;
     }
 
     //For display ship that should placed player on the arena
-    public bool DisplayListShip()
+    public Data GetListShipData()
     {
-        int cout = 0;
-        string name = _listPlayer[_activePlayer - 1].Name;
-        Console.WriteLine();
-        Console.WriteLine($"List Ship :               Your Turn, {name}");
-        foreach (var item in _listShipMenu)
+        return new Data()
         {
-
-            Console.WriteLine($"[{item.Key}] {item.Value}");
-
-        }
-        int Count = _listShipMenu.Count;
-        return Count != 0;
+            PlayerList = _listPlayer,
+            ListShipMenu = _listShipMenu,
+            ActivePlayer = _activePlayer,
+        };
     }
 
     //Hit Enemy 
@@ -399,58 +346,16 @@ class GameController
         return result;
     }
 
-
-    //Display hit result
-    public void DisplayHitResult(string[] coor, string result)
-    {
-        Console.WriteLine($"\n Coordinates {coor[0]},{coor[1]}         result : {result}");
-        Thread.Sleep(1000);
-    }
-
-    //clearing console
-    public void DisplayClear()
-    {
-        Console.Clear();
-    }
-
-    //Method input for coordinate
-    public string ReadKeyCoor()
-    {
-        ConsoleKey key;
-        string inputCoor = "";
-        int btn = 0;
-        bool state = true;
-        while (btn != 13)
-        {
-            key = Console.ReadKey().Key;
-            btn = (int)key;
-            if (btn == 36)
-            {
-                Console.Clear();
-                DisplayShipPosition();
-                Console.WriteLine("\n Your Ship Position        Will close in 3s. ");
-                Console.WriteLine(" ");
-                Thread.Sleep(3000);
-                inputCoor = "false";
-                break;
-            }
-            else if (btn == 13)
-            {
-                break;
-            }
-            char c = Convert.ToChar(btn);
-            inputCoor += c.ToString();
-        }
-        return inputCoor;
-    }
-
     //save coordinates ship player
-    public void SaveCoordinates()
+    public Data SaveCoordinates()
     {
         string[,] ArrayData = new string[10, 10];
         Array.Copy(ArenaArray, ArrayData, ArenaArray.Length);
         _shipPlayerInArena.Add(_activePlayer, ArrayData);
-        Console.WriteLine("Data Saved!");
-        Thread.Sleep(1000);
+
+        return new Data()
+        {
+            Message = "Data Saved!",
+        };
     }
 }
