@@ -74,6 +74,12 @@ class Program
                     Thread.Sleep(1000);
                     break;
                 }
+                if (result == "end")
+                {
+                    _playerTurn = false;
+                    DisplayMap = false;
+                    break;
+                }
                 DisplayClear();
                 DisplayPlayerTurn();
                 game.UpdateHitArena();
@@ -87,9 +93,27 @@ class Program
 
     private static void BattleEnd()
     {
-
+        DisplayGameEnd();
     }
+    //Battle end
+    private static void DisplayGameEnd()
+    {
+        ConsoleKey Input;
+        do
+        {
+            Console.Clear();
+            Console.WriteLine();
+            Console.WriteLine("==============================================");
+            Console.WriteLine("**                 BATTLESHIP               **");
+            Console.WriteLine("==============================================");
+            Console.WriteLine("\n \n");
+            Console.WriteLine("                    WINNER");
+            Console.WriteLine($"                {game.GetWinnerName()}");
+            Console.WriteLine("\n \n");
+            Input = Console.ReadKey().Key;
 
+        } while (((int)Input) != 13);
+    }
 
     //home Game
     private static void DisplayGameHome()
