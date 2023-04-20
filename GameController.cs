@@ -10,6 +10,7 @@ class GameController
     private Dictionary<int, Dictionary<string, IShip>>? _listShipsPlayer = new();
     private Dictionary<string, string>? _listShipMenu = new();  // New property
     private Dictionary<string, IShip> _Ships = new();
+    private Dictionary<int, int> _totalHitPlayer = new();
     private string[,] ArenaArray = new string[10, 10]; //new property
     private int _activePlayer = 1;
 
@@ -31,6 +32,16 @@ class GameController
 
         ResetShipListMenu();
         SetArenaClear();
+    }
+    //add total hit points
+    public void AddTotalHitPoints()
+    {
+        int count = 0;
+        foreach (KeyValuePair<string, IShip> ship in _Ships)
+        {
+            count += ship.Value.ShipSize;
+        }
+        _totalHitPlayer.Add(_activePlayer, count);
     }
 
     //reset the ship list
@@ -69,7 +80,6 @@ class GameController
         foreach (Player player in _listPlayer)
         {
             _listShipsPlayer.Add(player.Id, _Ships);
-
         }
     }
 
@@ -315,6 +325,7 @@ class GameController
     {
         int EnemyId;
         string result;
+        Dictionary<string, IShip> listShip = _listShipsPlayer[_activePlayer];
 
         if (_activePlayer == 1) EnemyId = 2;
         else EnemyId = 1;
@@ -326,6 +337,11 @@ class GameController
             blankCoor[x - 1, y - 1] = "H";
             shipCoor[x - 1, y - 1] = "H";
             result = "Hit!!";
+            _totalHitPlayer[EnemyId]--;
+            if (_totalHitPlayer[EnemyId] == 0)
+            {
+                return "end";
+            }
         }
         else if (shipCoor[x - 1, y - 1] == "_")
         {
@@ -350,6 +366,8 @@ class GameController
         Array.Copy(ArenaArray, ArrayData, ArenaArray.Length);
         _shipPlayerInArena.Add(_activePlayer, ArrayData);
 
+        AddTotalHitPoints();
+
         return new Data()
         {
             Message = "Data Saved!",
@@ -370,5 +388,12 @@ class GameController
         else
         { return false; }
 
+    }
+    public Data GetWinnerName()
+    {
+        return new Data()
+        {
+            Message = _listPlayer[_activePlayer - 1].Name,
+        };
     }
 }
