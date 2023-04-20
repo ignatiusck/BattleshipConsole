@@ -29,13 +29,29 @@ class GameController
         _Ships.Add("S", submarine);
         _Ships.Add("D", destroyer);
 
-        _listShipMenu.Add("B", "Battleship");
-        _listShipMenu.Add("R", "Carrier");
-        _listShipMenu.Add("C", "Cruiser");
-        _listShipMenu.Add("S", "Submarine");
-        _listShipMenu.Add("D", "Destroyer");
-
+        ResetShipListMenu();
         SetArenaClear();
+    }
+
+    //reset the ship list
+    public void ResetShipListMenu()
+    {
+        foreach (KeyValuePair<string, IShip> ship in _Ships)
+        {
+            _listShipMenu[ship.Key] = "  " + ship.Value.ShipSize + "   " + ship.Value.ShipName;
+        }
+    }
+    //For reset setting mode
+    public void ResetShipCoor()
+    {
+
+        for (int i = 0; i < 10; i++)
+        {
+            for (int j = 0; j < 10; j++)
+            {
+                ArenaArray[i, j] = "_";
+            }
+        }
     }
     //get active player
     public Data GetDataCreatePlayer()
@@ -160,11 +176,11 @@ class GameController
 
         if (rotate.ToUpper() == "H")
         {
-            return ShipSize + int.Parse(x) > 10;
+            return ShipSize + int.Parse(x) - 1 > 10;
         }
         else if (rotate.ToUpper() == "V")
         {
-            return ShipSize + int.Parse(y) > 10;
+            return ShipSize + int.Parse(y) - 1 > 10;
         }
         else
         {
@@ -271,25 +287,6 @@ class GameController
         }
     }
 
-
-    //For reset setting mode
-    public void ResetShipCoor()
-    {
-        _listShipMenu["B"] = "Battleship";
-        _listShipMenu["R"] = "Carrier";
-        _listShipMenu["C"] = "Cruiser";
-        _listShipMenu["S"] = "Submarine";
-        _listShipMenu["D"] = "Destroyer";
-
-        for (int i = 0; i < 10; i++)
-        {
-            for (int j = 0; j < 10; j++)
-            {
-                ArenaArray[i, j] = "_";
-            }
-        }
-    }
-
     //Display player ship position
     public void DisplayShipPosition()
     {
@@ -357,5 +354,21 @@ class GameController
         {
             Message = "Data Saved!",
         };
+    }
+    //Validate Hit input
+    public bool ValidateHitInput(string input)
+    {
+        string[] DataInput = input.Split("¼");
+        if (input.Length != 3 || DataInput.Length != 2)
+        {
+            return true;
+        }
+        else if (!int.TryParse(DataInput[0], out int data))
+        {
+            return true;
+        }
+        else
+        { return false; }
+
     }
 }

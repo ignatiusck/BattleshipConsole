@@ -24,6 +24,7 @@ class Program
     {
         while (_playerTurn)
         {
+            game.ResetShipListMenu();
             game.ResetShipCoor();
             AddShipToArena(_playerAddShip);
             game.TurnControl();
@@ -49,13 +50,27 @@ class Program
                     DisplayPlayerTurn();
 
                     inputCoor = ReadKeyCoor();
-                    DisplayMap = (inputCoor == "false") ? true : false;
+                    DisplayMap = inputCoor == "false";
+                    if (!DisplayMap)
+                    {
+                        DisplayMap = game.ValidateHitInput(inputCoor);
+                        if (DisplayMap)
+                        {
+                            Console.ForegroundColor = ConsoleColor.Red;
+                            Console.WriteLine();
+                            Console.WriteLine($" Input invalid.");
+                            Console.ResetColor();
+                            Thread.Sleep(1000);
+                        }
+                    }
                 }
                 string[] coor = inputCoor.Split("¼");
                 string result = game.HitEnemy(int.Parse(coor[0]), int.Parse(coor[1]));
                 if (result == "false")
                 {
+                    Console.ForegroundColor = ConsoleColor.Red;
                     Console.WriteLine($"Input Invalid. try again.");
+                    Console.ResetColor();
                     Thread.Sleep(1000);
                     break;
                 }
@@ -124,14 +139,19 @@ class Program
 
                 if (Name.Length < 3)
                 {
+                    Console.ForegroundColor = ConsoleColor.Red;
                     Console.WriteLine("Name should be atleast 3 characters long");
                     Thread.Sleep(2000);
+                    Console.ResetColor();
+
                 };
             } while (Name.Length < 3);
             _listPlayer.Add(player);
             _listPlayer[_activePlayer - 1].Name = Name;
             _listPlayer[_activePlayer - 1].Id = _activePlayer;
+            Console.ForegroundColor = ConsoleColor.Green;
             Console.WriteLine("Player name saved!");
+            Console.ResetColor();
             Thread.Sleep(1000);
 
             _activePlayer = game.TurnControl();
@@ -151,13 +171,17 @@ class Program
                 _playerAddShip = DisplayListShip();
                 if (_playerAddShip == false) break;
 
-                Console.Write("\n" + "Place your ship : ");
+                Console.WriteLine();
+                Console.WriteLine("Input : 'KEY Coordinat H/V' Example : 'B 1,1 H' ");
+                Console.Write("Place your ship : ");
                 string DataInput = Console.ReadLine();
                 Data data = game.ValidationInShip(DataInput);
                 if (data.State == false)
                 {
                     DataValid = true;
+                    Console.ForegroundColor = ConsoleColor.Red;
                     Console.WriteLine($"{data.Message}");
+                    Console.ResetColor();
                     Thread.Sleep(2000);
                     _playerAddShip = true;
                 }
@@ -166,7 +190,9 @@ class Program
             }
         }
         Data isSaved = game.SaveCoordinates();
+        Console.ForegroundColor = ConsoleColor.Green;
         Console.WriteLine($"{isSaved.Message}");
+        Console.ResetColor();
         Thread.Sleep(1000);
     }
     //display player name turn
@@ -222,11 +248,10 @@ class Program
         string name = _listPlayer[_activePlayer - 1].Name;
         Console.WriteLine();
         Console.WriteLine($"List Ship :               Your Turn, {name}");
+        Console.WriteLine($"KEY  Size    NAME");
         foreach (var item in _listShipMenu)
         {
-
             Console.WriteLine($"[{item.Key}] {item.Value}");
-
         }
         int Count = _listShipMenu.Count;
         return Count != 0;
@@ -248,7 +273,9 @@ class Program
                 Console.Clear();
                 game.DisplayShipPosition();
                 DisplayArena();
+                Console.ForegroundColor = ConsoleColor.Green;
                 Console.WriteLine("\n Your Ship Position        Will close in 3s. ");
+                Console.ResetColor();
                 Console.WriteLine(" ");
                 Thread.Sleep(3000);
                 inputCoor = "false";
@@ -274,6 +301,4 @@ class Program
     {
         Console.Clear();
     }
-
-
 }
