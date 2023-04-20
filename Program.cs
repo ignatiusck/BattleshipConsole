@@ -77,7 +77,7 @@ class Program
                 if (result == "end")
                 {
                     _playerTurn = false;
-                    DisplayMap = false;
+                    //DisplayMap = false;
                     break;
                 }
                 DisplayClear();
