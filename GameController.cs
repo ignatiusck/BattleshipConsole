@@ -186,11 +186,11 @@ class GameController
 
         if (rotate.ToUpper() == "H")
         {
-            return ShipSize + int.Parse(x) - 1 > 10;
+            return ShipSize + int.Parse(y) - 1 > 10;
         }
         else if (rotate.ToUpper() == "V")
         {
-            return ShipSize + int.Parse(y) - 1 > 10;
+            return ShipSize + int.Parse(x) - 1 > 10;
         }
         else
         {
