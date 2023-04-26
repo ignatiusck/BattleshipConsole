@@ -2,7 +2,6 @@ using System.Drawing;
 class Arena
 {
     private Size _arenaSize = new();
-    private List<Coordinate> _arenaCoordinates;
 
     public Arena()
     {

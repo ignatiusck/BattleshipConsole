@@ -3,7 +3,6 @@ public class Coordinate
 {
     private int _x;
     private int _y;
-    private bool? _isGotHit;
 
     public void SetValue(int x, int y)
     {

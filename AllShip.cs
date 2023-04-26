@@ -3,7 +3,7 @@ class Battleship : IShip
     public string ShipName { get; set; }
     public int ShipSize { get; set; }
     public List<Coordinate> ShipCoordinates { get; set; }
-    public bool IsSink { get; set; }
+
 
     public Battleship()
     {
@@ -12,7 +12,7 @@ class Battleship : IShip
         Coordinate coordinate = new();
         List<Coordinate> ListCoors = new();
         ShipCoordinates = ListCoors;
-        IsSink = false;
+
     }
 }
 
@@ -22,7 +22,7 @@ class Submarine : IShip
     public string ShipName { get; set; }
     public int ShipSize { get; set; }
     public List<Coordinate> ShipCoordinates { get; set; }
-    public bool IsSink { get; set; }
+
 
     public Submarine()
     {
@@ -31,7 +31,7 @@ class Submarine : IShip
         Coordinate coordinate = new();
         List<Coordinate> ListCoors = new();
         ShipCoordinates = ListCoors;
-        IsSink = false;
+
     }
 }
 
@@ -40,7 +40,7 @@ class Carrier : IShip
     public string ShipName { get; set; }
     public int ShipSize { get; set; }
     public List<Coordinate> ShipCoordinates { get; set; }
-    public bool IsSink { get; set; }
+
 
     public Carrier()
     {
@@ -49,7 +49,7 @@ class Carrier : IShip
         Coordinate coordinate = new();
         List<Coordinate> ListCoors = new();
         ShipCoordinates = ListCoors;
-        IsSink = false;
+
     }
 }
 
@@ -67,7 +67,7 @@ class Destroyer : IShip
         Coordinate coordinate = new();
         List<Coordinate> ListCoors = new();
         ShipCoordinates = ListCoors;
-        IsSink = false;
+
     }
 }
 
@@ -76,7 +76,7 @@ class Cruiser : IShip
     public string ShipName { get; set; }
     public int ShipSize { get; set; }
     public List<Coordinate> ShipCoordinates { get; set; }
-    public bool IsSink { get; set; }
+
 
     public Cruiser()
     {
@@ -85,6 +85,6 @@ class Cruiser : IShip
         Coordinate coordinate = new();
         List<Coordinate> ListCoors = new();
         ShipCoordinates = ListCoors;
-        IsSink = false;
+
     }
 }

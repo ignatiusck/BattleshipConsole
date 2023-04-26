@@ -22,6 +22,7 @@ class Program
     }
     private static void Preparation()
     {
+        DisplayPreparationStart();
         while (_playerTurn)
         {
             game.ResetShipListMenu();
@@ -35,6 +36,7 @@ class Program
     }
     private static void BattleStart()
     {
+        DisplayBattleStart();
         while (_playerTurn)
         {
             string inputCoor = "";
@@ -50,7 +52,7 @@ class Program
                     DisplayPlayerTurn();
 
                     inputCoor = ReadKeyCoor();
-                    DisplayMap = inputCoor == "false";
+                    DisplayMap = inputCoor == "getmap";
                     if (!DisplayMap)
                     {
                         DisplayMap = game.ValidateHitInput(inputCoor);
@@ -65,8 +67,8 @@ class Program
                     }
                 }
                 string[] coor = inputCoor.Split("¼");
-                string result = game.HitEnemy(int.Parse(coor[0]), int.Parse(coor[1]));
-                if (result == "false")
+                Data result = game.HitEnemy(int.Parse(coor[0]), int.Parse(coor[1]));
+                if (result.Message == "Worng data")
                 {
                     Console.ForegroundColor = ConsoleColor.Red;
                     Console.WriteLine($"Input Invalid. try again.");
@@ -74,17 +76,16 @@ class Program
                     Thread.Sleep(1000);
                     break;
                 }
-                if (result == "end")
-                {
-                    _playerTurn = false;
-                    //DisplayMap = false;
-                    break;
-                }
                 DisplayClear();
                 DisplayPlayerTurn();
                 game.UpdateHitArena();
                 DisplayArena();
                 DisplayHitResult(coor, result);
+                if (result.Message.Last() == '!')
+                {
+                    _playerTurn = false;
+                    break;
+                }
                 game.TurnControl();
                 TryInput = false;
             }
@@ -95,11 +96,11 @@ class Program
     {
         DisplayGameEnd();
     }
-    //Battle end
-    private static void DisplayGameEnd()
+    //End Display
+    private static async Task DisplayWinnerAsync()
     {
-        ConsoleKey Input;
-        do
+        bool state = false;
+        while (true)
         {
             Console.Clear();
             Console.WriteLine();
@@ -107,9 +108,74 @@ class Program
             Console.WriteLine("**                 BATTLESHIP               **");
             Console.WriteLine("==============================================");
             Console.WriteLine("\n \n");
-            Console.WriteLine("                    WINNER");
-            Console.WriteLine($"                {game.GetWinnerName()}");
+            Console.ForegroundColor = state ? ConsoleColor.Yellow : ConsoleColor.Black;
+            state = state ? false : true;
+            Console.WriteLine(" WINNER");
+            Console.ResetColor();
+            Console.WriteLine($" {game.GetPlayerName()}");
             Console.WriteLine("\n \n");
+            Console.Write(" Press Enter to Exit...");
+            await Task.Delay(1000);
+        }
+    }
+    //Battle end
+    private static void DisplayGameEnd()
+    {
+        ConsoleKey Input;
+        Task.Run(() => DisplayWinnerAsync());
+        do
+        {
+            Input = Console.ReadKey().Key;
+            //Console.ReadKey();
+
+        } while (((int)Input) != 13);
+    }
+
+    //display preparation phase
+    private static void DisplayPreparationStart()
+    {
+        ConsoleKey Input;
+        string name = game.GetPlayerName();
+        do
+        {
+            Console.Clear();
+            Console.WriteLine();
+            Console.WriteLine("==============================================");
+            Console.WriteLine("**            PREPARATION PHASE             **");
+            Console.WriteLine("==============================================");
+            Console.WriteLine("\n");
+            Console.WriteLine(" Place all your ship in the Arena.");
+            Console.Write($" You play first, ");
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            Console.WriteLine(name);
+            Console.ResetColor();
+            Console.WriteLine("\n \n");
+            Console.Write(" Press Enter to continue...");
+            Input = Console.ReadKey().Key;
+
+        } while (((int)Input) != 13);
+    }
+
+    //display preparation phase
+    private static void DisplayBattleStart()
+    {
+        ConsoleKey Input;
+        string name = game.GetPlayerName();
+        do
+        {
+            Console.Clear();
+            Console.WriteLine();
+            Console.WriteLine("==============================================");
+            Console.WriteLine("**               BATTLE START               **");
+            Console.WriteLine("==============================================");
+            Console.WriteLine("\n");
+            Console.WriteLine(" Attack your Opponent!! ");
+            Console.Write($" You play first, ");
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            Console.WriteLine(name);
+            Console.ResetColor();
+            Console.WriteLine("\n \n");
+            Console.Write(" Press Enter to continue...");
             Input = Console.ReadKey().Key;
 
         } while (((int)Input) != 13);
@@ -223,7 +289,13 @@ class Program
     private static void DisplayPlayerTurn()
     {
         string name = game.GetPlayerName();
-        Console.WriteLine($"             \n Your turn, {name}");
+        Console.Write($"\n                         Your turn, ");
+        Console.ForegroundColor = ConsoleColor.Yellow;
+        Console.WriteLine($"{name}");
+        Console.ResetColor();
+        Console.WriteLine();
+        Console.WriteLine(" Press 'Home' to see your ship positions ");
+        Console.WriteLine(" Input : 'y,x' Example : '3,2' ");
         Console.Write($" Hit Enemy : ");
     }
 
@@ -271,7 +343,10 @@ class Program
 
         string name = _listPlayer[_activePlayer - 1].Name;
         Console.WriteLine();
-        Console.WriteLine($"List Ship :               Your Turn, {name}");
+        Console.Write($"List Ship :               Your Turn, ");
+        Console.ForegroundColor = ConsoleColor.Yellow;
+        Console.WriteLine($"{name}");
+        Console.ResetColor();
         Console.WriteLine($"KEY  Size    NAME");
         foreach (var item in _listShipMenu)
         {
@@ -295,14 +370,14 @@ class Program
             if (btn == 36)
             {
                 Console.Clear();
-                game.DisplayShipPosition();
+                game.CopyShipPositionToMap();
                 DisplayArena();
-                Console.ForegroundColor = ConsoleColor.Green;
+                Console.ForegroundColor = ConsoleColor.Yellow;
                 Console.WriteLine("\n Your Ship Position        Will close in 3s. ");
                 Console.ResetColor();
                 Console.WriteLine(" ");
                 Thread.Sleep(3000);
-                inputCoor = "false";
+                inputCoor = "getmap";
                 break;
             }
             else if (btn == 13)
@@ -315,10 +390,22 @@ class Program
         return inputCoor;
     }
     //Display hit result
-    private static void DisplayHitResult(string[] coor, string result)
+    private static void DisplayHitResult(string[] coor, Data result)
     {
-        Console.WriteLine($"\n Coordinates {coor[0]},{coor[1]}         result : {result}");
+        string Result = result.State ? "Hit" : "Miss";
+        ConsoleColor Color = Result == "Hit" ? ConsoleColor.Green : ConsoleColor.Red;
+        Console.Write($"\n  Coordinates {coor[0]},{coor[1]}           result : ");
+        Console.ForegroundColor = Color;
+        Console.WriteLine(Result);
+        if (result.Message.Length >= 12)
+        {
+            Console.WriteLine();
+            Console.WriteLine(" " + result.Message);
+            Thread.Sleep(1500);
+        }
         Thread.Sleep(1000);
+        Console.ResetColor();
+
     }
     //clearing console
     private static void DisplayClear()
