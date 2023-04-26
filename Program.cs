@@ -96,11 +96,11 @@ class Program
     {
         DisplayGameEnd();
     }
-    //Battle end
-    private static void DisplayGameEnd()
+    //End Display
+    private static async Task DisplayWinnerAsync()
     {
-        ConsoleKey Input;
-        do
+        bool state = false;
+        while (true)
         {
             Console.Clear();
             Console.WriteLine();
@@ -108,11 +108,25 @@ class Program
             Console.WriteLine("**                 BATTLESHIP               **");
             Console.WriteLine("==============================================");
             Console.WriteLine("\n \n");
+            Console.ForegroundColor = state ? ConsoleColor.Yellow : ConsoleColor.Black;
+            state = state ? false : true;
             Console.WriteLine(" WINNER");
+            Console.ResetColor();
             Console.WriteLine($" {game.GetPlayerName()}");
             Console.WriteLine("\n \n");
             Console.Write(" Press Enter to Exit...");
+            await Task.Delay(1000);
+        }
+    }
+    //Battle end
+    private static void DisplayGameEnd()
+    {
+        ConsoleKey Input;
+        Task.Run(() => DisplayWinnerAsync());
+        do
+        {
             Input = Console.ReadKey().Key;
+            //Console.ReadKey();
 
         } while (((int)Input) != 13);
     }

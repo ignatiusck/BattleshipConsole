@@ -24,7 +24,7 @@ class GameController
         return new Dictionary<string, IShip>()
         {
             ["S"] = new Submarine(),
-            ["B"] = new Battleship(),
+            // ["B"] = new Battleship(),
             // ["C"] = new Cruiser(),
             // ["D"] = new Destroyer(),
             // ["R"] = new Carrier(),
