@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "y0R9IyuFWj8lmrG7AFVUX94olpEE3DNtsGXoypsZJf3DpYEW0jftaAq3COuiOgwLJTFnB/yxu4rHmywLk6657A==",
+  "dgSpecHash": "CNTEbTGA8Uh8QvrFFDcYkL8yFjg0Ugj4ufWugu9r6VeU6taUs1UhCUOHFkkG/1F3SNUdVQkyqSTxdtuONc9sdQ==",
   "success": true,
-  "projectFilePath": "/workspaces/BattleshipConsole/BattleshipConsole.csproj",
+  "projectFilePath": "/home/ignatius/Desktop/Bootcamp/BattleshipConsole/BattleshipConsole.csproj",
   "expectedPackageFiles": [],
   "logs": []
 }
