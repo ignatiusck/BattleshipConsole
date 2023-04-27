@@ -71,7 +71,7 @@ class Program
                 if (result.Message == "Worng data")
                 {
                     Console.ForegroundColor = ConsoleColor.Red;
-                    Console.WriteLine($"Input Invalid. try again.");
+                    Console.WriteLine($" Input Invalid. try again.");
                     Console.ResetColor();
                     Thread.Sleep(1000);
                     break;
@@ -230,12 +230,19 @@ class Program
                 if (Name.Length < 3)
                 {
                     Console.ForegroundColor = ConsoleColor.Red;
-                    Console.WriteLine("Name should be atleast 3 characters long");
+                    Console.WriteLine("Name should be atleast 3 characters long.");
                     Thread.Sleep(2000);
                     Console.ResetColor();
 
                 };
-            } while (Name.Length < 3);
+                if (_listPlayer.Any(NameData => NameData.Name == Name))
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine("Name have been taken.");
+                    Thread.Sleep(2000);
+                    Console.ResetColor();
+                }
+            } while (Name.Length < 3 || _listPlayer.Any(NameData => NameData.Name == Name));
             _listPlayer.Add(player);
             _listPlayer[_activePlayer - 1].Name = Name;
             _listPlayer[_activePlayer - 1].Id = _activePlayer;
