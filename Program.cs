@@ -65,20 +65,22 @@ public class Program
             IDictionary<string, IShip> ListShipMenu = game.GetListShipInGame();
             string PlayerName = game.GetPlayerActive();
             string[,] ArenaMap = game.GetShipPlayerInArena(); //aarrgg
-            string? InputPlayer;
-            do
+            string? InputPlayer = null;
+            bool IsPassed = false;
+
+            while (ListShipMenu.Count != 0)
             {
-                do
+                while (!IsPassed)
                 {
                     Console.Clear();
                     Console.Write(
                         page.PreparationMap(ListShipMenu, PlayerName, ArenaMap)
                         );
                     InputPlayer = Console.ReadLine();
-                    game.AddShipToArena(InputPlayer!, ListShipMenu);
-
-                } while (true);
-            } while (true);
+                    //validation
+                }
+                game.AddShipToArena(InputPlayer!, ListShipMenu);
+            }
         } while (true);
     }
 

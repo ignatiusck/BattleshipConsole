@@ -33,7 +33,7 @@ class GameController
         {
             ["S"] = new Submarine(),
             ["B"] = new Battleship(),
-            ["C"] = new Cruiser(),
+            // ["C"] = new Cruiser(),
             // ["D"] = new Destroyer(),
             // ["R"] = new Carrier(),
         };
