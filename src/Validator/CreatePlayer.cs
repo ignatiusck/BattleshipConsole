@@ -1,0 +1,15 @@
+public class ValidatorCreatePlayer
+{
+
+    public bool IslengthUnderLimit(string Input, int Limit)
+    {
+        return Input.Length <= Limit;
+    }
+
+    public bool IsPlayerAvailable(string Input, List<IPlayer> PlayerList)
+    {
+        return PlayerList.Any(player =>
+            string.Equals(player.Name, Input, StringComparison.OrdinalIgnoreCase)
+            );
+    }
+}

@@ -4,4 +4,3 @@ public interface IShip
     int ShipSize { get; set; }
     List<Coordinate> ShipCoordinates { get; set; }
 }
-
