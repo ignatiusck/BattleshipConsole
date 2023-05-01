@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 public class Program
 {
     private static readonly Page page = new();
@@ -46,7 +46,7 @@ public class Program
             } while (!DataPassed);
             Count++;
             Status = game.AddPlayer(InputPlayer);
-            DataCorrect("Player data saved", 1500);
+            DataCorrect("Player data saved", 1000);
         } while (Status);
     }
 
@@ -62,10 +62,20 @@ public class Program
         //setup player ship
         do
         {
+            IDictionary<string, IShip> ListShipMenu = game.GetListShipInGame();
+            string PlayerName = game.GetPlayerActive();
+            string[,] ArenaMap = game.GetShipPlayerInArena(); //aarrgg
+            string? InputPlayer;
             do
             {
                 do
                 {
+                    Console.Clear();
+                    Console.Write(
+                        page.PreparationMap(ListShipMenu, PlayerName, ArenaMap)
+                        );
+                    InputPlayer = Console.ReadLine();
+                    game.AddShipToArena(InputPlayer!, ListShipMenu);
 
                 } while (true);
             } while (true);

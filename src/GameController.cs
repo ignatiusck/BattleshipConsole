@@ -1,23 +1,29 @@
 using System.Collections.Generic;
 class GameController
 {
-    private List<IPlayer>? _listPlayerInfo = new(); // list player
-    private Dictionary<int, string[,]> _shipPlayerInArena = new(); // data ship player in arena
-    private Dictionary<int, string[,]> _hitPlayerInArena = new(); // data arena hit player
-    //private Dictionary<IPlayer, Dictionary<string, IShip>>? _listPlayerInfo = new(); //full data relation player and all ships
-    private Dictionary<string, string>? _listShipMenu = new();  // list ship menu for preparation phase
-    private Dictionary<string, IShip> _ships = new(); // list ship in game
-    private Dictionary<int, int> _totalHitPlayer = new(); // total hit every player
-    private string[,] _arenaArray = new string[10, 10]; //Array for displaying to console
-    private int _activePlayer = 1; // active player id
-    private ValidatorCreatePlayer VPlayer = new();
+    private List<Player>? _listPlayerInfo; // list player
+    // private Dictionary<int, string[,]> _shipPlayerInArena = new(); // data ship player in arena
+    // private Dictionary<int, string[,]> _hitPlayerInArena = new(); // data arena hit player
+    // //private Dictionary<IPlayer, Dictionary<string, IShip>>? _listPlayerInfo = new(); //full data relation player and all ships
+    //private Dictionary<string, string>? _listShipMenu = new();  // list ship menu for preparation phase
+    // private Dictionary<string, IShip> _ships = new(); // list ship in game
+    // private Dictionary<int, int> _totalHitPlayer = new(); // total hit every player
+
+    private static Arena? _arena;
+    private string[,] _arenaArray; //Array for displaying to console
+    private int _activePlayer; // active player id
+    private ValidatorCreatePlayer _vPlayer;
+    private Dictionary<string, IShip> _listShipInGame;
+
 
     //Create game with player
     public GameController()
     {
-        _ships = CreateShipPack();
-        // ResetShipListMenu();
-        // SetArenaClear();
+        _listPlayerInfo = new();
+        _arena = new();
+        _arenaArray = new string[_arena.ArenaSize.Height, _arena.ArenaSize.Width];
+        _activePlayer = 1;
+        _vPlayer = new();
     }
 
     //create ship packet
@@ -37,61 +43,98 @@ class GameController
     {
         Player player = new()
         {
-            Id = _listPlayerInfo.Count + 1,
+            Id = _listPlayerInfo!.Count + 1,
             Name = PlayerName,
             ListShip = CreateShipPack(),
         };
         _listPlayerInfo.Add(player);
-
+        if (_listPlayerInfo.Count == 2) SetPreparationArenaPlayer();
         return _listPlayerInfo.Count < 2;
     }
 
     public IData ValidatorPlayer(string Input)
     {
-        if (VPlayer.IslengthUnderLimit(Input, 3))
+        if (_vPlayer.IslengthUnderLimit(Input, 2))
             return new Rejected($"Name should be atleast {3} characters long.");
-        if (VPlayer.IsPlayerAvailable(Input, _listPlayerInfo))
+        if (_vPlayer.IsPlayerAvailable(Input, _listPlayerInfo!))
             return new Rejected($"{Input} have been taken.");
         return new Accepted();
     }
 
-    public string GetPlayerActive()
+    public string[,] GetShipPlayerInArena()
     {
-        return _listPlayerInfo[_activePlayer - 1].Name;
+        IPlayerBattleship player =
+            _listPlayerInfo!.Find(player => player.Id == _activePlayer)!;
+
+        return player.ShipPlayerInArena;
     }
 
-    //For reset setting mode
+    public string GetPlayerActive()
+    {
+        IPlayer player =
+            _listPlayerInfo!.FirstOrDefault(player => player.Id == _activePlayer)!;
+
+        return player.Name;
+    }
+
     public void ResetShipCoor()
     {
 
-        for (int i = 0; i < 10; i++)
+        for (int i = 0; i < _arena!.ArenaSize.Height; i++)
         {
-            for (int j = 0; j < 10; j++)
+            for (int j = 0; j < _arena.ArenaSize.Width; j++)
             {
                 _arenaArray[i, j] = "_";
             }
         }
     }
 
-    //Set default arena
-    public void SetPreparationArenaPlayer()
+    private void SetPreparationArenaPlayer()
     {
-        for (int i = 0; i < 10; i++)
+        ResetShipCoor();
+        foreach (Player player in _listPlayerInfo!)
         {
-            for (int j = 0; j < 10; j++)
-            {
-                _arenaArray[i, j] = "_";
-            }
+            string[,] ArrayData = new string[_arena!.ArenaSize.Height, _arena.ArenaSize.Width];
+            Array.Copy(_arenaArray, ArrayData, _arenaArray.Length);
+            player.ShipPlayerInArena = ArrayData;
         }
+    }
 
-        string[,] ArrayData = new string[10, 10];
-        string[,] ArrayData2 = new string[10, 10];
+    public IDictionary<string, IShip> GetListShipInGame()
+    {
+        Dictionary<string, IShip> ListShipMenu = new();
+        foreach (KeyValuePair<string, IShip> Ship in CreateShipPack())
+        {
+            ListShipMenu.Add(Ship.Key, Ship.Value);
+        }
+        return ListShipMenu;
+    }
 
-        Array.Copy(_arenaArray, ArrayData, _arenaArray.Length);
-        Array.Copy(_arenaArray, ArrayData2, _arenaArray.Length);
+    public void AddShipToArena(string Inputposition, IDictionary<string, IShip> ListShipMenu)
+    {
+        IPlayerBattleship player =
+            _listPlayerInfo!.Find(player => player.Id == _activePlayer)!;
 
-        _hitPlayerInArena.Add(1, ArrayData);
-        _hitPlayerInArena.Add(2, ArrayData2);
+        string[] Data = Inputposition.Split(" ");
+        string[] Coordinate = Data[1].Split(",");
+        string Rotate = Data[2];
+        string KeyShip = Data[0];
+        int XCoor = int.Parse(Coordinate[0]) - 1;
+        int YCoor = int.Parse(Coordinate[1]) - 1;
+
+        for (int i = 0; i < player.ListShip[KeyShip].ShipSize; i++)
+        {
+            Coordinate Coor = new()
+            {
+                X = XCoor,
+                Y = YCoor,
+            };
+            player.ShipPlayerInArena[Coor.X, Coor.Y] = KeyShip;
+            player.ListShip[KeyShip].ShipCoordinates.Add(Coor);
+
+            _ = (Rotate.ToUpper()! == "H") ? XCoor++ : YCoor++;
+        }
+        ListShipMenu.Remove(KeyShip);
     }
 
     // public List<IPlayer> GetListPlayers()
@@ -317,45 +360,7 @@ class GameController
 //     }
 
 //     // //add ship to arena player
-//     // public bool AddToMap(string key, Coordinate coor, string rotate)
-//     // {
-//     //     Dictionary<string, IShip> listShip = _listShipsPlayer[_activePlayer];
-//     //     int x = coor.GetValueX();
-//     //     int y = coor.GetValueY();
-//     //     List<Coordinate> listCoor = new();
-//     //     if (rotate == "V")
-//     //     {
-//     //         for (int i = 0; i < listShip[key]._shipSize; i++)
-//     //         {
-//     //             _arenaArray[i + x - 1, y - 1] = key;
-//     //             Coordinate c = new();
-//     //             c.SetValue(i + x - 1, y - 1);
-//     //             listCoor.Add(c);
-//     //         }
 
-//     //         listShip[key]._shipCoordinates = listCoor;
-//     //         _listShipMenu.Remove(key);
-//     //         return false;
-//     //     }
-//     //     else if (rotate == "H")
-//     //     {
-//     //         for (int i = 0; i < listShip[key]._shipSize; i++)
-//     //         {
-//     //             _arenaArray[x - 1, i + y - 1] = key;
-//     //             Coordinate c = new();
-//     //             c.SetValue(x - 1, i + y - 1);
-//     //             listCoor.Add(c);
-//     //         }
-
-//     //         listShip[key]._shipCoordinates = listCoor;
-//     //         _listShipMenu.Remove(key);
-//     //         return false;
-//     //     }
-//     //     else
-//     //     {
-//     //         return true;
-//     //     }
-//     // }
 
 //     // //Display player ship position
 //     // public void CopyShipPositionToMap()

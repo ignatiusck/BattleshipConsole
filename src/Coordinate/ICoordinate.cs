@@ -1,5 +1,5 @@
 interface ICoordinate
 {
-    int x { get; set; }
+    int X { get; set; }
     int Y { get; set; }
 }

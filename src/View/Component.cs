@@ -2,7 +2,7 @@ using System.Drawing;
 
 class Component
 {
-    private static readonly Arena? _arena;
+    private static readonly Arena? _arena = new();
 
     public string Header(string Title)
     {
@@ -42,7 +42,7 @@ class Component
 
         Map += "\n";
         Map += "  0  1";
-        for (int k = 2; k <= _arena.ArenaSize.Width; k++)
+        for (int k = 2; k <= _arena!.ArenaSize.Width; k++)
         {
             Map += $"   {k}";
         }
@@ -60,14 +60,16 @@ class Component
 
             for (int j = 0; j < _arena.ArenaSize.Width; j++)
             {
-                Map += $" [{ArenaMap[i - 1, j]}]";
+                Map += ArenaMap[i - 1, j] == "_" ?
+                    $" [{ArenaMap[i - 1, j]}]" :
+                    $" [{Log.Message(ArenaMap[i - 1, j], ConsoleColor.Yellow)}]";
             }
             Map += "\n";
         }
         return Map;
     }
 
-    public string BodyListShipMenu(Dictionary<string, IShip> ListShipMenu)
+    public string BodyListShipMenu(IDictionary<string, IShip> ListShipMenu)
     {
         string ShipMenu = "";
         foreach (KeyValuePair<string, IShip> ship in ListShipMenu)
@@ -76,7 +78,7 @@ class Component
         }
 
         return
-            "KEY  Size    NAME \n" + ShipMenu;
+            "\nKEY  Size    NAME \n" + ShipMenu;
     }
 
     public string BodyTurnControl(bool Preparation, string PlayerName)

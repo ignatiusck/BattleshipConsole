@@ -15,7 +15,7 @@ static class Log
     public static string Message(string Message, ConsoleColor Color)
     {
         return
-            $"{_colorMap[Color]}" + Message + " \u001b[0m";
+            $"{_colorMap[Color]}" + Message + "\u001b[0m";
     }
 
     public static void Succed(string Message, int Delay)

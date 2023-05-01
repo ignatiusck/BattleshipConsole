@@ -21,6 +21,7 @@ class Page
 
     public string Transition(bool Transition, string PlayerName)
     {
+
         string Title = Transition ? "PREPARATION PHASE " : "   BATTLE START   ";
         return
             component.Header(Title) +
@@ -28,7 +29,7 @@ class Page
             component.BodyTransition(Transition, PlayerName);
     }
 
-    public string PreparationMap(Dictionary<string, IShip> ListShipMenu, string PlayerName, string[,] ArenaMap)
+    public string PreparationMap(IDictionary<string, IShip> ListShipMenu, string PlayerName, string[,] ArenaMap)
     {
         return
             component.BodyArenaMap(ArenaMap) +

@@ -6,7 +6,7 @@ public class ValidatorCreatePlayer
         return Input.Length <= Limit;
     }
 
-    public bool IsPlayerAvailable(string Input, List<IPlayer> PlayerList)
+    public bool IsPlayerAvailable(string Input, List<Player> PlayerList)
     {
         return PlayerList.Any(player =>
             string.Equals(player.Name, Input, StringComparison.OrdinalIgnoreCase)
