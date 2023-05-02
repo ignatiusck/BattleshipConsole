@@ -1,18 +1,19 @@
-using log4net.Config;
+using Pages;
+using MainGameController;
+using MainLogger;
 public class Program
 {
     private static readonly Page page = new();
     private static GameController game = new();
     private static Logger<Program> Logger = new();
-    private static bool Status;
-
 
     public static void Main(string[] args)
     {
-        Logger.Config();
+        Logger.Config(true);
 
         BattleshipStart();
         PreparationPhase();
+        BattlePhase();
     }
 
     private static void BattleshipStart()
@@ -27,6 +28,7 @@ public class Program
 
         //Create new player
         int Count = 1;
+        bool Status;
         do
         {
             string InputPlayer;
@@ -60,16 +62,16 @@ public class Program
         do
         {
             Console.Clear();
-            Console.WriteLine(page.Transition(true, game.GetPlayerActive()));
+            Console.Write(page.Transition(true, game.GetPlayerActive().Name));
         } while ((int)Console.ReadKey().Key != 13);
 
         //setup player ship
+        int Count = 0;
         do
         {
             IDictionary<string, IShip> ListShipMenu = game.GetListShipInGame();
-            string PlayerName = game.GetPlayerActive();
+            string PlayerName = game.GetPlayerActive().Name;
             string[,] ArenaMap = game.GetShipPlayerInArena(); //aarrgg
-            string? InputPlayer = null;
 
             while (ListShipMenu.Count != 0)
             {
@@ -78,25 +80,78 @@ public class Program
                 {
                     Console.Clear();
                     Console.Write(page.PreparationMap(ListShipMenu, PlayerName, ArenaMap));
-                    InputPlayer = Console.ReadLine();
-                    IData Data = game.ValodatorPreparation(InputPlayer!, ListShipMenu, ArenaMap);
+                    string? InputPlayer = Console.ReadLine();
+                    IData Data = game.ValidatorPreparation(InputPlayer!, ListShipMenu, ArenaMap);
                     if (!Data.Status)
                     {
                         DataNotCorrect(Data.Message, 1000);
-                        IsPassed = Data.Status;
-                        Logger.Message("fail to add name Player, retry to enter", LogLevel.Error);
+                        Logger.Message(Data.Message, LogLevel.Error);
+                        break;
                     }
-                    else
-                    {
-                        IsPassed = Data.Status;
-                        DataCorrect("ship added.", 500);
-                        Logger.Message("Ship added.", LogLevel.Info);
-                    }
+                    game.AddShipToArena(InputPlayer!, ListShipMenu);
+                    Console.Clear();
+                    Console.Write(page.PreparationMap(ListShipMenu, PlayerName, ArenaMap));
+                    DataCorrect(" ship added.", 1000);
+                    IsPassed = Data.Status;
+                    Logger.Message("Ship added.", LogLevel.Info);
                 }
-                game.AddShipToArena(InputPlayer!, ListShipMenu);
             }
             DataCorrect("Ship Position saved.", 1000);
-        } while (true);
+            Count += game.TurnControl();
+        } while (Count != 2);
+    }
+
+    private static void BattlePhase()
+    {
+        //transition
+        do
+        {
+            Console.Clear();
+            Console.Write(page.Transition(false, game.GetPlayerActive().Name));
+        } while ((int)Console.ReadKey().Key != 13);
+
+        while (true)
+        {
+            while (true)
+            {
+                while (true)
+                {
+                    string[,] ArenaMap = game.GetPlayerDataInGame().HitInOpponentArena;
+                    string[,] ShipPosition = game.GetShipPlayerInArena();
+                    string PlayerName = game.GetPlayerActive().Name;
+
+                    Console.Clear();
+                    Console.Write(page.BattleMap(PlayerName, ArenaMap));
+                    string Input = ReadKeyCoor();
+                    if (Input == "HOME")
+                    {
+                        Console.Clear();
+                        Console.Write(page.ShipPosition(ShipPosition));
+                        DataCorrect("", 3000);
+                        break;
+                    }
+                    IData Data = game.ValidateInputCoorHit(Input)!;
+                    if (!Data.Status)
+                    {
+                        DataNotCorrect(Data.Message, 1000);
+                        break;
+                    }
+                    IData Result = game.HitOpponent(Input);
+                    ArenaMap = game.GetPlayerDataInGame().HitInOpponentArena;
+
+                    Console.Clear();
+                    Console.Write(page.HitResult(Result.Status, Input, ArenaMap));
+
+                    string AdditionalMessage = "";
+                    if (Result.Message.Length > 0)
+                        AdditionalMessage = $"   You Destroyed {Result.Message} Opponent!";
+
+                    DataCorrect(AdditionalMessage, 2000);
+
+                    game.TurnControl();
+                }
+            }
+        }
     }
 
     private static void DataCorrect(string Message, int Count)
@@ -107,13 +162,21 @@ public class Program
 
     private static void DataNotCorrect(string Message, int Count)
     {
-        Console.WriteLine(AddColor.Message(Message, ConsoleColor.Red));
+        Console.WriteLine(AddColor.Message("\n " + Message, ConsoleColor.Red));
         Thread.Sleep(Count);
     }
 
-    private static void Validation()
+    private static string ReadKeyCoor()
     {
-
+        string InputCoor = "";
+        while (true)
+        {
+            ConsoleKey key = Console.ReadKey().Key;
+            if ((int)key == 36) return "HOME";
+            if ((int)key == 13) return InputCoor;
+            char Input = Convert.ToChar(key);
+            InputCoor += Input.ToString();
+        }
     }
 }
 

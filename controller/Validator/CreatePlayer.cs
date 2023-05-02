@@ -1,15 +1,18 @@
-public class ValidatorCreatePlayer
+namespace Validators
 {
-
-    public bool IslengthUnderLimit(string Input, int Limit)
+    public class ValidatorCreatePlayer
     {
-        return Input.Trim().Length < Limit;
-    }
 
-    public bool IsPlayerAvailable(string Input, List<Player> PlayerList)
-    {
-        return PlayerList.Any(player =>
-            string.Equals(player.Name, Input, StringComparison.OrdinalIgnoreCase)
-            );
+        public bool IslengthUnderLimit(string Input, int Limit)
+        {
+            return Input.Trim().Length < Limit;
+        }
+
+        public bool IsPlayerAvailable(string Input, List<Player> PlayerList)
+        {
+            return PlayerList.Any(player =>
+                string.Equals(player.Name, Input, StringComparison.OrdinalIgnoreCase)
+                );
+        }
     }
 }

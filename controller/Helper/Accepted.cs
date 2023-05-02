@@ -1,12 +1,14 @@
-public class Accepted : IData
+namespace Helpers
 {
-
-    public string Message { get; set; }
-    public bool Status { get; set; }
-
-    public Accepted()
+    public sealed class Accepted : IData
     {
-        Message = "Succed.";
-        Status = true;
+        public string Message { get; set; }
+        public bool Status { get; set; }
+
+        public Accepted()
+        {
+            Message = "Succed.";
+            Status = true;
+        }
     }
 }

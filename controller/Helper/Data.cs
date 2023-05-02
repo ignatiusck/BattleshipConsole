@@ -1,6 +1,6 @@
 namespace Helpers
 {
-    public sealed class Rejected : IData
+    public sealed class Data : IData
     {
         private string _message;
         private bool _status;
@@ -8,10 +8,10 @@ namespace Helpers
         public string Message { get => _message; }
         public bool Status { get => _status; }
 
-        public Rejected(string Message)
+        public Data(string message, bool status)
         {
-            _message = Message;
-            _status = false;
+            _message = message;
+            _status = status;
         }
     }
 }
