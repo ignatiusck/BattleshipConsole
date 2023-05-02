@@ -5,19 +5,23 @@ class Logger<T>
 {
     private delegate void LoggerBank(string Message);
     private readonly ILog Log = LogManager.GetLogger(typeof(T));
-    private readonly List<LoggerBank> logger = new(){
+    private readonly List<LoggerBank> logger;
+
+    public Logger()
+    {
+        logger = new(){
             Log.Info,
             Log.Warn,
             Log.Error,
             Log.Fatal,
         };
-
-    public static void Config()
+    }
+    public void Config()
     {
         XmlConfigurator.Configure(new FileInfo("controller/Logger/log4net.config"));
     }
 
-    public static void Message(string message, LogLevel LogLevel)
+    public void Message(string message, LogLevel LogLevel)
     {
         logger[(int)LogLevel](message);
     }

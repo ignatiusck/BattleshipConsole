@@ -3,12 +3,13 @@ public class Program
 {
     private static readonly Page page = new();
     private static GameController game = new();
+    private static Logger<Program> Logger = new();
     private static bool Status;
 
 
     public static void Main(string[] args)
     {
-        Logger<Program>.Config();
+        Logger.Config();
 
         BattleshipStart();
         PreparationPhase();
@@ -22,7 +23,7 @@ public class Program
             Console.Clear();
             Console.WriteLine(page.Home());
         } while ((int)Console.ReadKey().Key != 13);
-        Logger<Program>.Message("Game started", LogLevel.Info);
+        Logger.Message("Game started", LogLevel.Info);
 
         //Create new player
         int Count = 1;
@@ -40,7 +41,7 @@ public class Program
                 {
                     DataNotCorrect(Data.Message, 1500);
                     DataPassed = Data.Status;
-                    Logger<Program>.Message("fail to add name Player, retry to enter", LogLevel.Error);
+                    Logger.Message("fail to add name Player, retry to enter", LogLevel.Error);
                 }
                 else
                 {
@@ -69,21 +70,32 @@ public class Program
             string PlayerName = game.GetPlayerActive();
             string[,] ArenaMap = game.GetShipPlayerInArena(); //aarrgg
             string? InputPlayer = null;
-            bool IsPassed = false;
 
             while (ListShipMenu.Count != 0)
             {
+                bool IsPassed = false;
                 while (!IsPassed)
                 {
                     Console.Clear();
-                    Console.Write(
-                        page.PreparationMap(ListShipMenu, PlayerName, ArenaMap)
-                        );
+                    Console.Write(page.PreparationMap(ListShipMenu, PlayerName, ArenaMap));
                     InputPlayer = Console.ReadLine();
-                    //validation
+                    IData Data = game.ValodatorPreparation(InputPlayer!, ListShipMenu, ArenaMap);
+                    if (!Data.Status)
+                    {
+                        DataNotCorrect(Data.Message, 1000);
+                        IsPassed = Data.Status;
+                        Logger.Message("fail to add name Player, retry to enter", LogLevel.Error);
+                    }
+                    else
+                    {
+                        IsPassed = Data.Status;
+                        DataCorrect("ship added.", 500);
+                        Logger.Message("Ship added.", LogLevel.Info);
+                    }
                 }
                 game.AddShipToArena(InputPlayer!, ListShipMenu);
             }
+            DataCorrect("Ship Position saved.", 1000);
         } while (true);
     }
 

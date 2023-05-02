@@ -3,7 +3,7 @@ public class ValidatorCreatePlayer
 
     public bool IslengthUnderLimit(string Input, int Limit)
     {
-        return Input.Length <= Limit;
+        return Input.Trim().Length < Limit;
     }
 
     public bool IsPlayerAvailable(string Input, List<Player> PlayerList)

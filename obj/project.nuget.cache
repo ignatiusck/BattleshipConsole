@@ -1,16 +1,16 @@
 {
   "version": 2,
-  "dgSpecHash": "nendoPaDBXuoyjkOAkNi5RADlQK4nCAchwm7CzbDOAWIzFW/z2ESK9T2ujFP+vF2vi3rgE3kJJdP1O5Ri2P6xA==",
+  "dgSpecHash": "INRv+daNeyyA67DIhUG3lJG/n3+kIK5iEtbqR6R14tXUCjzS7+8Cn1c9lVvNohKug+rcBCHCzw0Duek2A/ce4g==",
   "success": true,
-  "projectFilePath": "C:\\Users\\FORMULATRIX\\Desktop\\BattleshipConsole\\BattleshipConsole.csproj",
+  "projectFilePath": "/home/ignatius/Desktop/Bootcamp/BattleshipConsole/BattleshipConsole.csproj",
   "expectedPackageFiles": [
-    "C:\\Users\\FORMULATRIX\\.nuget\\packages\\log4net\\2.0.15\\log4net.2.0.15.nupkg.sha512",
-    "C:\\Users\\FORMULATRIX\\.nuget\\packages\\microsoft.netcore.platforms\\2.0.0\\microsoft.netcore.platforms.2.0.0.nupkg.sha512",
-    "C:\\Users\\FORMULATRIX\\.nuget\\packages\\system.configuration.configurationmanager\\4.5.0\\system.configuration.configurationmanager.4.5.0.nupkg.sha512",
-    "C:\\Users\\FORMULATRIX\\.nuget\\packages\\system.security.accesscontrol\\4.5.0\\system.security.accesscontrol.4.5.0.nupkg.sha512",
-    "C:\\Users\\FORMULATRIX\\.nuget\\packages\\system.security.cryptography.protecteddata\\4.5.0\\system.security.cryptography.protecteddata.4.5.0.nupkg.sha512",
-    "C:\\Users\\FORMULATRIX\\.nuget\\packages\\system.security.permissions\\4.5.0\\system.security.permissions.4.5.0.nupkg.sha512",
-    "C:\\Users\\FORMULATRIX\\.nuget\\packages\\system.security.principal.windows\\4.5.0\\system.security.principal.windows.4.5.0.nupkg.sha512"
+    "/home/ignatius/.nuget/packages/log4net/2.0.15/log4net.2.0.15.nupkg.sha512",
+    "/home/ignatius/.nuget/packages/microsoft.netcore.platforms/2.0.0/microsoft.netcore.platforms.2.0.0.nupkg.sha512",
+    "/home/ignatius/.nuget/packages/system.configuration.configurationmanager/4.5.0/system.configuration.configurationmanager.4.5.0.nupkg.sha512",
+    "/home/ignatius/.nuget/packages/system.security.accesscontrol/4.5.0/system.security.accesscontrol.4.5.0.nupkg.sha512",
+    "/home/ignatius/.nuget/packages/system.security.cryptography.protecteddata/4.5.0/system.security.cryptography.protecteddata.4.5.0.nupkg.sha512",
+    "/home/ignatius/.nuget/packages/system.security.permissions/4.5.0/system.security.permissions.4.5.0.nupkg.sha512",
+    "/home/ignatius/.nuget/packages/system.security.principal.windows/4.5.0/system.security.principal.windows.4.5.0.nupkg.sha512"
   ],
   "logs": []
 }

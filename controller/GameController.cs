@@ -13,17 +13,23 @@ class GameController
     private string[,] _arenaArray; //Array for displaying to console
     private int _activePlayer; // active player id
     private ValidatorCreatePlayer _vPlayer;
-    private Dictionary<string, IShip> _listShipInGame;
+    private ValidatorPreparationPhase _vPreparation;
+    private Logger<GameController> _logger;
 
 
     //Create game with player
     public GameController()
     {
-        _listPlayerInfo = new();
         _arena = new();
-        _arenaArray = new string[_arena.ArenaSize.Height, _arena.ArenaSize.Width];
+
+        _arenaArray = new string[_arena!.ArenaSize.Height, _arena.ArenaSize.Width];
         _activePlayer = 1;
+        _listPlayerInfo = new();
+
         _vPlayer = new();
+        _vPreparation = new();
+
+        _logger = new();
     }
 
     //create ship packet
@@ -47,19 +53,25 @@ class GameController
             Name = PlayerName,
             ListShip = CreateShipPack(),
         };
+
         _listPlayerInfo.Add(player);
         if (_listPlayerInfo.Count == 2) SetPreparationArenaPlayer();
-        Logger<GameController>.Message("Player added.", LogLevel.Info);
+        _logger.Message("Player added.", LogLevel.Info);
+
+        if (_listPlayerInfo.Count == 2)
+        {
+            TurnControl();
+        }
+
         return _listPlayerInfo.Count < 2;
     }
 
-    public IData ValidatorPlayer(string Input)
+    private IDictionary<string, IShip> GetListPlayerShip()
     {
-        if (_vPlayer.IslengthUnderLimit(Input, 2))
-            return new Rejected($"Name should be atleast {3} characters long.");
-        if (_vPlayer.IsPlayerAvailable(Input, _listPlayerInfo!))
-            return new Rejected($"{Input} have been taken.");
-        return new Accepted();
+        IPlayerBattleship player =
+            _listPlayerInfo!.Find(player => player.Id == _activePlayer)!;
+
+        return player.ListShip;
     }
 
     public string[,] GetShipPlayerInArena()
@@ -118,8 +130,8 @@ class GameController
 
         string[] Data = Inputposition.Split(" ");
         string[] Coordinate = Data[1].Split(",");
-        string Rotate = Data[2];
-        string KeyShip = Data[0];
+        string Rotate = Data[2].ToUpper();
+        string KeyShip = Data[0].ToUpper();
         int XCoor = int.Parse(Coordinate[0]) - 1;
         int YCoor = int.Parse(Coordinate[1]) - 1;
 
@@ -136,6 +148,44 @@ class GameController
             _ = (Rotate.ToUpper()! == "H") ? XCoor++ : YCoor++;
         }
         ListShipMenu.Remove(KeyShip);
+    }
+
+    public IData ValidatorPlayer(string Input)
+    {
+        if (_vPlayer.IslengthUnderLimit(Input, 3))
+            return new Rejected($"Name should be atleast {3} characters long.");
+        if (_vPlayer.IsPlayerAvailable(Input, _listPlayerInfo!))
+            return new Rejected($"{Input} have been taken.");
+        return new Accepted();
+    }
+
+    public IData ValodatorPreparation(string Input, IDictionary<string, IShip> ListShipMenu, string[,] ArenaMap)
+    {
+        if (_vPreparation.IsInputValid(Input))
+            return new Rejected("Invalid input.");
+        if (_vPreparation.IsShipNotValid(Input, ListShipMenu))
+            return new Rejected("Ship not valid.");
+        if (_vPreparation.IsCoordinateValid(Input))
+            return new Rejected("Coordinate not valid.");
+        if (_vPreparation.IsOutOfRange(Input, ListShipMenu))
+            return new Rejected("Out of range");
+        if (_vPreparation.IsRotateNotValid(Input))
+            return new Rejected("Invalid rotation.");
+
+        IData Data = _vPreparation.IsAnyShipHere(Input, ArenaMap);
+        if (!Data.Status)
+        {
+            return new Rejected(
+                $"{GetListPlayerShip()[Data.Message]} here, Reposition your ship!"
+                );
+        };
+
+        return new Accepted();
+    }
+
+    public void TurnControl()
+    {
+        _activePlayer = _activePlayer == 1 ? 2 : 1;
     }
 
     // public List<IPlayer> GetListPlayers()

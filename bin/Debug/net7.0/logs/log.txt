@@ -8,3 +8,98 @@
 2023-05-02 11:45:51,756 ERROR Program - fail to add name Player, retry to enter
 2023-05-02 11:45:55,494 ERROR Program - fail to add name Player, retry to enter
 2023-05-02 11:45:57,817 INFO  GameController - Player added.
+2023-05-02 14:14:02,187 INFO  Program - Game started
+2023-05-02 14:14:04,460 ERROR Program - fail to add name Player, retry to enter
+2023-05-02 14:14:13,476 ERROR Program - fail to add name Player, retry to enter
+2023-05-02 14:14:14,555 INFO  GameController - Player added.
+2023-05-02 14:14:17,130 INFO  GameController - Player added.
+2023-05-02 14:14:49,934 INFO  Program - Game started
+2023-05-02 14:14:52,744 ERROR Program - fail to add name Player, retry to enter
+2023-05-02 14:14:54,652 INFO  GameController - Player added.
+2023-05-02 14:14:58,899 INFO  GameController - Player added.
+2023-05-02 14:46:32,141 INFO  Program - Game started
+2023-05-02 14:46:33,948 INFO  GameController - Player added.
+2023-05-02 14:46:36,132 INFO  GameController - Player added.
+2023-05-02 14:46:43,383 ERROR Program - fail to add name Player, retry to enter
+2023-05-02 14:46:49,487 ERROR Program - fail to add name Player, retry to enter
+2023-05-02 14:50:42,307 INFO  Program - Game started
+2023-05-02 14:50:44,747 INFO  GameController - Player added.
+2023-05-02 14:50:48,194 ERROR Program - fail to add name Player, retry to enter
+2023-05-02 14:50:49,132 INFO  GameController - Player added.
+2023-05-02 14:51:41,285 INFO  Program - Game started
+2023-05-02 14:51:42,700 INFO  GameController - Player added.
+2023-05-02 14:51:46,249 ERROR Program - fail to add name Player, retry to enter
+2023-05-02 14:51:48,109 INFO  GameController - Player added.
+2023-05-02 14:52:00,973 ERROR Program - fail to add name Player, retry to enter
+2023-05-02 14:52:05,155 ERROR Program - fail to add name Player, retry to enter
+2023-05-02 14:52:08,901 ERROR Program - fail to add name Player, retry to enter
+2023-05-02 14:52:54,386 INFO  Program - Game started
+2023-05-02 14:52:56,981 INFO  GameController - Player added.
+2023-05-02 14:52:58,973 INFO  GameController - Player added.
+2023-05-02 14:54:00,830 INFO  Program - Game started
+2023-05-02 14:54:02,694 INFO  GameController - Player added.
+2023-05-02 14:54:04,448 INFO  GameController - Player added.
+2023-05-02 14:58:12,193 INFO  Program - Game started
+2023-05-02 14:58:13,825 INFO  GameController - Player added.
+2023-05-02 14:58:15,904 INFO  GameController - Player added.
+2023-05-02 14:58:20,432 ERROR Program - fail to add name Player, retry to enter
+2023-05-02 14:58:22,376 INFO  Program - Ship Added.
+2023-05-02 14:58:33,575 INFO  Program - Ship Added.
+2023-05-02 15:18:17,672 INFO  Program - Game started
+2023-05-02 15:18:20,543 ERROR Program - fail to add name Player, retry to enter
+2023-05-02 15:18:23,505 ERROR Program - fail to add name Player, retry to enter
+2023-05-02 15:18:26,466 ERROR Program - fail to add name Player, retry to enter
+2023-05-02 15:18:29,403 ERROR Program - fail to add name Player, retry to enter
+2023-05-02 15:19:20,823 INFO  Program - Game started
+2023-05-02 15:19:25,762 ERROR Program - fail to add name Player, retry to enter
+2023-05-02 15:19:28,680 ERROR Program - fail to add name Player, retry to enter
+2023-05-02 15:19:31,201 ERROR Program - fail to add name Player, retry to enter
+2023-05-02 15:21:55,470 INFO  Program - Game started
+2023-05-02 15:21:57,591 INFO  GameController - Player added.
+2023-05-02 15:23:51,406 INFO  Program - Game started
+2023-05-02 15:24:22,832 INFO  Program - Game started
+2023-05-02 15:24:26,518 ERROR Program - fail to add name Player, retry to enter
+2023-05-02 15:24:27,534 INFO  GameController - Player added.
+2023-05-02 15:24:33,587 ERROR Program - fail to add name Player, retry to enter
+2023-05-02 15:24:39,083 ERROR Program - fail to add name Player, retry to enter
+2023-05-02 15:28:16,638 ERROR Program - fail to add name Player, retry to enter
+2023-05-02 15:32:15,520 INFO  Program - Game started
+2023-05-02 15:32:17,728 INFO  GameController - Player added.
+2023-05-02 15:32:20,466 INFO  GameController - Player added.
+2023-05-02 15:35:37,377 INFO  Program - Game started
+2023-05-02 15:35:39,372 INFO  GameController - Player added.
+2023-05-02 15:35:41,300 INFO  GameController - Player added.
+2023-05-02 15:35:48,009 ERROR Program - fail to add name Player, retry to enter
+2023-05-02 15:35:54,817 ERROR Program - fail to add name Player, retry to enter
+2023-05-02 15:41:23,603 ERROR Program - fail to add name Player, retry to enter
+2023-05-02 15:42:37,948 INFO  Program - Game started
+2023-05-02 15:42:41,140 INFO  GameController - Player added.
+2023-05-02 15:42:43,028 INFO  GameController - Player added.
+2023-05-02 15:42:48,285 INFO  Program - Ship Added.
+2023-05-02 15:42:52,138 INFO  Program - Ship Added.
+2023-05-02 15:44:14,599 INFO  Program - Game started
+2023-05-02 15:44:16,673 INFO  GameController - Player added.
+2023-05-02 15:44:18,576 INFO  GameController - Player added.
+2023-05-02 15:44:28,394 ERROR Program - fail to add name Player, retry to enter
+2023-05-02 15:44:33,526 INFO  Program - Ship Added.
+2023-05-02 15:45:45,917 INFO  Program - Game started
+2023-05-02 15:45:47,833 INFO  GameController - Player added.
+2023-05-02 15:45:50,700 INFO  GameController - Player added.
+2023-05-02 15:45:56,485 INFO  Program - Ship added.
+2023-05-02 15:46:00,590 INFO  Program - Ship added.
+2023-05-02 16:25:28,334 INFO  Program - Game started
+2023-05-02 16:25:30,118 INFO  GameController - Player added.
+2023-05-02 16:25:32,077 INFO  GameController - Player added.
+2023-05-02 16:54:54,316 INFO  Program - Game started
+2023-05-02 16:54:56,404 INFO  GameController - Player added.
+2023-05-02 16:54:58,194 INFO  GameController - Player added.
+2023-05-02 16:55:03,432 INFO  Program - Ship added.
+2023-05-02 16:55:10,738 ERROR Program - fail to add name Player, retry to enter
+2023-05-02 17:00:10,480 INFO  Program - Game started
+2023-05-02 17:00:11,481 INFO  GameController - Player added.
+2023-05-02 17:00:13,174 INFO  GameController - Player added.
+2023-05-02 17:00:19,870 INFO  Program - Ship added.
+2023-05-02 17:00:32,031 ERROR Program - fail to add name Player, retry to enter
+2023-05-02 17:29:41,035 INFO  Program - Game started
+2023-05-02 17:29:42,779 INFO  GameController - Player added.
+2023-05-02 17:29:46,856 INFO  GameController - Player added.
