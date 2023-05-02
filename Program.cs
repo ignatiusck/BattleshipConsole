@@ -8,16 +8,11 @@ public class Program
 
     public static void Main(string[] args)
     {
-        //SetConfiguration();
+        Logger<Program>.Config();
 
         BattleshipStart();
         PreparationPhase();
     }
-
-    // private static void SetConfiguration()
-    // {
-    //     XmlConfigurator.Configure(new FileInfo("logs/log4net.config"));
-    // }
 
     private static void BattleshipStart()
     {
@@ -27,7 +22,7 @@ public class Program
             Console.Clear();
             Console.WriteLine(page.Home());
         } while ((int)Console.ReadKey().Key != 13);
-        Logger.Message("Game started", LogLevel.Info);
+        Logger<Program>.Message("Game started", LogLevel.Info);
 
         //Create new player
         int Count = 1;
@@ -45,7 +40,7 @@ public class Program
                 {
                     DataNotCorrect(Data.Message, 1500);
                     DataPassed = Data.Status;
-                    Logger.Message("fail to add name Player, retry to enter", LogLevel.Error);
+                    Logger<Program>.Message("fail to add name Player, retry to enter", LogLevel.Error);
                 }
                 else
                 {

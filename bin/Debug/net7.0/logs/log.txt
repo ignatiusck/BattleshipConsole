@@ -1,7 +1,10 @@
-2023-05-02 10:48:25,503 INFO  Logger - Game started
-2023-05-02 11:13:22,274 INFO  Logger - Game started
-2023-05-02 11:13:26,809 ERROR Logger - fail to add name Player, retry to enter
-2023-05-02 11:22:19,739 INFO  Logger - Game started
-2023-05-02 11:22:22,629 ERROR Logger - fail to add name Player, retry to enter
-2023-05-02 11:26:02,504 INFO  Logger - Game started
-2023-05-02 11:26:10,548 ERROR Logger - fail to add name Player, retry to enter
+
+2023-05-02 11:35:35,889 INFO  Program - Game started
+2023-05-02 11:35:39,435 ERROR Program - fail to add name Player, retry to enter
+2023-05-02 11:35:42,214 INFO  GameController - Player added.
+2023-05-02 11:35:47,632 INFO  GameController - Player added.
+2023-05-02 11:45:47,070 INFO  Program - Game started
+2023-05-02 11:45:49,803 ERROR Program - fail to add name Player, retry to enter
+2023-05-02 11:45:51,756 ERROR Program - fail to add name Player, retry to enter
+2023-05-02 11:45:55,494 ERROR Program - fail to add name Player, retry to enter
+2023-05-02 11:45:57,817 INFO  GameController - Player added.

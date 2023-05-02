@@ -49,6 +49,7 @@ class GameController
         };
         _listPlayerInfo.Add(player);
         if (_listPlayerInfo.Count == 2) SetPreparationArenaPlayer();
+        Logger<GameController>.Message("Player added.", LogLevel.Info);
         return _listPlayerInfo.Count < 2;
     }
 
