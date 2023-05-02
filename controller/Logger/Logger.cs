@@ -1,11 +1,11 @@
 using log4net;
 using log4net.Config;
 
-static class Logger<T>
+class Logger<T>
 {
     private delegate void LoggerBank(string Message);
-    private static readonly ILog Log = LogManager.GetLogger(typeof(T));
-    private static readonly List<LoggerBank> logger = new(){
+    private readonly ILog Log = LogManager.GetLogger(typeof(T));
+    private readonly List<LoggerBank> logger = new(){
             Log.Info,
             Log.Warn,
             Log.Error,
@@ -14,7 +14,7 @@ static class Logger<T>
 
     public static void Config()
     {
-        XmlConfigurator.Configure(new FileInfo("controller/Helper/log4net.config"));
+        XmlConfigurator.Configure(new FileInfo("controller/Logger/log4net.config"));
     }
 
     public static void Message(string message, LogLevel LogLevel)
