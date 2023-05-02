@@ -1,17 +1,23 @@
-using System.Collections.Generic;
+using log4net.Config;
 public class Program
 {
     private static readonly Page page = new();
-    private static readonly Component component = new();
     private static GameController game = new();
     private static bool Status;
 
 
     public static void Main(string[] args)
     {
+        //SetConfiguration();
+
         BattleshipStart();
         PreparationPhase();
     }
+
+    // private static void SetConfiguration()
+    // {
+    //     XmlConfigurator.Configure(new FileInfo("logs/log4net.config"));
+    // }
 
     private static void BattleshipStart()
     {
@@ -21,6 +27,7 @@ public class Program
             Console.Clear();
             Console.WriteLine(page.Home());
         } while ((int)Console.ReadKey().Key != 13);
+        Logger.Message("Game started", LogLevel.Info);
 
         //Create new player
         int Count = 1;
@@ -32,12 +39,13 @@ public class Program
             {
                 Console.Clear();
                 Console.Write(page.CreatePlayer(Count));
-                InputPlayer = Console.ReadLine();
+                InputPlayer = Console.ReadLine()!;
                 IData Data = game.ValidatorPlayer(InputPlayer);
                 if (!Data.Status)
                 {
                     DataNotCorrect(Data.Message, 1500);
                     DataPassed = Data.Status;
+                    Logger.Message("fail to add name Player, retry to enter", LogLevel.Error);
                 }
                 else
                 {
@@ -86,13 +94,13 @@ public class Program
 
     private static void DataCorrect(string Message, int Count)
     {
-        Console.WriteLine(Log.Message(Message, ConsoleColor.Green));
+        Console.WriteLine(AddColor.Message(Message, ConsoleColor.Green));
         Thread.Sleep(Count);
     }
 
     private static void DataNotCorrect(string Message, int Count)
     {
-        Console.WriteLine(Log.Message(Message, ConsoleColor.Red));
+        Console.WriteLine(AddColor.Message(Message, ConsoleColor.Red));
         Thread.Sleep(Count);
     }
 

@@ -1,4 +1,4 @@
-static class Log
+static class AddColor
 {
     private static readonly Dictionary<ConsoleColor, string> _colorMap = new()
     {

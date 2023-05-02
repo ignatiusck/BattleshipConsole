@@ -28,7 +28,7 @@ class Component
     public string BodyTransition(bool Preparation, string PlayerName)
     {
         string View = Preparation ? "Attack your Opponent!!" : "Place all your ship in the Arena.";
-        PlayerName = Log.Message(PlayerName, ConsoleColor.Yellow);
+        PlayerName = AddColor.Message(PlayerName, ConsoleColor.Yellow);
         return
             $" {View} \n" +
             " You play first, " +
@@ -62,7 +62,7 @@ class Component
             {
                 Map += ArenaMap[i - 1, j] == "_" ?
                     $" [{ArenaMap[i - 1, j]}]" :
-                    $" [{Log.Message(ArenaMap[i - 1, j], ConsoleColor.Yellow)}]";
+                    $" [{AddColor.Message(ArenaMap[i - 1, j], ConsoleColor.Yellow)}]";
             }
             Map += "\n";
         }
@@ -84,7 +84,7 @@ class Component
     public string BodyTurnControl(bool Preparation, string PlayerName)
     {
         string View = Preparation ? "List Ship : " : "            ";
-        PlayerName = Log.Message(PlayerName, ConsoleColor.Yellow);
+        PlayerName = AddColor.Message(PlayerName, ConsoleColor.Yellow);
         return
             View + "              Your Turn, " + PlayerName;
     }
@@ -107,12 +107,12 @@ class Component
     public string BodyShipPosition()
     {
         return
-            Log.Message(" Your Ship Position        Will close in 3s. ", ConsoleColor.Yellow);
+            AddColor.Message(" Your Ship Position        Will close in 3s. ", ConsoleColor.Yellow);
     }
 
     public string BodyWinner(bool state, string PlayerName)
     {
-        string Win = state ? Log.Message("WINNER", ConsoleColor.Black) : Log.Message("WINNER", ConsoleColor.Yellow);
+        string Win = state ? AddColor.Message("WINNER", ConsoleColor.Black) : AddColor.Message("WINNER", ConsoleColor.Yellow);
         return
             Win + "\n" +
             PlayerName + "\n \n \n" +
