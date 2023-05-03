@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+using System.Xml.Serialization;
 using Helpers;
 using Validators;
 using MainLogger;
@@ -8,7 +8,7 @@ namespace MainGameController
     public class GameController
     {
         private List<Player>? _listPlayerInfo;
-        private static Arena? _arena;
+        private Arena? _arena;
         private string[,] _arenaArray;
         private int _activePlayer;
         private ValidatorCreatePlayer _vPlayer;
@@ -30,6 +30,23 @@ namespace MainGameController
             _vHit = new();
 
             _logger = new();
+        }
+
+        public void SaveGame()
+        {
+            SaveData Save = new()
+            {
+                ListPlayerInfo = _listPlayerInfo,
+                Arena = _arena,
+                ActivePlayer = _activePlayer,
+                ArenaArray = _arenaArray,
+            };
+
+            XmlSerializer serializer = new(typeof(SaveData));
+            using (StreamWriter Writer = new("DataGame.xml"))
+            {
+                serializer.Serialize(Writer, Save);
+            }
         }
 
         //create ship packet

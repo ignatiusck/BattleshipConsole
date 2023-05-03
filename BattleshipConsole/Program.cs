@@ -106,6 +106,7 @@ public class Program
     private static void BattlePhase()
     {
         //transition
+        Game.SaveGame();
         do
         {
             Console.Clear();
@@ -155,13 +156,13 @@ public class Program
                     WinnerStatus = true;
                     break;
                 };
-
+                Game.SaveGame();
                 Game.TurnControl();
             }
         }
     }
 
-    private static async Task BattleshipEnd()
+    private static void BattleshipEnd()
     {
         Data Data = new("", true);
         string PlayerName = Game.GetPlayerActive().Name;

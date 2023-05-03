@@ -1,6 +1,6 @@
 using System.Drawing;
 
-class Arena : IArena
+public class Arena : IArena
 {
     private Size _arenaSize;
 
