@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "c:\\Users\\FORMULATRIX\\Desktop\\BattleshipConsole\\BattleshipConsole\\BattleshipConsole.csproj": {}
+    "/home/ignatius/Desktop/Bootcamp/BattleshipConsole/BattleshipConsole/BattleshipConsole.csproj": {}
   },
   "projects": {
-    "c:\\Users\\FORMULATRIX\\Desktop\\BattleshipConsole\\BattleshipConsole\\BattleshipConsole.csproj": {
+    "/home/ignatius/Desktop/Bootcamp/BattleshipConsole/BattleshipConsole/BattleshipConsole.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "c:\\Users\\FORMULATRIX\\Desktop\\BattleshipConsole\\BattleshipConsole\\BattleshipConsole.csproj",
+        "projectUniqueName": "/home/ignatius/Desktop/Bootcamp/BattleshipConsole/BattleshipConsole/BattleshipConsole.csproj",
         "projectName": "BattleshipConsole",
-        "projectPath": "c:\\Users\\FORMULATRIX\\Desktop\\BattleshipConsole\\BattleshipConsole\\BattleshipConsole.csproj",
-        "packagesPath": "C:\\Users\\FORMULATRIX\\.nuget\\packages\\",
-        "outputPath": "c:\\Users\\FORMULATRIX\\Desktop\\BattleshipConsole\\BattleshipConsole\\obj\\",
+        "projectPath": "/home/ignatius/Desktop/Bootcamp/BattleshipConsole/BattleshipConsole/BattleshipConsole.csproj",
+        "packagesPath": "/home/ignatius/.nuget/packages/",
+        "outputPath": "/home/ignatius/Desktop/Bootcamp/BattleshipConsole/BattleshipConsole/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\FORMULATRIX\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "/home/ignatius/.nuget/NuGet/NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net7.0"
@@ -59,7 +59,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.202\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/7.0.203/RuntimeIdentifierGraph.json"
         }
       }
     }
