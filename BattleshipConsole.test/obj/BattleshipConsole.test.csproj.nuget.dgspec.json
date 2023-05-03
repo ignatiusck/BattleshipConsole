@@ -1,0 +1,150 @@
+{
+  "format": 1,
+  "restore": {
+    "/home/ignatius/Desktop/Bootcamp/BattleshipConsole/BattleshipConsole.test/BattleshipConsole.test.csproj": {}
+  },
+  "projects": {
+    "/home/ignatius/Desktop/Bootcamp/BattleshipConsole/BattleshipConsole.test/BattleshipConsole.test.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "/home/ignatius/Desktop/Bootcamp/BattleshipConsole/BattleshipConsole.test/BattleshipConsole.test.csproj",
+        "projectName": "BattleshipConsole.test",
+        "projectPath": "/home/ignatius/Desktop/Bootcamp/BattleshipConsole/BattleshipConsole.test/BattleshipConsole.test.csproj",
+        "packagesPath": "/home/ignatius/.nuget/packages/",
+        "outputPath": "/home/ignatius/Desktop/Bootcamp/BattleshipConsole/BattleshipConsole.test/obj/",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "/home/ignatius/.nuget/NuGet/NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net7.0"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net7.0": {
+            "targetAlias": "net7.0",
+            "projectReferences": {
+              "/home/ignatius/Desktop/Bootcamp/BattleshipConsole/BattleshipConsole/BattleshipConsole.csproj": {
+                "projectPath": "/home/ignatius/Desktop/Bootcamp/BattleshipConsole/BattleshipConsole/BattleshipConsole.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net7.0": {
+          "targetAlias": "net7.0",
+          "dependencies": {
+            "Microsoft.NET.Test.Sdk": {
+              "target": "Package",
+              "version": "[17.3.2, )"
+            },
+            "Moq": {
+              "target": "Package",
+              "version": "[4.18.4, )"
+            },
+            "coverlet.collector": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[3.1.2, )"
+            },
+            "xunit": {
+              "target": "Package",
+              "version": "[2.4.2, )"
+            },
+            "xunit.runner.visualstudio": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[2.4.5, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/7.0.203/RuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "/home/ignatius/Desktop/Bootcamp/BattleshipConsole/BattleshipConsole/BattleshipConsole.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "/home/ignatius/Desktop/Bootcamp/BattleshipConsole/BattleshipConsole/BattleshipConsole.csproj",
+        "projectName": "BattleshipConsole",
+        "projectPath": "/home/ignatius/Desktop/Bootcamp/BattleshipConsole/BattleshipConsole/BattleshipConsole.csproj",
+        "packagesPath": "/home/ignatius/.nuget/packages/",
+        "outputPath": "/home/ignatius/Desktop/Bootcamp/BattleshipConsole/BattleshipConsole/obj/",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "/home/ignatius/.nuget/NuGet/NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net7.0"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net7.0": {
+            "targetAlias": "net7.0",
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net7.0": {
+          "targetAlias": "net7.0",
+          "dependencies": {
+            "log4net": {
+              "target": "Package",
+              "version": "[2.0.15, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/7.0.203/RuntimeIdentifierGraph.json"
+        }
+      }
+    }
+  }
+}
