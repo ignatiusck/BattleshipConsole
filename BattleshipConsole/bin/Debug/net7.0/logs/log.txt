@@ -359,3 +359,11 @@
 2023-05-03 00:27:48,449 INFO  Program - Game started
 2023-05-03 00:27:57,132 INFO  Program - Ship added.
 2023-05-03 00:28:01,048 INFO  Program - Ship added.
+2023-05-03 11:36:18,507 INFO  Program - Game started
+2023-05-03 11:36:21,676 ERROR Program - fail to add name Player, retry to enter
+2023-05-03 11:36:24,003 ERROR Program - fail to add name Player, retry to enter
+2023-05-03 11:36:30,232 ERROR Program - fail to add name Player, retry to enter
+2023-05-03 11:36:33,668 ERROR Program - fail to add name Player, retry to enter
+2023-05-03 11:36:46,670 INFO  Program - Ship added.
+2023-05-03 11:36:49,603 ERROR Program - Invalid input.
+2023-05-03 11:37:09,030 INFO  Program - Ship added.

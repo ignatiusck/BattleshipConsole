@@ -1,5 +1,6 @@
 using System;
 using MainGameController;
+using Moq;
 
 namespace BattleshipConsole.test;
 
@@ -49,6 +50,7 @@ public class BattleshipConsoleTest
         Dictionary<string, IShip> ListShipMenu = new()
         {
             ["B"] = new Battleship(),
+            //["B"] = (IShip)new Mock<IShip>(),
         };
         string[,] ArenaMap = new string[10, 10];
 
@@ -64,13 +66,13 @@ public class BattleshipConsoleTest
         Assert.Equal(Result.Status, Expected);
     }
 
-    [Theory]
-    [InlineData("dhjehdke", false)]
-    [InlineData("a,a", false)]
-    [InlineData("1.1", false)]
-    [InlineData("1,1", true)]
-    public void ValidateInputCoorHit(string Input, bool Expected)
-    {
+    // [Theory]
+    // [InlineData("dhjehdke", false)]
+    // [InlineData("a,a", false)]
+    // [InlineData("1.1", false)]
+    // [InlineData("1,1", true)]
+    // public void ValidateInputCoorHit(string Input, bool Expected)
+    // {
 
-    }
+    // }
 }

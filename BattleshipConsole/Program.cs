@@ -9,7 +9,7 @@ public class Program
 
     public static void Main(string[] args)
     {
-        Logger.Config(true);
+        Logger.Config(false);
 
         BattleshipStart();
         PreparationPhase();

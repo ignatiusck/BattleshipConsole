@@ -5,19 +5,19 @@ namespace MainLogger
 {
     class Logger<T>
     {
-        private delegate void LoggerBank(string Message);
+        private delegate void LoggerList(string Message);
         private readonly ILog Log = LogManager.GetLogger(typeof(T));
-        private readonly List<LoggerBank> logger;
+        private readonly List<LoggerList> logger;
         private bool initialized;
 
         public Logger()
         {
             logger = new(){
-            Log.Info,
-            Log.Warn,
-            Log.Error,
-            Log.Fatal,
-        };
+                Log.Info,
+                Log.Warn,
+                Log.Error,
+                Log.Fatal,
+            };
         }
         public void Config(bool Status)
         {
