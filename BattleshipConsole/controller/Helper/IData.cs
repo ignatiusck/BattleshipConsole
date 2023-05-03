@@ -1,6 +1,6 @@
 public interface IData
 {
     string Message { get; }
-    bool Status { get; }
+    bool Status { get; set; }
 
 }

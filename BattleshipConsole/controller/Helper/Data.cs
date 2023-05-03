@@ -6,7 +6,7 @@ namespace Helpers
         private bool _status;
 
         public string Message { get => _message; }
-        public bool Status { get => _status; }
+        public bool Status { get => _status; set => _status = value; }
 
         public Data(string message, bool status)
         {

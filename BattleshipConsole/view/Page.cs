@@ -65,7 +65,7 @@ namespace Pages
             return
                 component.Header("    BATTLESHIP    ") +
                 component.WriteSpace(3) +
-                component.BodyWinner(true, PlayerName);
+                component.BodyWinner(state, PlayerName);
         }
 
         public string HitResult(bool Status, string Coor, string[,] ArenaMap)

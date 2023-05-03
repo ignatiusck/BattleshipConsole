@@ -1,3 +1,4 @@
+using System;
 namespace Components
 {
     class Component
@@ -33,7 +34,7 @@ namespace Components
                 $" {View} \n" +
                 " You play first, " +
                 PlayerName + "\n \n \n \n" +
-                "Press Enter to continue...                ";
+                "Press Enter to continue...";
         }
 
         public string BodyArenaMap(string[,] ArenaMap)
@@ -44,19 +45,14 @@ namespace Components
             Map += "  0  1";
             for (int k = 2; k <= _arena!.ArenaSize.Width; k++)
             {
-                Map += $"   {k}";
+                if (k <= 10) Map += $"   {k}";
+                else Map += $"  {k}";
             }
             Map += "\n";
             for (int i = 1; i <= _arena.ArenaSize.Height; i++)
             {
-                if (i == 10)
-                {
-                    Map += $" {i}";
-                }
-                else
-                {
-                    Map += $"  {i}";
-                }
+                if (i >= 10) Map += $" {i}";
+                else Map += $"  {i}";
 
                 for (int j = 0; j < _arena.ArenaSize.Width; j++)
                 {
@@ -83,24 +79,38 @@ namespace Components
 
         public string BodyTurnControl(bool Preparation, string PlayerName)
         {
+            Arena arena = new();
             string View = Preparation ? "List Ship : " : "            ";
             PlayerName = AddColor.Message(PlayerName, ConsoleColor.Yellow);
+            string Space = "";
+
+            if (arena.ArenaSize.Width >= 10)
+                for (int i = 10; i <= arena.ArenaSize.Width; i++) Space += "    ";
+
             return
-                View + "              Your Turn, " + PlayerName;
+                View + "            " + Space + "Your Turn, " + PlayerName;
         }
 
         public string BodyInputShip()
         {
             return
-                "Input : 'KEY Coordinat H/V' Example : 'B 1,1 H' \n" +
+                "Input : " +
+                AddColor.Message("'KEY Coordinat H/V'", ConsoleColor.Yellow) +
+                " Example : " +
+                AddColor.Message("'B 1,1 H' \n", ConsoleColor.Yellow) +
                 "Place your ship : ";
         }
 
         public string BodyInputHit()
         {
             return
-                " \n \n Press 'Home' to see your ship positions \n" +
-                " Input : 'y,x' Example : '3,2' \n" +
+                " \n \n Press " +
+                AddColor.Message("'Home'", ConsoleColor.Yellow) +
+                " to see your ship positions \n" +
+                " Input : " +
+                AddColor.Message("'y,x'", ConsoleColor.Yellow) +
+                " Example : " +
+                AddColor.Message("'3,2'", ConsoleColor.Yellow) + " \n" +
                 " Hit Enemy : ";
         }
 
