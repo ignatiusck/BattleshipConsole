@@ -1,4 +1,4 @@
-using System.Xml.Serialization;
+using Newtonsoft.Json;
 using Helpers;
 using Validators;
 using MainLogger;
@@ -32,20 +32,33 @@ namespace MainGameController
             _logger = new();
         }
 
+        public GameController(GameData Data)
+        {
+            _arena = Data.Arena;
+            _activePlayer = Data.ActivePlayer;
+            _listPlayerInfo = Data.ListPlayerInfo;
+
+            _vPlayer = new();
+            _vPreparation = new();
+            _vHit = new();
+
+            _logger = new();
+        }
+
         public void SaveGame()
         {
-            SaveData Save = new()
+            GameData Data = new()
             {
                 ListPlayerInfo = _listPlayerInfo,
                 Arena = _arena,
                 ActivePlayer = _activePlayer,
-                ArenaArray = _arenaArray,
             };
 
-            XmlSerializer serializer = new(typeof(SaveData));
-            using (StreamWriter Writer = new("DataGame.xml"))
+            using (StreamWriter Writer = new("Data.json"))
+            using (JsonWriter JsonWriter = new JsonTextWriter(Writer))
             {
-                serializer.Serialize(Writer, Save);
+                JsonSerializer Serializer = new();
+                Serializer.Serialize(JsonWriter, Data);
             }
         }
 

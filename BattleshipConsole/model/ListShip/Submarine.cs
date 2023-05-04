@@ -1,4 +1,4 @@
-class Submarine : IShip
+public class Submarine : IShip
 {
     private string _shipName;
     private int _shipSize;

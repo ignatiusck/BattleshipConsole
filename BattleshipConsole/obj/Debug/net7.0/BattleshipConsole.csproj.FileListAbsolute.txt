@@ -112,3 +112,4 @@ c:/Users/FORMULATRIX/Desktop/BattleshipConsole/BattleshipConsole/obj/Debug/net7.
 /home/ignatius/Desktop/Bootcamp/BattleshipConsole/BattleshipConsole/obj/Debug/net7.0/BattleshipConsole.pdb
 /home/ignatius/Desktop/Bootcamp/BattleshipConsole/BattleshipConsole/obj/Debug/net7.0/BattleshipConsole.genruntimeconfig.cache
 /home/ignatius/Desktop/Bootcamp/BattleshipConsole/BattleshipConsole/obj/Debug/net7.0/ref/BattleshipConsole.dll
+/home/ignatius/Desktop/Bootcamp/BattleshipConsole/BattleshipConsole/bin/Debug/net7.0/Newtonsoft.Json.dll

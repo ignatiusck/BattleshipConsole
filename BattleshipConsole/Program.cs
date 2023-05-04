@@ -5,15 +5,20 @@ using Helpers;
 public class Program
 {
     private static readonly Page page = new();
-    private static GameController Game = new();
+    private static GameController? Game;
     private static Logger<Program> Logger = new();
+    private static bool LoadState;
 
     public static void Main(string[] args)
     {
         Logger.Config(false);
 
         BattleshipStart();
-        PreparationPhase();
+        if (!LoadState)
+        {
+            CreatePlayer();
+            PreparationPhase();
+        }
         BattlePhase();
         BattleshipEnd();
     }
@@ -21,11 +26,33 @@ public class Program
     private static void BattleshipStart()
     {
         //display home menu
-        do
+        LoadState = false;
+        while (true)
         {
             Console.Clear();
             Console.WriteLine(page.Home());
-        } while ((int)Console.ReadKey().Key != 13);
+            int KeyIn = (int)Console.ReadKey().Key;
+            if (KeyIn == 13) break;
+            if (KeyIn == 36)
+            {
+                Console.WriteLine("36");
+                GameData LoadData = new(true);
+                Game = new GameController(LoadData);
+                Console.WriteLine($"{LoadData.ActivePlayer}");
+                Console.ReadKey();
+                LoadState = true;
+                break;
+            }
+        }
+    }
+    private static void CreatePlayer()
+    {
+        if (!LoadState)
+        {
+            Console.WriteLine($"Text");
+            Console.ReadKey();
+            Game = new();
+        }
         Logger.Message("Game started", LogLevel.Info);
 
         //Create new player
@@ -106,7 +133,6 @@ public class Program
     private static void BattlePhase()
     {
         //transition
-        Game.SaveGame();
         do
         {
             Console.Clear();
