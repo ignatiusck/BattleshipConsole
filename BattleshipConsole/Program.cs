@@ -7,6 +7,7 @@ public class Program
     private static Logger<Program> Logger = new();
     private static readonly Page page = new();
     private static GameController? Game;
+    private static string PathGameData = "./model/GameData/Data.json";
     private static bool LoadState;
 
     public static void Main(string[] args)
@@ -27,18 +28,35 @@ public class Program
     {
         //display home menu
         LoadState = false;
-        while (true)
+        bool LoadStatePage = true;
+        while (LoadStatePage)
         {
-            Console.Clear();
-            Console.WriteLine(page.Home());
-            int KeyIn = (int)Console.ReadKey().Key;
-            if (KeyIn == 13) break;
-            if (KeyIn == 36)
+            while (true)
             {
-                GameData LoadData = new(true);
-                Game = new GameController(LoadData);
-                LoadState = true;
-                break;
+                Console.Clear();
+                Console.WriteLine(page.Home());
+                int KeyIn = (int)Console.ReadKey().Key;
+                if (KeyIn == 13)
+                {
+                    LoadStatePage = false;
+                    break;
+                }
+                if (KeyIn == 36)
+                {
+                    if (GameData.IsDataEmpty(PathGameData))
+                    {
+                        Console.Clear();
+                        Console.WriteLine(page.DataNotFound());
+                        DataNotCorrect("               Will Close in 3s.", 3000);
+                        LoadState = false;
+                        break;
+                    }
+                    GameData LoadData = new(PathGameData);
+                    Game = new GameController(LoadData);
+                    LoadState = true;
+                    LoadStatePage = false;
+                    break;
+                }
             }
         }
     }
@@ -83,7 +101,7 @@ public class Program
         do
         {
             Console.Clear();
-            Console.Write(page.Transition(true, Game!.GetPlayerActive().Name));
+            Console.Write(page.Transition(true, false, Game!.GetPlayerActive().Name));
         } while ((int)Console.ReadKey().Key != 13);
 
         //setup player ship
@@ -128,7 +146,7 @@ public class Program
         do
         {
             Console.Clear();
-            Console.Write(page.Transition(false, Game!.GetPlayerActive().Name));
+            Console.Write(page.Transition(false, LoadState, Game!.GetPlayerActive().Name));
         } while ((int)Console.ReadKey().Key != 13);
 
         bool WinnerStatus = false;
@@ -175,7 +193,7 @@ public class Program
                     break;
                 };
                 Game.TurnControl();
-                Game.SaveGame();
+                Game.SaveGame(PathGameData);
             }
         }
     }
@@ -183,6 +201,7 @@ public class Program
     private static void BattleshipEnd()
     {
         Data Data = new("", true);
+        Game.ClearGameData(PathGameData);
         string PlayerName = Game!.GetPlayerActive().Name;
         _ = Task.Run(() => BattleshipEndPage(Data, PlayerName));
         do

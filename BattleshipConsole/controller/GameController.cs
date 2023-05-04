@@ -20,11 +20,10 @@ namespace MainGameController
         public GameController()
         {
             _arena = new();
-
-            _arenaArray = new string[_arena!.ArenaSize.Height, _arena.ArenaSize.Width];
             _activePlayer = 1;
             _listPlayerInfo = new();
 
+            _arenaArray = new string[_arena!.ArenaSize.Height, _arena.ArenaSize.Width];
             _vPlayer = new();
             _vPreparation = new();
             _vHit = new();
@@ -38,6 +37,7 @@ namespace MainGameController
             _activePlayer = Data.ActivePlayer;
             _listPlayerInfo = Data.ListPlayerInfo;
 
+            _arenaArray = new string[_arena!.ArenaSize.Height, _arena.ArenaSize.Width];
             _vPlayer = new();
             _vPreparation = new();
             _vHit = new();
@@ -45,7 +45,7 @@ namespace MainGameController
             _logger = new();
         }
 
-        public void SaveGame()
+        public void SaveGame(string PathGameData)
         {
             GameData Data = new()
             {
@@ -54,12 +54,18 @@ namespace MainGameController
                 ActivePlayer = _activePlayer,
             };
 
-            using (StreamWriter Writer = new("Data.json"))
-            using (JsonWriter JsonWriter = new JsonTextWriter(Writer))
-            {
-                JsonSerializer Serializer = new();
-                Serializer.Serialize(JsonWriter, Data);
-            }
+            using StreamWriter Writer = new(PathGameData);
+            using JsonWriter JsonWriter = new JsonTextWriter(Writer);
+            JsonSerializer Serializer = new();
+            Serializer.Serialize(JsonWriter, Data);
+        }
+
+        public void ClearGameData(string PathGameData)
+        {
+            using StreamWriter Writer = new(PathGameData);
+            using JsonWriter JsonWriter = new JsonTextWriter(Writer);
+            JsonSerializer Serializer = new();
+            Serializer.Serialize(JsonWriter, string.Empty);
         }
 
         //create ship packet
@@ -220,7 +226,7 @@ namespace MainGameController
             if (_vHit.IsOutOfRange(Input, _arena!))
                 return new Rejected("Coordinate out of range.");
             if (_vHit.IsHitedBefore(Input, ArenaMap))
-                return new Rejected("coordinate hitted before.");
+                return new Rejected("Coordinate have been hit.");
             return new Accepted();
         }
 

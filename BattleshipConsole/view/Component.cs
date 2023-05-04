@@ -21,7 +21,9 @@ namespace Components
                 "    > Start New Game --- " +
                 AddColor.Message("[ENTER]", ConsoleColor.Yellow) +
                 " \n    > Continue Game  --- " +
-                AddColor.Message("[HOME]", ConsoleColor.Yellow) + " \n \n \n \n \n" +
+                AddColor.Message("[HOME]", ConsoleColor.Yellow) + "  " +
+                AddColor.Message("(Beta)", ConsoleColor.Black) +
+                " \n \n \n \n \n" +
                 "Press 'Enter' or 'Home' button to continue...";
         }
 
@@ -31,11 +33,13 @@ namespace Components
                 $"Enter your name (Player {ActivePlayer}) : ";
         }
 
-        public string BodyTransition(bool Preparation, string PlayerName)
+        public string BodyTransition(bool Preparation, bool IsContinue, string PlayerName)
         {
             string View = !Preparation ? "Attack your Opponent!!" : "Place all your ship in the Arena.";
+            string Continue = IsContinue ? "Game data loaded!" : " ";
             PlayerName = AddColor.Message(PlayerName, ConsoleColor.Yellow);
             return
+                $"              {Continue} \n \n \n" +
                 $" {View} \n" +
                 " You play first, " +
                 PlayerName + "\n \n \n \n" +
@@ -93,7 +97,7 @@ namespace Components
                 for (int i = 10; i <= arena.ArenaSize.Width; i++) Space += "    ";
 
             return
-                View + "            " + Space + "Your Turn, " + PlayerName;
+                View + "          " + Space + "Your Turn, " + PlayerName;
         }
 
         public string BodyInputShip()
@@ -116,7 +120,7 @@ namespace Components
                 AddColor.Message("'y,x'", ConsoleColor.Yellow) +
                 " Example : " +
                 AddColor.Message("'3,2'", ConsoleColor.Yellow) + " \n" +
-                " Hit Enemy : ";
+                " Hit Opponent : ";
         }
 
         public string BodyShipPosition()
@@ -143,6 +147,12 @@ namespace Components
                 Win + "\n" +
                 PlayerName + "\n \n \n" +
                 "Press Enter to exit...";
+        }
+
+        public string BodyDataNotFound()
+        {
+            return
+                "                Data not found!";
         }
 
         public string WriteSpace(int count)

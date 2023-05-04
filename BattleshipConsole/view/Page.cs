@@ -14,6 +14,16 @@ namespace Pages
                 component.BodyHome();
         }
 
+        public string DataNotFound()
+        {
+            return
+                component.Header("    BATTLESHIP    ") +
+                component.WriteSpace(4) +
+                component.BodyDataNotFound() +
+                component.WriteSpace(4);
+
+        }
+
         public string CreatePlayer(int ActivePlayer)
         {
             return
@@ -21,14 +31,14 @@ namespace Pages
                 component.BodyInputName(ActivePlayer);
         }
 
-        public string Transition(bool Transition, string PlayerName)
+        public string Transition(bool Transition, bool LoadData, string PlayerName)
         {
 
             string Title = Transition ? "PREPARATION PHASE " : "   BATTLE PHASE   ";
             return
                 component.Header(Title) +
-                component.WriteSpace(3) +
-                component.BodyTransition(Transition, PlayerName);
+                component.WriteSpace(1) +
+                component.BodyTransition(Transition, LoadData, PlayerName);
         }
 
         public string PreparationMap(IDictionary<string, Ship> ListShipMenu, string PlayerName, string[,] ArenaMap)

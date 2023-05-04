@@ -47,9 +47,9 @@ public class BattleshipConsoleTest
     [InlineData("B 2,2 V", true)]
     public void ValidatorPreparation_SouldValidateInputPosisitionShip(String Input, bool Expected)
     {
-        Dictionary<string, IShip> ListShipMenu = new()
+        Dictionary<string, Ship> ListShipMenu = new()
         {
-            ["B"] = new Battleship(),
+            ["B"] = new Ship("Battleship", 4),
             //["B"] = (IShip)new Mock<IShip>(),
         };
         string[,] ArenaMap = new string[10, 10];
