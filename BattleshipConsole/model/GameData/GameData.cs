@@ -13,10 +13,10 @@ public class GameData
         Arena = new();
         ActivePlayer = new();
     }
-    public GameData(bool _)
+    public GameData(string PathGameData)
     {
         GameData Data = new();
-        using (StreamReader Reader = new("Data.json"))
+        using (StreamReader Reader = new(PathGameData))
         using (JsonReader jsonReader = new JsonTextReader(Reader))
         {
             JsonSerializer Serializer = new();
@@ -25,5 +25,11 @@ public class GameData
         ListPlayerInfo = Data.ListPlayerInfo;
         Arena = Data.Arena;
         ActivePlayer = Data.ActivePlayer;
+    }
+
+    public static bool IsDataEmpty(string PathGameData)
+    {
+        FileInfo info = new(PathGameData);
+        return info.Length < 10;
     }
 }
