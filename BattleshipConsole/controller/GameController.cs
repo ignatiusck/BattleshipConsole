@@ -63,24 +63,22 @@ namespace MainGameController
         }
 
         //create ship packet
-        private Dictionary<string, IShip> CreateShipPack()
+        private Dictionary<string, Ship> CreateShipPack()
         {
-            return new Dictionary<string, IShip>()
+            return new Dictionary<string, Ship>()
             {
-                ["S"] = new Submarine(),
-                // ["B"] = new Battleship(),
-                // ["C"] = new Cruiser(),
-                // ["D"] = new Destroyer(),
-                // ["R"] = new Carrier(),
+                ["S"] = new Ship("Submarine", 3),
+                // ["B"] = new Ship("Battleship", 4), 
+                ["C"] = new Ship("Cruiser", 3),
+                // ["D"] = new Ship("Destroyer", 3),
+                // ["R"] = new new Ship("Carrier", 4),
             };
         }
 
         public bool AddPlayer(string PlayerName)
         {
-            Player player = new()
+            Player player = new(_listPlayerInfo!.Count + 1, PlayerName)
             {
-                Id = _listPlayerInfo!.Count + 1,
-                Name = PlayerName,
                 ListShip = CreateShipPack(),
             };
 
@@ -91,7 +89,7 @@ namespace MainGameController
             return _listPlayerInfo.Count < 2;
         }
 
-        private IDictionary<string, IShip> GetListPlayerShip()
+        private IDictionary<string, Ship> GetListPlayerShip()
         {
             IPlayerBattleship player =
                 _listPlayerInfo!.Find(player => player.Id == _activePlayer)!;
@@ -147,17 +145,17 @@ namespace MainGameController
             }
         }
 
-        public IDictionary<string, IShip> GetListShipInGame()
+        public IDictionary<string, Ship> GetListShipInGame()
         {
-            Dictionary<string, IShip> ListShipMenu = new();
-            foreach (KeyValuePair<string, IShip> Ship in CreateShipPack())
+            Dictionary<string, Ship> ListShipMenu = new();
+            foreach (KeyValuePair<string, Ship> Ship in CreateShipPack())
             {
                 ListShipMenu.Add(Ship.Key, Ship.Value);
             }
             return ListShipMenu;
         }
 
-        public void AddShipToArena(string Inputposition, IDictionary<string, IShip> ListShipMenu)
+        public void AddShipToArena(string Inputposition, IDictionary<string, Ship> ListShipMenu)
         {
             IPlayerBattleship player =
                 _listPlayerInfo!.Find(player => player.Id == _activePlayer)!;
@@ -193,7 +191,7 @@ namespace MainGameController
             return new Accepted();
         }
 
-        public IData ValidatorPreparation(string Input, IDictionary<string, IShip> ListShipMenu, string[,] ArenaMap)
+        public IData ValidatorPreparation(string Input, IDictionary<string, Ship> ListShipMenu, string[,] ArenaMap)
         {
             if (_vPreparation.IsInputValid(Input))
                 return new Rejected("Invalid input.");
@@ -233,7 +231,7 @@ namespace MainGameController
             int Y = int.Parse(Coor[1]) - 1;
 
             int Opponent = _activePlayer == 1 ? 2 : 1;
-            string DestroyShip = "";
+            string DestroyShip = "none";
             IPlayerBattleship Attacker = GetPlayerDataInGame();
             IPlayerBattleship Defender = GetPlayerDataInGame(Opponent);
 
@@ -253,7 +251,7 @@ namespace MainGameController
             }
             Attacker.HitInOpponentArena[X, Y] = "*";
             Defender.ShipPlayerInArena[X, Y] = "*";
-            return new Data("", false);
+            return new Data("none", false);
         }
 
         public int TurnControl()
@@ -267,7 +265,7 @@ namespace MainGameController
             int Opponent = _activePlayer == 1 ? 2 : 1;
             IPlayerBattleship Player = GetPlayerDataInGame(Opponent);
             int TotalShipCoor = 0;
-            foreach (KeyValuePair<string, IShip> Ship in Player.ListShip)
+            foreach (KeyValuePair<string, Ship> Ship in Player.ListShip)
             {
                 TotalShipCoor += Ship.Value.ShipCoordinates.Count;
             }

@@ -10,9 +10,8 @@ namespace Pages
         {
             return
                 component.Header("    BATTLESHIP    ") +
-                component.WriteSpace(5) +
-                component.BodyHome() +
-                component.WriteSpace(6);
+                component.WriteSpace(2) +
+                component.BodyHome();
         }
 
         public string CreatePlayer(int ActivePlayer)
@@ -32,7 +31,7 @@ namespace Pages
                 component.BodyTransition(Transition, PlayerName);
         }
 
-        public string PreparationMap(IDictionary<string, IShip> ListShipMenu, string PlayerName, string[,] ArenaMap)
+        public string PreparationMap(IDictionary<string, Ship> ListShipMenu, string PlayerName, string[,] ArenaMap)
         {
             return
                 component.BodyArenaMap(ArenaMap) +

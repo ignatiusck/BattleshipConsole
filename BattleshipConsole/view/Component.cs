@@ -17,7 +17,12 @@ namespace Components
         {
             return
                 "                 MULTIPLAYER \n" +
-                "          Press Enter to continue...";
+                "  Game Menu : \n \n" +
+                "    > Start New Game --- " +
+                AddColor.Message("[ENTER]", ConsoleColor.Yellow) +
+                " \n    > Continue Game  --- " +
+                AddColor.Message("[HOME]", ConsoleColor.Yellow) + " \n \n \n \n \n" +
+                "Press 'Enter' or 'Home' button to continue...";
         }
 
         public string BodyInputName(int ActivePlayer)
@@ -65,10 +70,10 @@ namespace Components
             return Map;
         }
 
-        public string BodyListShipMenu(IDictionary<string, IShip> ListShipMenu)
+        public string BodyListShipMenu(IDictionary<string, Ship> ListShipMenu)
         {
             string ShipMenu = "";
-            foreach (KeyValuePair<string, IShip> ship in ListShipMenu)
+            foreach (KeyValuePair<string, Ship> ship in ListShipMenu)
             {
                 ShipMenu += $"[{ship.Key}]   {ship.Value.ShipSize}   {ship.Value.ShipName}\n";
             }
