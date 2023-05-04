@@ -4,16 +4,21 @@ using MainLogger;
 using Helpers;
 public class Program
 {
-    private static readonly Page page = new();
-    private static GameController Game = new();
     private static Logger<Program> Logger = new();
+    private static readonly Page page = new();
+    private static GameController? Game;
+    private static bool LoadState;
 
     public static void Main(string[] args)
     {
         Logger.Config(false);
 
         BattleshipStart();
-        PreparationPhase();
+        if (!LoadState)
+        {
+            CreatePlayer();
+            PreparationPhase();
+        }
         BattlePhase();
         BattleshipEnd();
     }
@@ -21,11 +26,25 @@ public class Program
     private static void BattleshipStart()
     {
         //display home menu
-        do
+        LoadState = false;
+        while (true)
         {
             Console.Clear();
             Console.WriteLine(page.Home());
-        } while ((int)Console.ReadKey().Key != 13);
+            int KeyIn = (int)Console.ReadKey().Key;
+            if (KeyIn == 13) break;
+            if (KeyIn == 36)
+            {
+                GameData LoadData = new(true);
+                Game = new GameController(LoadData);
+                LoadState = true;
+                break;
+            }
+        }
+    }
+    private static void CreatePlayer()
+    {
+        if (!LoadState) Game = new();
         Logger.Message("Game started", LogLevel.Info);
 
         //Create new player
@@ -40,7 +59,7 @@ public class Program
                 Console.Clear();
                 Console.Write(page.CreatePlayer(Count));
                 InputPlayer = Console.ReadLine()!;
-                IData Data = Game.ValidatorPlayer(InputPlayer);
+                IData Data = Game!.ValidatorPlayer(InputPlayer);
                 if (!Data.Status)
                 {
                     DataNotCorrect(Data.Message, 1500);
@@ -64,14 +83,14 @@ public class Program
         do
         {
             Console.Clear();
-            Console.Write(page.Transition(true, Game.GetPlayerActive().Name));
+            Console.Write(page.Transition(true, Game!.GetPlayerActive().Name));
         } while ((int)Console.ReadKey().Key != 13);
 
         //setup player ship
         int Count = 0;
         do
         {
-            IDictionary<string, IShip> ListShipMenu = Game.GetListShipInGame();
+            IDictionary<string, Ship> ListShipMenu = Game.GetListShipInGame();
             string PlayerName = Game.GetPlayerActive().Name;
             string[,] ArenaMap = Game.GetShipPlayerInArena(); //aarrgg
 
@@ -109,7 +128,7 @@ public class Program
         do
         {
             Console.Clear();
-            Console.Write(page.Transition(false, Game.GetPlayerActive().Name));
+            Console.Write(page.Transition(false, Game!.GetPlayerActive().Name));
         } while ((int)Console.ReadKey().Key != 13);
 
         bool WinnerStatus = false;
@@ -144,8 +163,8 @@ public class Program
                 Console.Write(page.HitResult(Result.Status, Input, ArenaMap));
 
                 string AdditionalMessage = "";
-                if (Result.Message.Length > 0)
-                    AdditionalMessage = $"  You Destroyed {Result.Message} Opponent!";
+                if (Result.Message != "none")
+                    AdditionalMessage = $"\n  You Destroyed {Result.Message} Opponent!";
 
                 DataCorrect(AdditionalMessage, 2000);
 
@@ -155,16 +174,16 @@ public class Program
                     WinnerStatus = true;
                     break;
                 };
-
                 Game.TurnControl();
+                Game.SaveGame();
             }
         }
     }
 
-    private static async Task BattleshipEnd()
+    private static void BattleshipEnd()
     {
         Data Data = new("", true);
-        string PlayerName = Game.GetPlayerActive().Name;
+        string PlayerName = Game!.GetPlayerActive().Name;
         _ = Task.Run(() => BattleshipEndPage(Data, PlayerName));
         do
         {

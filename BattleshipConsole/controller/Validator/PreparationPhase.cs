@@ -10,7 +10,7 @@ namespace Validators
             return Data.Count() != 3 || Data[1].Split(",").Count() != 2;
         }
 
-        public bool IsShipNotValid(string Input, IDictionary<string, IShip> ListShipMenu)
+        public bool IsShipNotValid(string Input, IDictionary<string, Ship> ListShipMenu)
         {
             string[] Data = Input.Split(" ");
             return !ListShipMenu.Any(ship => ship.Key == Data[0].ToUpper());
@@ -23,7 +23,7 @@ namespace Validators
             return !int.TryParse(Coor[0], out int x) && !int.TryParse(Coor[1], out int y);
         }
 
-        public bool IsOutOfRange(string Input, IDictionary<string, IShip> ListMenuShip)
+        public bool IsOutOfRange(string Input, IDictionary<string, Ship> ListMenuShip)
         {
             string[] Data = Input.Split(" ");
             string[] Coor = Data[1].Split(",");
@@ -40,7 +40,7 @@ namespace Validators
             return !(Rotate == "H" || Rotate == "V");
         }
 
-        public IData IsAnyShipHere(string Input, string[,] ArenaMap, IDictionary<string, IShip> ListShipMenu)
+        public IData IsAnyShipHere(string Input, string[,] ArenaMap, IDictionary<string, Ship> ListShipMenu)
         {
             string[] Data = Input.Split(" ");
             string[] Coor = Data[1].Split(",");
