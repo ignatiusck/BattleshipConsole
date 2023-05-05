@@ -64,17 +64,8 @@ public class GameDataContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        optionsBuilder.UseSqlite("Data Source=<./model/GameData/Data.db>");
+        optionsBuilder.UseSqlite("Data Source=./model/GameData/Data.db");
     }
-    // protected override void OnModelCreating(ModelBuilder modelBuilder)
-    // {
-    //     modelBuilder.Entity<GameData>()
-    //         .Property(p => p.ListPlayerInfo).HasJsonPropertyName(d => d)
-    //         .HasColumnName("ArrayPropertySingle")
-    //         .HasConversion(
-    //             v => v[0, 0],
-    //             v => new string[,] { { v } });
-    // }
 }
 
 public class ArrayArena

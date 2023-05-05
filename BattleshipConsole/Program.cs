@@ -19,6 +19,7 @@ public class Program
             context.Database.EnsureCreated();
             SQLiteConnection.CreateFile(PathGameData);
         }
+
         // Logger.Config(false);
 
         // BattleshipStart();
