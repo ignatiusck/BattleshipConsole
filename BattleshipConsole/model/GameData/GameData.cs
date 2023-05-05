@@ -33,12 +33,14 @@ public class GameData
     }
     public GameData()
     {
+        Id = 1;
         ListPlayerInfo = new();
         Arena = new();
         ActivePlayer = new();
     }
     public GameData(string PathGameData)
     {
+        Id = 1;
         GameData Data = new();
         using (StreamReader Reader = new(PathGameData))
         using (JsonReader jsonReader = new JsonTextReader(Reader))
