@@ -54,6 +54,13 @@ namespace MainGameController
                 ActivePlayer = _activePlayer,
             };
 
+            using (GameDataContext context = new())
+            {
+                context.Add(Data);
+                context.SaveChanges();
+            }
+
+
             using StreamWriter Writer = new(PathGameData);
             using JsonWriter JsonWriter = new JsonTextWriter(Writer);
             JsonSerializer Serializer = new();

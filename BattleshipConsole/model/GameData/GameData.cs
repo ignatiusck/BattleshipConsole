@@ -4,9 +4,10 @@ using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-[Keyless]
 public class GameData
 {
+    [Key]
+    public int Id { get; set; }
     // public List<Player>? ListPlayerInfo { get; set; }
     [NotMapped]
     public Arena? Arena { get; set; }
@@ -60,16 +61,9 @@ public class GameData
 public class GameDataContext : DbContext
 {
     public DbSet<GameData> GameDatas { get; set; }
-    public DbSet<ArrayArena> ArenaMap { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         optionsBuilder.UseSqlite("Data Source=./model/GameData/Data.db");
     }
-}
-
-public class ArrayArena
-{
-    public int Id { get; set; }
-    public string Data { get; set; }
 }

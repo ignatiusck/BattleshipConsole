@@ -14,22 +14,22 @@ public class Program
 
     public static void Main(string[] args)
     {
-        using (GameDataContext context = new())
-        {
-            context.Database.EnsureCreated();
-            SQLiteConnection.CreateFile(PathGameData);
-        }
-
-        // Logger.Config(false);
-
-        // BattleshipStart();
-        // if (!LoadState)
+        // using (GameDataContext context = new())
         // {
-        //     CreatePlayer();
-        //     PreparationPhase();
+        //     context.Database.EnsureCreated();
+        //     SQLiteConnection.CreateFile(PathGameData);
         // }
-        // BattlePhase();
-        // BattleshipEnd();
+
+        Logger.Config(false);
+
+        BattleshipStart();
+        if (!LoadState)
+        {
+            CreatePlayer();
+            PreparationPhase();
+        }
+        BattlePhase();
+        BattleshipEnd();
     }
 
     private static void BattleshipStart()
