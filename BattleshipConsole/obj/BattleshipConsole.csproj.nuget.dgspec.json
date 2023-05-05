@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "/home/ignatius/Desktop/Bootcamp/BattleshipConsole/BattleshipConsole/BattleshipConsole.csproj": {}
+    "/workspaces/BattleshipConsole/BattleshipConsole/BattleshipConsole.csproj": {}
   },
   "projects": {
-    "/home/ignatius/Desktop/Bootcamp/BattleshipConsole/BattleshipConsole/BattleshipConsole.csproj": {
+    "/workspaces/BattleshipConsole/BattleshipConsole/BattleshipConsole.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/home/ignatius/Desktop/Bootcamp/BattleshipConsole/BattleshipConsole/BattleshipConsole.csproj",
+        "projectUniqueName": "/workspaces/BattleshipConsole/BattleshipConsole/BattleshipConsole.csproj",
         "projectName": "BattleshipConsole",
-        "projectPath": "/home/ignatius/Desktop/Bootcamp/BattleshipConsole/BattleshipConsole/BattleshipConsole.csproj",
-        "packagesPath": "/home/ignatius/.nuget/packages/",
-        "outputPath": "/home/ignatius/Desktop/Bootcamp/BattleshipConsole/BattleshipConsole/obj/",
+        "projectPath": "/workspaces/BattleshipConsole/BattleshipConsole/BattleshipConsole.csproj",
+        "packagesPath": "/home/codespace/.nuget/packages/",
+        "outputPath": "/workspaces/BattleshipConsole/BattleshipConsole/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "/home/ignatius/.nuget/NuGet/NuGet.Config"
+          "/home/codespace/.nuget/NuGet/NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net7.0"
@@ -38,9 +38,21 @@
         "net7.0": {
           "targetAlias": "net7.0",
           "dependencies": {
+            "Microsoft.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[7.0.5, )"
+            },
+            "Microsoft.EntityFrameworkCore.Sqlite": {
+              "target": "Package",
+              "version": "[7.0.5, )"
+            },
             "Newtonsoft.Json": {
               "target": "Package",
               "version": "[13.0.3, )"
+            },
+            "System.Data.SQLite": {
+              "target": "Package",
+              "version": "[1.0.117, )"
             },
             "log4net": {
               "target": "Package",
@@ -63,7 +75,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/7.0.203/RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "/usr/local/dotnet/7.0.202/sdk/7.0.202/RuntimeIdentifierGraph.json"
         }
       }
     }

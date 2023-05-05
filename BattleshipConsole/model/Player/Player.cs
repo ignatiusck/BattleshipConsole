@@ -10,6 +10,9 @@ public class Player : IPlayer, IPlayerBattleship
     public string[,]? ShipPlayerInArena { get; set; }
     public Dictionary<string, Ship>? ListShip { get; set; }
 
+    public Player()
+    {
+    }
     public Player(int id, string name)
     {
         _id = id;

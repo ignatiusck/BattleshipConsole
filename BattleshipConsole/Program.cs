@@ -2,6 +2,8 @@ using Pages;
 using MainGameController;
 using MainLogger;
 using Helpers;
+using System.Data.SQLite;
+
 public class Program
 {
     private static Logger<Program> Logger = new();
@@ -12,16 +14,21 @@ public class Program
 
     public static void Main(string[] args)
     {
-        Logger.Config(false);
-
-        BattleshipStart();
-        if (!LoadState)
+        using (GameDataContext context = new())
         {
-            CreatePlayer();
-            PreparationPhase();
+            context.Database.EnsureCreated();
+            SQLiteConnection.CreateFile(PathGameData);
         }
-        BattlePhase();
-        BattleshipEnd();
+        // Logger.Config(false);
+
+        // BattleshipStart();
+        // if (!LoadState)
+        // {
+        //     CreatePlayer();
+        //     PreparationPhase();
+        // }
+        // BattlePhase();
+        // BattleshipEnd();
     }
 
     private static void BattleshipStart()

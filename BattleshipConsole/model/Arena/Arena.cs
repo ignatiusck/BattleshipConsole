@@ -1,5 +1,7 @@
 using System.Drawing;
+using Microsoft.EntityFrameworkCore;
 
+[Keyless]
 public class Arena : IArena
 {
     private Size _arenaSize;
