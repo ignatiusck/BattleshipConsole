@@ -4,12 +4,13 @@ public class Player : IPlayer, IPlayerBattleship
     private int _id;
     private string _name;
 
-    public int Id { get => _id; }
-    public string? Name { get => _name; }
+    public int Id { get => _id; set => _id = value; }
+    public string? Name { get => _name; set => _name = value; }
     public string[,]? HitInOpponentArena { get; set; }
     public string[,]? ShipPlayerInArena { get; set; }
     public Dictionary<string, Ship>? ListShip { get; set; }
 
+    public Player() { }
     public Player(int id, string name)
     {
         _id = id;

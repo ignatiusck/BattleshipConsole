@@ -24,6 +24,22 @@ namespace Pages
 
         }
 
+        public string ListLoadData(IList<SaveDb> ListData)
+        {
+            string List = "List auto save data : \n\n ID           Time \n";
+            foreach (SaveDb Data in ListData)
+            {
+                List += AddColor.Message($"[ {Data.Id} ]", ConsoleColor.Yellow) +
+                "  " +
+                Data.Time + "\n";
+            }
+
+            return
+                component.Header("    BATTLESHIP    ") +
+                List +
+                "\nSelect ID : ";
+        }
+
         public string CreatePlayer(int ActivePlayer)
         {
             return
