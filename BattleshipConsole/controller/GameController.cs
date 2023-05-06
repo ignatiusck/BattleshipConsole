@@ -15,6 +15,8 @@ namespace MainGameController
         private ValidatorPreparationPhase _vPreparation;
         private ValidatorHit _vHit;
         private Logger<GameController> _logger;
+        private readonly int[] _maxSaveId = new int[] { 1, 2, 3, 4, 5 };
+        private int _gameId;
 
         //Create game with player
         public GameController()
@@ -31,11 +33,12 @@ namespace MainGameController
             _logger = new();
         }
 
-        public GameController(GameData Data)
+        public GameController(List<Player> ListPlayerInfo, int ActivePlayer, int GameId)
         {
-            _arena = Data.Arena;
-            _activePlayer = Data.ActivePlayer;
-            _listPlayerInfo = Data.ListPlayerInfo;
+            _arena = new();
+            _activePlayer = ActivePlayer;
+            _listPlayerInfo = ListPlayerInfo;
+            _gameId = GameId;
 
             _arenaArray = new string[_arena!.ArenaSize.Height, _arena.ArenaSize.Width];
             _vPlayer = new();
@@ -45,34 +48,40 @@ namespace MainGameController
             _logger = new();
         }
 
-        public void SaveGame(string PathGameData)
+        public void SaveGame()
         {
-            GameData Data = new()
+            using (DataDbContext db = new())
             {
-                ListPlayerInfo = _listPlayerInfo,
-                Arena = _arena,
-                ActivePlayer = _activePlayer,
-            };
+                SaveDb FetcedData = db.GameDatas.Find(_gameId)!;
+                if (FetcedData == null)
+                {
+                    SaveDb Data = new()
+                    {
+                        ActivePlayer = _activePlayer,
+                        SerializedData = JsonConvert.SerializeObject(_listPlayerInfo),
+                        Time = DateTime.Now.ToString(),
+                    };
 
-            using (GameDataContext context = new())
-            {
-                context.Add(Data);
-                context.SaveChanges();
+                    db.GameDatas.Add(Data);
+                    db.SaveChanges();
+                    _gameId = Data.Id;
+                    return;
+                }
+                FetcedData.ActivePlayer = _activePlayer;
+                FetcedData.SerializedData = JsonConvert.SerializeObject(_listPlayerInfo);
+                FetcedData.Time = DateTime.Now.ToString();
+                db.SaveChanges();
             }
-
-
-            using StreamWriter Writer = new(PathGameData);
-            using JsonWriter JsonWriter = new JsonTextWriter(Writer);
-            JsonSerializer Serializer = new();
-            Serializer.Serialize(JsonWriter, Data);
         }
 
-        public void ClearGameData(string PathGameData)
+        public void ClearGameData()
         {
-            using StreamWriter Writer = new(PathGameData);
-            using JsonWriter JsonWriter = new JsonTextWriter(Writer);
-            JsonSerializer Serializer = new();
-            Serializer.Serialize(JsonWriter, string.Empty);
+            using (DataDbContext db = new())
+            {
+                SaveDb Data = db.GameDatas.Find(_gameId)!;
+                db.GameDatas.Remove(Data);
+                db.SaveChanges();
+            }
         }
 
         //create ship packet
@@ -82,7 +91,7 @@ namespace MainGameController
             {
                 ["S"] = new Ship("Submarine", 3),
                 // ["B"] = new Ship("Battleship", 4), 
-                ["C"] = new Ship("Cruiser", 3),
+                // ["C"] = new Ship("Cruiser", 3),
                 // ["D"] = new Ship("Destroyer", 3),
                 // ["R"] = new new Ship("Carrier", 4),
             };
