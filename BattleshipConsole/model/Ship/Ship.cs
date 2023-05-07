@@ -1,15 +1,33 @@
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
+
 public class Ship : IShip
 {
-    private string _shipName;
-    private int _shipSize;
-    public string ShipName { get => _shipName; set => _shipName = value; }
-    public int ShipSize { get => _shipSize; set => _shipSize = value; }
+    [Key]
+    public int Id { get; set; }
+    [Required]
+    public string ShipName { get; set; }
+    [Required]
+    public string Key { get; set; }
+    [Required]
+    public int ShipSize { get; set; }
+    [Required]
+    public string SerializedCoor { get; set; }
+    [ForeignKey("Player")]
+    public int PlayerId { get; set; }
+
+    public virtual Player Player { get; set; }
+
+    [NotMapped]
     public List<Coordinate> ShipCoordinates { get; set; }
 
+    public Ship() { }
     public Ship(string name, int size)
     {
-        _shipName = name;
-        _shipSize = size;
+        ShipName = name;
+        ShipSize = size;
         ShipCoordinates = new List<Coordinate>();
     }
 }

@@ -16,7 +16,6 @@ public partial class Program
             IDictionary<string, Ship> ListShipMenu = Game.GetListShipInGame();
             string PlayerName = Game.GetPlayerActive().Name;
             string[,] ArenaMap = Game.GetShipPlayerInArena(); //aarrgg
-
             while (ListShipMenu.Count != 0)
             {
                 bool IsPassed = false;

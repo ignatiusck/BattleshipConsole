@@ -15,7 +15,6 @@ namespace MainGameController
         private ValidatorPreparationPhase _vPreparation;
         private ValidatorHit _vHit;
         private Logger<GameController> _logger;
-        private readonly int[] _maxSaveId = new int[] { 1, 2, 3, 4, 5 };
         private int _gameId;
 
         //Create game with player
@@ -50,36 +49,83 @@ namespace MainGameController
 
         public void SaveGame()
         {
-            using (DataDbContext db = new())
+            using (GameDbContext db = new())
             {
-                SaveDb FetcedData = db.GameDatas.Find(_gameId)!;
-                if (FetcedData == null)
+                SaveGame GetData = db.SaveGames!.Find(_gameId)!;
+                if (GetData == null)
                 {
-                    SaveDb Data = new()
+                    SaveGame Data = new()
                     {
                         ActivePlayer = _activePlayer,
-                        SerializedData = JsonConvert.SerializeObject(_listPlayerInfo),
                         Time = DateTime.Now.ToString(),
                     };
+                    db.SaveGames.Add(Data);
 
-                    db.GameDatas.Add(Data);
+                    foreach (Player P in _listPlayerInfo!)
+                    {
+                        Player player = new()
+                        {
+                            Name = P.Name,
+                            IdInGame = P.IdInGame,
+                            SerializedHit = JsonConvert.SerializeObject(P.HitInOpponentArena),
+                            SerializedShip = JsonConvert.SerializeObject(P.HitInOpponentArena),
+                        };
+                        db.Players!.Add(player);
+
+                        GamesPlayers GP = new()
+                        {
+                            SaveGame = Data,
+                            Player = player,
+                        };
+                        db.GamesPlayers!.Add(GP);
+
+                        foreach (KeyValuePair<string, Ship> ship in P.ListShip!)
+                        {
+                            ship.Value.Player = player;
+                            ship.Value.Key = ship.Key;
+                            ship.Value.SerializedCoor = JsonConvert.SerializeObject(ship.Value.ShipCoordinates);
+                            db.Ships!.Add(ship.Value);
+                        }
+                    }
                     db.SaveChanges();
                     _gameId = Data.Id;
                     return;
                 }
-                FetcedData.ActivePlayer = _activePlayer;
-                FetcedData.SerializedData = JsonConvert.SerializeObject(_listPlayerInfo);
-                FetcedData.Time = DateTime.Now.ToString();
+
+                GetData.ActivePlayer = _activePlayer;
+                GetData.Time = DateTime.Now.ToString();
+
+                foreach (GamesPlayers GP in db.GamesPlayers!.Where(gp => gp.SaveGameId == GetData.Id).ToList())
+                {
+                    Player? GetPlayer = db.Players!.Find(GP.PlayerId);
+                    GetPlayer!.SerializedHit = JsonConvert.SerializeObject(_listPlayerInfo![GetPlayer.IdInGame - 1].HitInOpponentArena);
+                    GetPlayer.SerializedShip = JsonConvert.SerializeObject(_listPlayerInfo[GetPlayer.IdInGame - 1].ShipPlayerInArena);
+
+                    foreach (Ship ship in db.Ships!.Where(Ship => Ship.PlayerId == GetPlayer.Id))
+                    {
+                        ship.SerializedCoor = JsonConvert.SerializeObject(_listPlayerInfo[GetPlayer.IdInGame - 1].ListShip![ship.Key].ShipCoordinates);
+                    }
+                }
                 db.SaveChanges();
             }
         }
 
         public void ClearGameData()
         {
-            using (DataDbContext db = new())
+            using (GameDbContext db = new())
             {
-                SaveDb Data = db.GameDatas.Find(_gameId)!;
-                db.GameDatas.Remove(Data);
+                SaveGame GetData = db.SaveGames!.Find(_gameId)!;
+                foreach (GamesPlayers GP in db.GamesPlayers!.Where(gp => gp.SaveGameId == GetData.Id).ToList())
+                {
+                    Player? GetPlayer = db.Players!.Find(GP.PlayerId);
+                    foreach (Ship ship in db.Ships!.Where(Ship => Ship.PlayerId == GetPlayer!.Id))
+                    {
+                        db.Ships!.Remove(ship);
+                    }
+                    db.Players.Remove(GetPlayer!);
+                    db.GamesPlayers!.Remove(GP);
+                }
+                db.SaveGames.Remove(GetData);
                 db.SaveChanges();
             }
         }
@@ -105,7 +151,10 @@ namespace MainGameController
             };
 
             _listPlayerInfo.Add(player);
-            if (_listPlayerInfo.Count == 2) SetPreparationArenaPlayer();
+            if (_listPlayerInfo.Count == 2)
+            {
+                SetPreparationArenaPlayer();
+            }
             _logger.Message("Player added.", LogLevel.Info);
 
             return _listPlayerInfo.Count < 2;
@@ -114,7 +163,7 @@ namespace MainGameController
         private IDictionary<string, Ship> GetListPlayerShip()
         {
             IPlayerBattleship player =
-                _listPlayerInfo!.Find(player => player.Id == _activePlayer)!;
+                _listPlayerInfo!.Find(player => player.IdInGame == _activePlayer)!;
 
             return player.ListShip;
         }
@@ -122,31 +171,31 @@ namespace MainGameController
         public string[,] GetShipPlayerInArena()
         {
             IPlayerBattleship player =
-                _listPlayerInfo!.Find(player => player.Id == _activePlayer)!;
+                _listPlayerInfo!.Find(player => player.IdInGame == _activePlayer)!;
 
             return player.ShipPlayerInArena;
         }
 
         public IPlayerBattleship GetPlayerDataInGame()
         {
-            return _listPlayerInfo!.Find(player => player.Id == _activePlayer)!;
+            return _listPlayerInfo!.Find(player => player.IdInGame == _activePlayer)!;
         }
 
         public IPlayerBattleship GetPlayerDataInGame(int Opponent)
         {
-            return _listPlayerInfo!.Find(player => player.Id == Opponent)!;
+            return _listPlayerInfo!.Find(player => player.IdInGame == Opponent)!;
         }
 
         public IPlayer GetPlayerActive()
         {
-            return _listPlayerInfo!.Find(player => player.Id == _activePlayer)!;
+            return _listPlayerInfo!.Find(player => player.IdInGame == _activePlayer)!;
         }
 
         public void ResetShipCoor()
         {
-            for (int i = 0; i < _arena!.ArenaSize.Height; i++)
+            for (int i = 0; i < 10; i++)
             {
-                for (int j = 0; j < _arena.ArenaSize.Width; j++)
+                for (int j = 0; j < 10; j++)
                 {
                     _arenaArray[i, j] = "_";
                 }
@@ -165,6 +214,7 @@ namespace MainGameController
                 player.ShipPlayerInArena = ShipPosition;
                 player.HitInOpponentArena = HitPosition;
             }
+
         }
 
         public IDictionary<string, Ship> GetListShipInGame()
@@ -180,7 +230,7 @@ namespace MainGameController
         public void AddShipToArena(string Inputposition, IDictionary<string, Ship> ListShipMenu)
         {
             IPlayerBattleship player =
-                _listPlayerInfo!.Find(player => player.Id == _activePlayer)!;
+                _listPlayerInfo!.Find(player => player.IdInGame == _activePlayer)!;
 
             string[] Data = Inputposition.Split(" ");
             string[] Coordinate = Data[1].Split(",");

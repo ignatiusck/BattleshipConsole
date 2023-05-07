@@ -10,13 +10,13 @@ public partial class Program
     private static Logger<Program> Logger = new();
     private static readonly Page page = new();
     private static GameController? Game;
-    private static string PathGameData = "./saveDbContext/DbData/Data.db";
+    private static string PathGameData = "./controller/saveDbContext/DbData/Data.db";
     private static bool IsContinue;
 
     public static void Main(string[] args)
     {
-        // DataDbContext.CreateDb(PathGameData);
-        DataDbContext.ResetDb(PathGameData);
+        // GameDbContext.CreateDb(PathGameData);
+        GameDbContext.ResetDb(PathGameData);
 
         Logger.Config(false);
 
@@ -58,18 +58,31 @@ public partial class Program
     private static bool SelectData()
     {
         char key = Console.ReadKey().KeyChar;
-        if (int.TryParse(key.ToString(), out int number))
+        if (int.TryParse(key.ToString(), out int Id))
         {
-            using (DataDbContext db = new())
+            List<Player> ListPlayerInfo = new();
+            using (GameDbContext db = new())
             {
-                SaveDb Data = db.GameDatas.Find(number)!;
-                if (Data == null)
+                SaveGame GetData = db.SaveGames.Find(Id)!;
+                if (GetData == null)
                 {
                     DataNotCorrect(" = ID not found.", 1000);
                     return true;
                 }
-                List<Player> ListPlayer = JsonConvert.DeserializeObject<List<Player>>(Data.SerializedData)!;
-                Game = new GameController(ListPlayer, Data.ActivePlayer, Data.Id);
+                foreach (GamesPlayers GP in db.GamesPlayers!.Where(gp => gp.SaveGameId == GetData.Id).ToList())
+                {
+                    Player? GetPlayer = new();
+                    GetPlayer = db.Players!.Find(GP.PlayerId);
+                    foreach (Ship ship in db.Ships!.Where(Ship => Ship.PlayerId == GetPlayer.Id))
+                    {
+                        GetPlayer!.ListShip![ship.Key] = ship;
+                        GetPlayer.ListShip[ship.Key].ShipCoordinates = JsonConvert.DeserializeObject<List<Coordinate>>(ship.SerializedCoor)!;
+                    }
+                    GetPlayer!.HitInOpponentArena = JsonConvert.DeserializeObject<string[,]>(GetPlayer.SerializedHit!);
+                    GetPlayer.ShipPlayerInArena = JsonConvert.DeserializeObject<string[,]>(GetPlayer.SerializedShip!);
+                    ListPlayerInfo.Add(GetPlayer);
+                    Game = new GameController(ListPlayerInfo, GetData.ActivePlayer, GetData.Id);
+                }
             }
             return false;
         }
@@ -78,10 +91,10 @@ public partial class Program
 
     private static void ListContinueData()
     {
-        List<SaveDb> SavedData;
+        List<SaveGame> SavedData;
 
-        DataDbContext db = new();
-        SavedData = db.GameDatas.ToList();
+        GameDbContext db = new();
+        SavedData = db.SaveGames.ToList();
         db.Dispose();
 
         Console.Clear();

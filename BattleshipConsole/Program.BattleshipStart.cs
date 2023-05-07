@@ -22,7 +22,7 @@ public partial class Program
                 if (KeyIn == 36)
                 {
                     Task.Run(() => AddColor.Message("Loading...", ConsoleColor.Green));
-                    if (DataDbContext.IsDataEmpty())
+                    if (GameDbContext.IsDataEmpty())
                     {
                         Console.Clear();
                         Console.WriteLine(page.DataNotFound());

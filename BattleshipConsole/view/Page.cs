@@ -24,10 +24,10 @@ namespace Pages
 
         }
 
-        public string ListLoadData(IList<SaveDb> ListData)
+        public string ListLoadData(IList<SaveGame> ListData)
         {
             string List = "List auto save data : \n\n ID           Time \n";
-            foreach (SaveDb Data in ListData)
+            foreach (SaveGame Data in ListData)
             {
                 List += AddColor.Message($"[ {Data.Id} ]", ConsoleColor.Yellow) +
                 "  " +
