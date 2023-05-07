@@ -1,8 +1,9 @@
+using MainGameController;
 public partial class Program
 {
     private static void CreatePlayer()
     {
-        if (!IsContinue) Game = new();
+        if (!IsContinue) Game = new GameController();
         Logger.Message("Game started", LogLevel.Info);
 
         //Create new player

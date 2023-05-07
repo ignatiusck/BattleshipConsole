@@ -2,41 +2,39 @@ using System.Data.SQLite;
 using Microsoft.EntityFrameworkCore;
 
 
-public class DataDbContext : DbContext
+public class GameDbContext : DbContext
 {
-    public DbSet<SaveDb> GameDatas { get; set; }
+    public DbSet<SaveGame>? SaveGames { get; set; }
+    public DbSet<Player>? Players { get; set; }
+    public DbSet<Ship>? Ships { get; set; }
+    public DbSet<GamesPlayers>? GamesPlayers { get; set; }
+
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        optionsBuilder.UseSqlite("Data Source=./saveDbContext/DbData/Data.db");
+        optionsBuilder.UseSqlite("Data Source=./controller/saveDbContext/DbData/Data.db");
     }
 
     public static bool IsDataEmpty()
     {
         int count;
-        using (DataDbContext db = new())
+        using (GameDbContext db = new())
         {
-            count = db.GameDatas.Count();
+            count = db.SaveGames!.Count();
         }
         return count == 0;
     }
 
     public static void ResetDb(string PathGameData)
     {
-        if (DataDbContext.IsDataEmpty())
+        if (GameDbContext.IsDataEmpty())
         {
             using (SQLiteConnection connection = new($"Data Source={PathGameData}"))
             {
                 connection.Open();
-                // using (var command = connection.CreateCommand())
-                // {
-                //     command.Connection = connection;
-                //     command.CommandText = "DELETE FROM GameDatas;";
-                //     command.ExecuteNonQuery();
-                // }
                 using (SQLiteCommand command = connection.CreateCommand())
                 {
-                    command.CommandText = "DELETE FROM sqlite_sequence WHERE name='GameDatas';";
+                    command.CommandText = "DELETE FROM sqlite_sequence WHERE name='SaveGames';";
                     command.ExecuteNonQuery();
                 }
             }
@@ -45,7 +43,7 @@ public class DataDbContext : DbContext
 
     public static void CreateDb(string PathGameData)
     {
-        using (DataDbContext context = new())
+        using (GameDbContext context = new())
         {
             if (!context.Database.EnsureCreated())
                 SQLiteConnection.CreateFile(PathGameData);

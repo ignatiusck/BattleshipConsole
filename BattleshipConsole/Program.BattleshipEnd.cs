@@ -1,14 +1,10 @@
-using Pages;
-using MainGameController;
-using MainLogger;
 using Helpers;
-using System.Data.SQLite;
 public partial class Program
 {
     private static void BattleshipEnd()
     {
         Data Data = new("", true);
-        Game.ClearGameData();
+        Game!.ClearGameData();
         string PlayerName = Game!.GetPlayerActive().Name;
         _ = Task.Run(() => BattleshipEndPage(Data, PlayerName));
         do
