@@ -17,9 +17,10 @@ public partial class Program
                 string[,] ArenaMap = Game.GetPlayerDataInGame().HitInOpponentArena;
                 string[,] ShipPosition = Game.GetShipPlayerInArena();
                 string PlayerName = Game.GetPlayerActive().Name;
+                IData HPPlayer = Game.GetHPPlayer();
 
                 Console.Clear();
-                Console.Write(page.BattleMap(PlayerName, ArenaMap));
+                Console.Write(page.BattleMap(PlayerName, ArenaMap, HPPlayer.Message));
                 string Input = ReadKeyCoor();
                 if (Input == "HOME")
                 {
@@ -53,7 +54,8 @@ public partial class Program
                     break;
                 }
                 Game.TurnControl();
-                Game.SaveGame();
+                IData ResultSave = Game.SaveGame();
+                if (!ResultSave.Status) DataNotCorrect(ResultSave.Message, 2000);
             }
         }
     }

@@ -69,6 +69,7 @@ public partial class Program
                     DataNotCorrect(" = ID not found.", 1000);
                     return true;
                 }
+
                 foreach (GamesPlayers GP in db.GamesPlayers!.Where(gp => gp.SaveGameId == GetData.Id).ToList())
                 {
                     Player? GetPlayer = new();
@@ -80,9 +81,10 @@ public partial class Program
                     }
                     GetPlayer!.HitInOpponentArena = JsonConvert.DeserializeObject<string[,]>(GetPlayer.SerializedHit!);
                     GetPlayer.ShipPlayerInArena = JsonConvert.DeserializeObject<string[,]>(GetPlayer.SerializedShip!);
+
                     ListPlayerInfo.Add(GetPlayer);
-                    Game = new GameController(ListPlayerInfo, GetData.ActivePlayer, GetData.Id);
                 }
+                Game = new GameController(ListPlayerInfo, GetData.ActivePlayer, GetData.Id, GetData.CountHP);
             }
             return false;
         }

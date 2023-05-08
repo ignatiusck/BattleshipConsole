@@ -1,9 +1,8 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 
-public class Ship : IShip
+public class Ship
 {
     [Key]
     public int Id { get; set; }
@@ -30,4 +29,5 @@ public class Ship : IShip
         ShipSize = size;
         ShipCoordinates = new List<Coordinate>();
     }
+
 }

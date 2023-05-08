@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "X2Y5haEO/12DXNQH9bArl+2VYkIA4NXmo/yQJ+A50MJVfiyV5Dr3QoGvL0XMKVmONgEJA/btFkycLYafzaccSg==",
+  "dgSpecHash": "WzI2qmH/D1xNw5hxAuef4EX+KLCEkgeoNkXs3S4hciRztJPJ9t+VVmFjkcuFu2W2h6AJvDQCSibBVC7mzU3Rbg==",
   "success": true,
-  "projectFilePath": "/home/ignatius/Desktop/Bootcamp/BattleshipConsole/BattleshipConsole.test/BattleshipConsole.test.csproj",
+  "projectFilePath": "/home/ignatius/Desktop/Bootcamp2/BattleshipConsole/BattleshipConsole.test/BattleshipConsole.test.csproj",
   "expectedPackageFiles": [
     "/home/ignatius/.nuget/packages/castle.core/5.1.1/castle.core.5.1.1.nupkg.sha512",
     "/home/ignatius/.nuget/packages/coverlet.collector/3.1.2/coverlet.collector.3.1.2.nupkg.sha512",

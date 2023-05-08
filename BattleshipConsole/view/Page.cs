@@ -62,18 +62,18 @@ namespace Pages
             return
                 component.BodyArenaMap(ArenaMap) +
                 component.WriteSpace(1) +
-                component.BodyTurnControl(true, PlayerName) +
+                component.BodyTurnControl(true, PlayerName, " ") +
                 component.BodyListShipMenu(ListShipMenu) +
                 component.WriteSpace(1) +
                 component.BodyInputShip();
         }
 
-        public string BattleMap(string PlayerName, string[,] ArenaMap)
+        public string BattleMap(string PlayerName, string[,] ArenaMap, string HPPlayer)
         {
             return
                 component.BodyArenaMap(ArenaMap) +
                 component.WriteSpace(1) +
-                component.BodyTurnControl(false, PlayerName) +
+                component.BodyTurnControl(false, PlayerName, HPPlayer) +
                 component.BodyInputHit();
         }
 

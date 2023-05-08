@@ -1,5 +1,6 @@
 using System.Data.SQLite;
 using Microsoft.EntityFrameworkCore;
+using Helpers;
 
 
 public class GameDbContext : DbContext
@@ -13,6 +14,15 @@ public class GameDbContext : DbContext
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         optionsBuilder.UseSqlite("Data Source=./controller/saveDbContext/DbData/Data.db");
+    }
+
+    public IData SaveData()
+    {
+        int Result = SaveChanges();
+        if (Result == 0) Result = SaveChanges();
+        if (Result == 0) Result = SaveChanges();
+        if (Result == 0) return new Rejected("DB Error, failed to save changes");
+        return new Accepted();
     }
 
     public static bool IsDataEmpty()

@@ -15,6 +15,7 @@ namespace MainGameController
         private ValidatorPreparationPhase _vPreparation;
         private ValidatorHit _vHit;
         private Logger<GameController> _logger;
+        private List<ShipPart> _countHP;
         private int _gameId;
 
         //Create game with player
@@ -23,6 +24,7 @@ namespace MainGameController
             _arena = new();
             _activePlayer = 1;
             _listPlayerInfo = new();
+            _countHP = new() { new ShipPart(), new ShipPart() };
 
             _arenaArray = new string[_arena!.ArenaSize.Height, _arena.ArenaSize.Width];
             _vPlayer = new();
@@ -32,13 +34,18 @@ namespace MainGameController
             _logger = new();
         }
 
-        public GameController(List<Player> ListPlayerInfo, int ActivePlayer, int GameId)
+        public GameController(List<Player> ListPlayerInfo, int ActivePlayer, int GameId, string HitData)
         {
             _arena = new();
             _activePlayer = ActivePlayer;
             _listPlayerInfo = ListPlayerInfo;
             _gameId = GameId;
 
+            string[] DataHit = HitData.Split(" ");
+            _countHP = new() {
+                new ShipPart() { TotalHP =  int.Parse(DataHit[0]), InGameHp = int.Parse(DataHit[1])},
+                new ShipPart() { TotalHP =  int.Parse(DataHit[2]), InGameHp = int.Parse(DataHit[3])}};
+
             _arenaArray = new string[_arena!.ArenaSize.Height, _arena.ArenaSize.Width];
             _vPlayer = new();
             _vPreparation = new();
@@ -47,7 +54,7 @@ namespace MainGameController
             _logger = new();
         }
 
-        public void SaveGame()
+        public IData SaveGame()
         {
             using (GameDbContext db = new())
             {
@@ -57,6 +64,7 @@ namespace MainGameController
                     SaveGame Data = new()
                     {
                         ActivePlayer = _activePlayer,
+                        CountHP = $"{_countHP[0].TotalHP} {_countHP[0].InGameHp} {_countHP[1].TotalHP} {_countHP[1].InGameHp}",
                         Time = DateTime.Now.ToString(),
                     };
                     db.SaveGames.Add(Data);
@@ -87,12 +95,15 @@ namespace MainGameController
                             db.Ships!.Add(ship.Value);
                         }
                     }
-                    db.SaveChanges();
+                    IData Result = db.SaveData();
                     _gameId = Data.Id;
-                    return;
+                    AddColor.Message("DB Created successfully", ConsoleColor.Green);
+                    Thread.Sleep(2000);
+                    return Result;
                 }
 
                 GetData.ActivePlayer = _activePlayer;
+                GetData.CountHP = $"{_countHP[0].TotalHP} {_countHP[0].InGameHp} {_countHP[1].TotalHP} {_countHP[1].InGameHp}";
                 GetData.Time = DateTime.Now.ToString();
 
                 foreach (GamesPlayers GP in db.GamesPlayers!.Where(gp => gp.SaveGameId == GetData.Id).ToList())
@@ -106,7 +117,7 @@ namespace MainGameController
                         ship.SerializedCoor = JsonConvert.SerializeObject(_listPlayerInfo[GetPlayer.IdInGame - 1].ListShip![ship.Key].ShipCoordinates);
                     }
                 }
-                db.SaveChanges();
+                return db.SaveData();
             }
         }
 
@@ -136,7 +147,7 @@ namespace MainGameController
             return new Dictionary<string, Ship>()
             {
                 ["S"] = new Ship("Submarine", 3),
-                // ["B"] = new Ship("Battleship", 4), 
+                ["B"] = new Ship("Battleship", 4),
                 // ["C"] = new Ship("Cruiser", 3),
                 // ["D"] = new Ship("Destroyer", 3),
                 // ["R"] = new new Ship("Carrier", 4),
@@ -214,7 +225,20 @@ namespace MainGameController
                 player.ShipPlayerInArena = ShipPosition;
                 player.HitInOpponentArena = HitPosition;
             }
+        }
 
+        public IData GetHPPlayer()
+        {
+            int Opponent = (_activePlayer == 1 ? 2 : 1) - 1;
+            float BarInt = _countHP[Opponent].InGameHp / (float)_countHP[Opponent].TotalHP * 10;
+            int BarSpaceInt = 10 - (int)BarInt;
+
+            string BarString = "";
+            string BarSpace = "";
+            for (int i = 0; i < BarInt; i++) BarString += "=";
+            for (int i = 0; i < BarSpaceInt; i++) BarSpace += " ";
+
+            return new Data($"Opponent HP: ({_countHP[Opponent].InGameHp}) {BarString}{BarSpace}", true);
         }
 
         public IDictionary<string, Ship> GetListShipInGame()
@@ -239,6 +263,7 @@ namespace MainGameController
             int XCoor = int.Parse(Coordinate[0]) - 1;
             int YCoor = int.Parse(Coordinate[1]) - 1;
 
+            ShipPart Part = new() { Name = KeyShip };
             for (int i = 0; i < player.ListShip[KeyShip].ShipSize; i++)
             {
                 Coordinate Coor = new()
@@ -249,8 +274,14 @@ namespace MainGameController
                 player.ShipPlayerInArena[Coor.X, Coor.Y] = KeyShip;
                 player.ListShip[KeyShip].ShipCoordinates.Add(Coor);
 
+                //Implement Composite Design Pattern
+                Part.AddData(Coor);
+
                 _ = (Rotate.ToUpper()! == "V") ? XCoor++ : YCoor++;
             }
+            _countHP[_activePlayer - 1].AddData(Part);
+            _countHP[_activePlayer - 1].InGameHp = _countHP[_activePlayer - 1].CountHitPoints();
+            _countHP[_activePlayer - 1].TotalHP = _countHP[_activePlayer - 1].CountHitPoints();
             ListShipMenu.Remove(KeyShip);
         }
 
@@ -319,6 +350,8 @@ namespace MainGameController
                     DestroyShip = Defender.ListShip[KeyShip].ShipName;
 
                 Defender.ShipPlayerInArena[X, Y] = "H";
+                _countHP[Opponent - 1].InGameHp--;
+
                 return new Data(DestroyShip, true);
             }
             Attacker.HitInOpponentArena[X, Y] = "*";

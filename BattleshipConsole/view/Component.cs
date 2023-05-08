@@ -86,18 +86,18 @@ namespace Components
                 "\nKEY  SIZE    NAME \n" + ShipMenu;
         }
 
-        public string BodyTurnControl(bool Preparation, string PlayerName)
+        public string BodyTurnControl(bool Preparation, string PlayerName, string HPPlayer)
         {
             Arena arena = new();
-            string View = Preparation ? "List Ship : " : "            ";
+            string View = Preparation ? "List Ship :           " : $"{HPPlayer}";
             PlayerName = AddColor.Message(PlayerName, ConsoleColor.Yellow);
             string Space = "";
 
             if (arena.ArenaSize.Width >= 10)
-                for (int i = 10; i <= arena.ArenaSize.Width; i++) Space += "    ";
+                for (int i = 10; i <= arena.ArenaSize.Width; i++) Space += "  ";
 
             return
-                View + "          " + Space + "Your Turn, " + PlayerName;
+                View + Space + "Your Turn, " + PlayerName;
         }
 
         public string BodyInputShip()
