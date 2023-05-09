@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "D8mQ5QuHPM83WB+6G2r4yX+sBlqTFdd8YNO9mIZqRoi0CakwpW/IHkDA5m8hlV3/qXHH+g/TVTqT1hbyVhn6/Q==",
+  "dgSpecHash": "Vqe7dWMirvaKULrhzsbUfHtzRx7h+XXNkRU1lgcO6YT5Lo93OvVoYYgxkuUIz68Zzof9rkjLO/fA6b149aLGrg==",
   "success": true,
-  "projectFilePath": "/home/ignatius/Desktop/Bootcamp/BattleshipConsole/BattleshipConsole/BattleshipConsole.csproj",
+  "projectFilePath": "/home/ignatius/Desktop/Bootcamp2/BattleshipConsole/BattleshipConsole/BattleshipConsole.csproj",
   "expectedPackageFiles": [
     "/home/ignatius/.nuget/packages/entityframework/6.4.4/entityframework.6.4.4.nupkg.sha512",
     "/home/ignatius/.nuget/packages/log4net/2.0.15/log4net.2.0.15.nupkg.sha512",

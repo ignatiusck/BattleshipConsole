@@ -3,8 +3,8 @@ public partial class Program
 {
     private static void CreatePlayer()
     {
-        if (!IsContinue) Game = new GameController();
-        Logger.Message("Game started", LogLevel.Info);
+        if (!_isContinue) _game = new GameController();
+        _logger.Message("Game started", LogLevel.Info);
 
         //Create new player
         int Count = 1;
@@ -16,14 +16,14 @@ public partial class Program
             do
             {
                 Console.Clear();
-                Console.Write(page.CreatePlayer(Count));
+                Console.Write(_view.CreatePlayer(Count));
                 InputPlayer = Console.ReadLine()!;
-                IData Data = Game!.ValidatorPlayer(InputPlayer);
+                IData Data = _game!.ValidatorPlayer(InputPlayer);
                 if (!Data.Status)
                 {
                     DataNotCorrect(Data.Message, 1500);
                     DataPassed = Data.Status;
-                    Logger.Message("fail to add name Player, retry to enter", LogLevel.Error);
+                    _logger.Message("fail to add name Player, retry to enter", LogLevel.Error);
                 }
                 else
                 {
@@ -31,7 +31,7 @@ public partial class Program
                 }
             } while (!DataPassed);
             Count++;
-            Status = Game.AddPlayer(InputPlayer);
+            Status = _game.AddPlayer(InputPlayer);
             DataCorrect("Player data saved", 1000);
         } while (Status);
     }

@@ -4,13 +4,13 @@ public partial class Program
     private static void BattleshipEnd()
     {
         Data Data = new("", true);
-        Game!.ClearGameData();
-        string PlayerName = Game!.GetPlayerActive().Name;
+        _game!.ClearGameData();
+        string PlayerName = _game!.GetPlayerActive().Name;
         _ = Task.Run(() => BattleshipEndPage(Data, PlayerName));
         do
         {
             Console.Clear();
-            Console.Write(page.PlayerWinner(Data.Status, PlayerName));
+            Console.Write(_view.PlayerWinner(Data.Status, PlayerName));
         } while ((int)Console.ReadKey().Key != 13);
     }
 
@@ -21,7 +21,7 @@ public partial class Program
             await Task.Delay(1000);
             Console.Clear();
             Data.Status = !Data.Status;
-            Console.Write(page.PlayerWinner(Data.Status, PlayerName));
+            Console.Write(_view.PlayerWinner(Data.Status, PlayerName));
         }
     }
 }

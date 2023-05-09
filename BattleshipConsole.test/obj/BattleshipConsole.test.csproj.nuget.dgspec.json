@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "/home/ignatius/Desktop/Bootcamp/BattleshipConsole/BattleshipConsole.test/BattleshipConsole.test.csproj": {}
+    "/home/ignatius/Desktop/Bootcamp2/BattleshipConsole/BattleshipConsole.test/BattleshipConsole.test.csproj": {}
   },
   "projects": {
-    "/home/ignatius/Desktop/Bootcamp/BattleshipConsole/BattleshipConsole.test/BattleshipConsole.test.csproj": {
+    "/home/ignatius/Desktop/Bootcamp2/BattleshipConsole/BattleshipConsole.test/BattleshipConsole.test.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/home/ignatius/Desktop/Bootcamp/BattleshipConsole/BattleshipConsole.test/BattleshipConsole.test.csproj",
+        "projectUniqueName": "/home/ignatius/Desktop/Bootcamp2/BattleshipConsole/BattleshipConsole.test/BattleshipConsole.test.csproj",
         "projectName": "BattleshipConsole.test",
-        "projectPath": "/home/ignatius/Desktop/Bootcamp/BattleshipConsole/BattleshipConsole.test/BattleshipConsole.test.csproj",
+        "projectPath": "/home/ignatius/Desktop/Bootcamp2/BattleshipConsole/BattleshipConsole.test/BattleshipConsole.test.csproj",
         "packagesPath": "/home/ignatius/.nuget/packages/",
-        "outputPath": "/home/ignatius/Desktop/Bootcamp/BattleshipConsole/BattleshipConsole.test/obj/",
+        "outputPath": "/home/ignatius/Desktop/Bootcamp2/BattleshipConsole/BattleshipConsole.test/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "/home/ignatius/.nuget/NuGet/NuGet.Config"
@@ -26,8 +26,8 @@
           "net7.0": {
             "targetAlias": "net7.0",
             "projectReferences": {
-              "/home/ignatius/Desktop/Bootcamp/BattleshipConsole/BattleshipConsole/BattleshipConsole.csproj": {
-                "projectPath": "/home/ignatius/Desktop/Bootcamp/BattleshipConsole/BattleshipConsole/BattleshipConsole.csproj"
+              "/home/ignatius/Desktop/Bootcamp2/BattleshipConsole/BattleshipConsole/BattleshipConsole.csproj": {
+                "projectPath": "/home/ignatius/Desktop/Bootcamp2/BattleshipConsole/BattleshipConsole/BattleshipConsole.csproj"
               }
             }
           }
@@ -87,14 +87,14 @@
         }
       }
     },
-    "/home/ignatius/Desktop/Bootcamp/BattleshipConsole/BattleshipConsole/BattleshipConsole.csproj": {
+    "/home/ignatius/Desktop/Bootcamp2/BattleshipConsole/BattleshipConsole/BattleshipConsole.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/home/ignatius/Desktop/Bootcamp/BattleshipConsole/BattleshipConsole/BattleshipConsole.csproj",
+        "projectUniqueName": "/home/ignatius/Desktop/Bootcamp2/BattleshipConsole/BattleshipConsole/BattleshipConsole.csproj",
         "projectName": "BattleshipConsole",
-        "projectPath": "/home/ignatius/Desktop/Bootcamp/BattleshipConsole/BattleshipConsole/BattleshipConsole.csproj",
+        "projectPath": "/home/ignatius/Desktop/Bootcamp2/BattleshipConsole/BattleshipConsole/BattleshipConsole.csproj",
         "packagesPath": "/home/ignatius/.nuget/packages/",
-        "outputPath": "/home/ignatius/Desktop/Bootcamp/BattleshipConsole/BattleshipConsole/obj/",
+        "outputPath": "/home/ignatius/Desktop/Bootcamp2/BattleshipConsole/BattleshipConsole/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "/home/ignatius/.nuget/NuGet/NuGet.Config"
