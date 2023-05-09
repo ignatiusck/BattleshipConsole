@@ -15,7 +15,7 @@ namespace MainGameController
         private ValidatorPreparationPhase _vPreparation;
         private ValidatorHit _vHit;
         private Logger<GameController> _logger;
-        private List<ShipPart> _countHP;
+        private List<ShipPack> _countHP;
         private int _gameId;
 
         //Create game with player
@@ -24,7 +24,7 @@ namespace MainGameController
             _arena = new();
             _activePlayer = 1;
             _listPlayerInfo = new();
-            _countHP = new() { new ShipPart(), new ShipPart() };
+            _countHP = new() { new ShipPack(), new ShipPack() };
 
             _arenaArray = new string[_arena!.ArenaSize.Height, _arena.ArenaSize.Width];
             _vPlayer = new();
@@ -43,8 +43,8 @@ namespace MainGameController
 
             string[] DataHit = HitData.Split(" ");
             _countHP = new() {
-                new ShipPart() { TotalHP =  int.Parse(DataHit[0]), InGameHp = int.Parse(DataHit[1])},
-                new ShipPart() { TotalHP =  int.Parse(DataHit[2]), InGameHp = int.Parse(DataHit[3])}};
+                new ShipPack() { TotalHP =  int.Parse(DataHit[0]), InGameHp = int.Parse(DataHit[1])},
+                new ShipPack() { TotalHP =  int.Parse(DataHit[2]), InGameHp = int.Parse(DataHit[3])}};
 
             _arenaArray = new string[_arena!.ArenaSize.Height, _arena.ArenaSize.Width];
             _vPlayer = new();
@@ -263,7 +263,7 @@ namespace MainGameController
             int XCoor = int.Parse(Coordinate[0]) - 1;
             int YCoor = int.Parse(Coordinate[1]) - 1;
 
-            ShipPart Part = new() { Name = KeyShip };
+            ShipPack ShipPack = new() { Name = KeyShip };
             for (int i = 0; i < player.ListShip[KeyShip].ShipSize; i++)
             {
                 Coordinate Coor = new()
@@ -275,13 +275,14 @@ namespace MainGameController
                 player.ListShip[KeyShip].ShipCoordinates.Add(Coor);
 
                 //Implement Composite Design Pattern
-                Part.AddData(Coor);
+                ShipPack.AddData(Coor);
 
                 _ = (Rotate.ToUpper()! == "V") ? XCoor++ : YCoor++;
             }
-            _countHP[_activePlayer - 1].AddData(Part);
+            _countHP[_activePlayer - 1].AddData(ShipPack);
             _countHP[_activePlayer - 1].InGameHp = _countHP[_activePlayer - 1].CountHitPoints();
             _countHP[_activePlayer - 1].TotalHP = _countHP[_activePlayer - 1].CountHitPoints();
+            //=============================================
             ListShipMenu.Remove(KeyShip);
         }
 

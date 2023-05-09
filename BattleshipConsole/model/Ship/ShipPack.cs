@@ -1,11 +1,13 @@
 using System.ComponentModel.DataAnnotations.Schema;
 
-public class ShipPart : IShipPart
+public class ShipPack : IShipPart
 {
     public string Name { get; set; }
-    public List<IShipPart> List = new();
     public int InGameHp { get; set; }
     public int TotalHP { get; set; }
+
+
+    public List<IShipPart> List = new(); //main component
 
     public void AddData(IShipPart Ship)
     {
