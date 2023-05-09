@@ -6,7 +6,7 @@ public partial class Program
         do
         {
             Console.Clear();
-            Console.Write(new Transition(false, IsContinue, Game!.GetPlayerActive().Name).View());
+            Console.Write(_view.Transition(false, _isContinue, _game!.GetPlayerActive().Name));
         } while ((int)Console.ReadKey().Key != 13);
 
         bool WinnerStatus = false;
@@ -14,32 +14,32 @@ public partial class Program
         {
             while (true)
             {
-                string[,] ArenaMap = Game.GetPlayerDataInGame().HitInOpponentArena;
-                string[,] ShipPosition = Game.GetShipPlayerInArena();
-                string PlayerName = Game.GetPlayerActive().Name;
-                IData HPPlayer = Game.GetHPPlayer();
+                string[,] ArenaMap = _game.GetPlayerDataInGame().HitInOpponentArena;
+                string[,] ShipPosition = _game.GetShipPlayerInArena();
+                string PlayerName = _game.GetPlayerActive().Name;
+                IData HPPlayer = _game.GetHPPlayer();
 
                 Console.Clear();
-                Console.Write(new BattleMap(PlayerName, ArenaMap, HPPlayer.Message).View());
+                Console.Write(_view.BattleMap(PlayerName, ArenaMap, HPPlayer.Message));
                 string Input = ReadKeyCoor();
                 if (Input == "HOME")
                 {
                     Console.Clear();
-                    Console.Write(new ShipPosition(ShipPosition).View());
+                    Console.Write(_view.ShipPosition(ShipPosition));
                     DataCorrect("", 3000);
                     break;
                 }
-                IData Data = Game.ValidateInputCoorHit(Input, ArenaMap)!;
+                IData Data = _game.ValidateInputCoorHit(Input, ArenaMap)!;
                 if (!Data.Status)
                 {
                     DataNotCorrect("\n " + Data.Message, 1000);
                     break;
                 }
-                IData Result = Game.HitOpponent(Input);
-                ArenaMap = Game.GetPlayerDataInGame().HitInOpponentArena;
+                IData Result = _game.HitOpponent(Input);
+                ArenaMap = _game.GetPlayerDataInGame().HitInOpponentArena;
 
                 Console.Clear();
-                Console.Write(new HitResult(Result.Status, Input, ArenaMap).View());
+                Console.Write(_view.HitResult(Result.Status, Input, ArenaMap));
 
                 string AdditionalMessage = "";
                 if (Result.Message != "none")
@@ -47,14 +47,14 @@ public partial class Program
 
                 DataCorrect(AdditionalMessage, 2000);
 
-                if (Game.GetWinnerStatus())
+                if (_game.GetWinnerStatus())
                 {
                     DataCorrect("  All Ship Oppenet Distryed, YOU WIN!!", 2000);
                     WinnerStatus = true;
                     break;
                 }
-                Game.TurnControl();
-                IData ResultSave = Game.SaveGame();
+                _game.TurnControl();
+                IData ResultSave = _game.SaveGame();
                 if (!ResultSave.Status) DataNotCorrect(ResultSave.Message, 2000);
             }
         }

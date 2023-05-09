@@ -44,7 +44,10 @@ public class GameDbContext : DbContext
                 connection.Open();
                 using (SQLiteCommand command = connection.CreateCommand())
                 {
-                    command.CommandText = "DELETE FROM sqlite_sequence WHERE name='SaveGames';";
+                    command.CommandText = "DELETE FROM sqlite_sequence WHERE name='SaveGames';" +
+                                          "DELETE FROM sqlite_sequence WHERE name='Players';" +
+                                          "DELETE FROM sqlite_sequence WHERE name='Ships';" +
+                                          "DELETE FROM sqlite_sequence WHERE name='GamesPlayers';";
                     command.ExecuteNonQuery();
                 }
             }

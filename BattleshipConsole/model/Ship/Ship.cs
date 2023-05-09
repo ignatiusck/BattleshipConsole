@@ -29,5 +29,4 @@ public class Ship
         ShipSize = size;
         ShipCoordinates = new List<Coordinate>();
     }
-
 }

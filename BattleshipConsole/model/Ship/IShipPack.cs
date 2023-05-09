@@ -1,4 +1,4 @@
-public interface IShipPart
+public interface IShipPack
 {
     int CountHitPoints();
 }

@@ -15,7 +15,7 @@ namespace MainGameController
         private ValidatorPreparationPhase _vPreparation;
         private ValidatorHit _vHit;
         private Logger<GameController> _logger;
-        private List<ShipPart> _countHP;
+        private List<ShipPack> _countHP;
         private int _gameId;
 
         //Create game with player
@@ -24,7 +24,7 @@ namespace MainGameController
             _arena = new();
             _activePlayer = 1;
             _listPlayerInfo = new();
-            _countHP = new() { new ShipPart(), new ShipPart() };
+            _countHP = new() { new ShipPack(), new ShipPack() };
 
             _arenaArray = new string[_arena!.ArenaSize.Height, _arena.ArenaSize.Width];
             _vPlayer = new();
@@ -43,8 +43,8 @@ namespace MainGameController
 
             string[] DataHit = HitData.Split(" ");
             _countHP = new() {
-                new ShipPart() { TotalHP =  int.Parse(DataHit[0]), InGameHp = int.Parse(DataHit[1])},
-                new ShipPart() { TotalHP =  int.Parse(DataHit[2]), InGameHp = int.Parse(DataHit[3])}};
+                new ShipPack() { TotalHP =  int.Parse(DataHit[0]), InGameHp = int.Parse(DataHit[1])},
+                new ShipPack() { TotalHP =  int.Parse(DataHit[2]), InGameHp = int.Parse(DataHit[3])}};
 
             _arenaArray = new string[_arena!.ArenaSize.Height, _arena.ArenaSize.Width];
             _vPlayer = new();
@@ -93,12 +93,12 @@ namespace MainGameController
                             ship.Value.Key = ship.Key;
                             ship.Value.SerializedCoor = JsonConvert.SerializeObject(ship.Value.ShipCoordinates);
                             db.Ships!.Add(ship.Value);
+
                         }
                     }
                     IData Result = db.SaveData();
                     _gameId = Data.Id;
-                    AddColor.Message("DB Created successfully", ConsoleColor.Green);
-                    Thread.Sleep(2000);
+
                     return Result;
                 }
 
@@ -263,7 +263,7 @@ namespace MainGameController
             int XCoor = int.Parse(Coordinate[0]) - 1;
             int YCoor = int.Parse(Coordinate[1]) - 1;
 
-            ShipPart Part = new() { Name = KeyShip };
+            ShipPack Part = new() { Name = KeyShip };
             for (int i = 0; i < player.ListShip[KeyShip].ShipSize; i++)
             {
                 Coordinate Coor = new()

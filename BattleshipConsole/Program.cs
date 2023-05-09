@@ -1,25 +1,24 @@
 using MainGameController;
 using MainLogger;
-using Helpers;
-using System.Data.SQLite;
 using Newtonsoft.Json;
 
 public partial class Program
 {
-    private static Logger<Program> Logger = new();
-    private static GameController? Game;
-    private static string PathGameData = "./controller/saveDbContext/DbData/Data.db";
-    private static bool IsContinue;
+    private static Logger<Program> _logger = new();
+    private static View _view = new();
+    private static GameController? _game;
+    private static string _pathGameData = "./controller/saveDbContext/DbData/Data.db";
+    private static bool _isContinue;
 
     public static void Main(string[] args)
     {
         // GameDbContext.CreateDb(PathGameData);
-        GameDbContext.ResetDb(PathGameData);
+        GameDbContext.ResetDb(_pathGameData);
 
-        Logger.Config(false);
+        _logger.Config(false);
 
         BattleshipStart();
-        if (!IsContinue)
+        if (!_isContinue)
         {
             CreatePlayer();
             PreparationPhase();
@@ -61,7 +60,7 @@ public partial class Program
             List<Player> ListPlayerInfo = new();
             using (GameDbContext db = new())
             {
-                SaveGame GetData = db.SaveGames.Find(Id)!;
+                SaveGame GetData = db.SaveGames!.Find(Id)!;
                 if (GetData == null)
                 {
                     DataNotCorrect(" = ID not found.", 1000);
@@ -72,7 +71,7 @@ public partial class Program
                 {
                     Player? GetPlayer = new();
                     GetPlayer = db.Players!.Find(GP.PlayerId);
-                    foreach (Ship ship in db.Ships!.Where(Ship => Ship.PlayerId == GetPlayer.Id))
+                    foreach (Ship ship in db.Ships!.Where(Ship => Ship.PlayerId == GetPlayer!.Id))
                     {
                         GetPlayer!.ListShip![ship.Key] = ship;
                         GetPlayer.ListShip[ship.Key].ShipCoordinates = JsonConvert.DeserializeObject<List<Coordinate>>(ship.SerializedCoor)!;
@@ -82,7 +81,7 @@ public partial class Program
 
                     ListPlayerInfo.Add(GetPlayer);
                 }
-                Game = new GameController(ListPlayerInfo, GetData.ActivePlayer, GetData.Id, GetData.CountHP);
+                _game = new GameController(ListPlayerInfo, GetData.ActivePlayer, GetData.Id, GetData.CountHP!);
             }
             return false;
         }
@@ -94,10 +93,10 @@ public partial class Program
         List<SaveGame> SavedData;
 
         GameDbContext db = new();
-        SavedData = db.SaveGames.ToList();
+        SavedData = db.SaveGames!.ToList();
         db.Dispose();
 
         Console.Clear();
-        Console.Write(new LoadGame(SavedData).View());
+        Console.Write(_view.LoadGame(SavedData));
     }
 }

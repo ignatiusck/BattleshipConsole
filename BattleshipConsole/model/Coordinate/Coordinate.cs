@@ -1,5 +1,5 @@
 using System.Xml.Serialization;
-public class Coordinate : ICoordinate, IShipPart
+public class Coordinate : ICoordinate, IShipPack
 {
     private int _x;
     private int _y;

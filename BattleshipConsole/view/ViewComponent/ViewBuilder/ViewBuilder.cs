@@ -1,9 +1,13 @@
-using System.ComponentModel;
-class Builder : IComponent, IBuilder
+class ViewBuilder : IComponent, IBuilder
 {
     public string ComponentName => "Page Box";
     private List<IComponent> _listComponents = new();
-    private string _page;
+    private string? _page;
+
+    public void Reset()
+    {
+        _listComponents = new();
+    }
 
     public void AddComponent(IComponent component)
     {

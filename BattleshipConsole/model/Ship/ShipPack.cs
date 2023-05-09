@@ -1,18 +1,16 @@
-using System.ComponentModel.DataAnnotations.Schema;
-
-public class ShipPart : IShipPart
+public class ShipPack : IShipPack
 {
-    public string Name { get; set; }
-    public List<IShipPart> List = new();
+    public string? Name { get; set; }
+    public List<IShipPack> List = new();
     public int InGameHp { get; set; }
     public int TotalHP { get; set; }
 
-    public void AddData(IShipPart Ship)
+    public void AddData(IShipPack Ship)
     {
         List.Add(Ship);
     }
 
-    public void RemoveData(IShipPart Ship)
+    public void RemoveData(IShipPack Ship)
     {
         List.Remove(Ship);
     }
@@ -20,7 +18,7 @@ public class ShipPart : IShipPart
     public int CountHitPoints()
     {
         TotalHP = 0;
-        foreach (IShipPart item in List)
+        foreach (IShipPack item in List)
         {
             TotalHP += item.CountHitPoints();
         }

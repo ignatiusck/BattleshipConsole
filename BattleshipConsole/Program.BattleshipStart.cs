@@ -1,18 +1,16 @@
-using MainGameController;
-
 public partial class Program
 {
     private static void BattleshipStart()
     {
         //display home menu
-        IsContinue = false;
+        _isContinue = false;
         bool LoadStatePage = true;
         while (LoadStatePage)
         {
             while (true)
             {
                 Console.Clear();
-                Console.WriteLine(new Home().View());
+                Console.WriteLine(_view.Home());
                 int KeyIn = (int)Console.ReadKey().Key;
                 if (KeyIn == 13)
                 {
@@ -25,16 +23,16 @@ public partial class Program
                     if (GameDbContext.IsDataEmpty())
                     {
                         Console.Clear();
-                        Console.WriteLine(new NotFound().View());
+                        Console.WriteLine(_view.NotFound());
                         DataNotCorrect("               Will Close in 3s.", 3000);
-                        IsContinue = false;
+                        _isContinue = false;
                         break;
                     }
                     do
                     {
                         ListContinueData();
                     } while (SelectData());
-                    IsContinue = true;
+                    _isContinue = true;
                     LoadStatePage = false;
                     break;
                 }

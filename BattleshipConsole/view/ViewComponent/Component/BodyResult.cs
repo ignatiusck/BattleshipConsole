@@ -6,7 +6,8 @@ namespace Components
         private string _bodyResult;
         public BodyResult(bool Status, string Coor)
         {
-            Coor = AddColor.Message(Coor, ConsoleColor.Yellow);
+            string[] Coors = Coor.Split("¼");
+            Coor = AddColor.Message($"{Coors[0]},{Coors[1]}", ConsoleColor.Yellow);
             string Result = Status ?
                 AddColor.Message("Hit!!", ConsoleColor.Green) :
                 AddColor.Message("Miss", ConsoleColor.Red);
