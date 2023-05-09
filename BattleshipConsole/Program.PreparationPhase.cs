@@ -6,7 +6,7 @@ public partial class Program
         do
         {
             Console.Clear();
-            Console.Write(page.Transition(true, false, Game!.GetPlayerActive().Name));
+            Console.Write(new Transition(true, false, Game!.GetPlayerActive().Name).View());
         } while ((int)Console.ReadKey().Key != 13);
 
         //setup player ship
@@ -22,7 +22,7 @@ public partial class Program
                 while (!IsPassed)
                 {
                     Console.Clear();
-                    Console.Write(page.PreparationMap(ListShipMenu, PlayerName, ArenaMap));
+                    Console.Write(new PreparationMap(ListShipMenu, PlayerName, ArenaMap).View());
                     string? InputPlayer = Console.ReadLine();
                     IData Data = Game.ValidatorPreparation(InputPlayer!, ListShipMenu, ArenaMap);
                     if (!Data.Status)
@@ -33,7 +33,7 @@ public partial class Program
                     }
                     Game.AddShipToArena(InputPlayer!, ListShipMenu);
                     Console.Clear();
-                    Console.Write(page.PreparationMap(ListShipMenu, PlayerName, ArenaMap));
+                    Console.Write(new PreparationMap(ListShipMenu, PlayerName, ArenaMap).View());
                     DataCorrect(" ship added.", 1000);
                     IsPassed = Data.Status;
                     Logger.Message("Ship added.", LogLevel.Info);

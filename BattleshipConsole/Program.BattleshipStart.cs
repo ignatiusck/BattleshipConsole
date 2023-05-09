@@ -12,7 +12,7 @@ public partial class Program
             while (true)
             {
                 Console.Clear();
-                Console.WriteLine(page.Home());
+                Console.WriteLine(new Home().View());
                 int KeyIn = (int)Console.ReadKey().Key;
                 if (KeyIn == 13)
                 {
@@ -25,7 +25,7 @@ public partial class Program
                     if (GameDbContext.IsDataEmpty())
                     {
                         Console.Clear();
-                        Console.WriteLine(page.DataNotFound());
+                        Console.WriteLine(new NotFound().View());
                         DataNotCorrect("               Will Close in 3s.", 3000);
                         IsContinue = false;
                         break;

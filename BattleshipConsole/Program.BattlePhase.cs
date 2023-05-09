@@ -6,7 +6,7 @@ public partial class Program
         do
         {
             Console.Clear();
-            Console.Write(page.Transition(false, IsContinue, Game!.GetPlayerActive().Name));
+            Console.Write(new Transition(false, IsContinue, Game!.GetPlayerActive().Name).View());
         } while ((int)Console.ReadKey().Key != 13);
 
         bool WinnerStatus = false;
@@ -20,12 +20,12 @@ public partial class Program
                 IData HPPlayer = Game.GetHPPlayer();
 
                 Console.Clear();
-                Console.Write(page.BattleMap(PlayerName, ArenaMap, HPPlayer.Message));
+                Console.Write(new BattleMap(PlayerName, ArenaMap, HPPlayer.Message).View());
                 string Input = ReadKeyCoor();
                 if (Input == "HOME")
                 {
                     Console.Clear();
-                    Console.Write(page.ShipPosition(ShipPosition));
+                    Console.Write(new ShipPosition(ShipPosition).View());
                     DataCorrect("", 3000);
                     break;
                 }
@@ -39,7 +39,7 @@ public partial class Program
                 ArenaMap = Game.GetPlayerDataInGame().HitInOpponentArena;
 
                 Console.Clear();
-                Console.Write(page.HitResult(Result.Status, Input, ArenaMap));
+                Console.Write(new HitResult(Result.Status, Input, ArenaMap).View());
 
                 string AdditionalMessage = "";
                 if (Result.Message != "none")

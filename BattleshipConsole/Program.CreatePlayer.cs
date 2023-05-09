@@ -16,7 +16,7 @@ public partial class Program
             do
             {
                 Console.Clear();
-                Console.Write(page.CreatePlayer(Count));
+                Console.Write(new CreatePlayer(Count).View());
                 InputPlayer = Console.ReadLine()!;
                 IData Data = Game!.ValidatorPlayer(InputPlayer);
                 if (!Data.Status)

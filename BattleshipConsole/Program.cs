@@ -1,4 +1,3 @@
-using Pages;
 using MainGameController;
 using MainLogger;
 using Helpers;
@@ -8,7 +7,6 @@ using Newtonsoft.Json;
 public partial class Program
 {
     private static Logger<Program> Logger = new();
-    private static readonly Page page = new();
     private static GameController? Game;
     private static string PathGameData = "./controller/saveDbContext/DbData/Data.db";
     private static bool IsContinue;
@@ -100,6 +98,6 @@ public partial class Program
         db.Dispose();
 
         Console.Clear();
-        Console.Write(page.ListLoadData(SavedData));
+        Console.Write(new LoadGame(SavedData).View());
     }
 }
