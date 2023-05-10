@@ -1,9 +1,10 @@
 public class ShipPack : IShipPack
 {
     public string? Name { get; set; }
-    public List<IShipPack> List = new();
     public int InGameHp { get; set; }
     public int TotalHP { get; set; }
+
+    public List<IShipPack> List = new();
 
     public void AddData(IShipPack Ship)
     {
